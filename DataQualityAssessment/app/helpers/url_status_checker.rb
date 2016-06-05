@@ -5,13 +5,14 @@ class UrlStatusChecker
   end
 
   def report
+    puts 'Checking url availability...'
     @urls.each do |url|
       print "\nAnalyzing #{url}..."
       code = fetch_code(url)
-      add_code_report(code)
+      add_code_report(code, url)
       puts 'Done!'
     end
-    @report
+    @report["200"]
   end
 
   private
@@ -25,11 +26,11 @@ class UrlStatusChecker
     res.code
   end
 
-  def add_code_report(code)
+  def add_code_report(code, url)
     if @report[code]
-      @report[code] += 1
+      @report[code] << url
     else
-      @report[code] = 1
+      @report[code] = [url]
     end
   end
 end

@@ -87,6 +87,9 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    pry-doc (0.8.0)
+      pry (~> 0.9)
+      yard (~> 0.8)
     rack (1.6.4)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -157,6 +160,7 @@ GEM
       binding_of_caller (>= 0.7.2)
       railties (>= 4.0)
       sprockets-rails (>= 2.0, < 4.0)
+    yard (0.8.7.6)
 
 PLATFORMS
   ruby
@@ -168,6 +172,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   pry
+  pry-doc
   rails (= 4.2.5)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
