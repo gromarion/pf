@@ -10,7 +10,8 @@ module Licensing
     end
 
     def report
-      puts "OPEN LICENSING CHECKER REPORT RUNNING. THIS MAY TAKE A WHILE..."
+      puts "LICENSING CHECKER REPORT RUNNING. THIS MAY TAKE A WHILE..."
+      puts "=========================================================="
       @urls.each do |url|
         print "\nAnalyzing #{url}..."
         if url.include?(HUMAN_READABLE_LICENSE)

@@ -7,6 +7,8 @@ module Performance
     end
 
     def report
+      puts "SCALABILITY CHECKER REPORT RUNNING. THIS MAY TAKE A WHILE..."
+      puts "============================================================"
       @urls.each do |url|
         print "\nAnalyzing #{url}..."
         add_time_report(url, avg_time(url), :avg_time)
