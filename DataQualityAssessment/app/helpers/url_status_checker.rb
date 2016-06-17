@@ -4,12 +4,9 @@ class UrlStatusChecker
   REDIRECTION = %w[300 301 302 303 304 305 306 307 308]
   OK_CODES = OK + REDIRECTION
 
-  SUCCESS = "success"
-  FAILURE = "failure"
-
-  def initialize(urls)
+  def initialize(urls, report)
     @urls = urls
-    @report = {}
+    @report = report
   end
 
   def report
@@ -24,7 +21,7 @@ class UrlStatusChecker
       add_code_report(code, url)
       puts 'Done!'
     end    
-    @report[SUCCESS]
+    @report
   end
 
   private
@@ -39,18 +36,11 @@ class UrlStatusChecker
   end
 
   def add_code_report(code, url)
-    if OK_CODES.include?(code)
-      add_value(SUCCESS, url)
+    if @report[url]
+      @report[url][:http_code] = code
     else
-      add_value(FAILURE, url)
-    end
-  end
-
-  def add_value(key, url)
-    if @report[key]
-      @report[key] << url
-    else
-      @report[key] = [url]
+      url_status = { url: url, http_code: code }
+      @report[url] = url_status
     end
   end
 end

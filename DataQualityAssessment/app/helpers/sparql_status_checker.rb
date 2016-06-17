@@ -2,9 +2,9 @@ class SparqlStatusChecker
   SUCCESS = 'success'
   FAILURE = 'failure'
 
-  def initialize(urls)
+  def initialize(urls, report)
     @urls = urls
-    @report = {}
+    @report = report
   end
 
   def report
@@ -20,16 +20,17 @@ class SparqlStatusChecker
       end
       puts 'Done!'
     end
-    @report[SUCCESS]
+    @report
   end
 
   private
 
   def add_code_report(code, url)
-    if @report[code]
-      @report[code] << url
+    if @report[url]
+      @report[url][:sparql] = code
     else
-      @report[code] = [url]
+      url_status = { url: url, sparql: code }
+      @report[url] = url_status
     end
   end
 end

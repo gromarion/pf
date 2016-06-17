@@ -5,8 +5,8 @@ class AvailabilityPipeline
   end
 
   def perform
-    remaining_urls = @urls
-    @criteria.each { |criteria| remaining_urls = criteria.constantize.new(remaining_urls).report }
-    remaining_urls
+    report = {}
+    @criteria.each { |criteria| report = criteria.constantize.new(@urls, report).report }
+    report
   end
 end
