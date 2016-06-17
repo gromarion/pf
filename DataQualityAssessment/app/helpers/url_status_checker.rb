@@ -36,11 +36,11 @@ class UrlStatusChecker
   end
 
   def add_code_report(code, url)
-    if @report[url]
-      @report[url][:http_code] = code
+    if @report[:url][url]
+      @report[:url][url][:http_code] = code
     else
       url_status = { url: url, http_code: code }
-      @report[url] = url_status
+      @report[:url][url] = url_status
     end
   end
 end

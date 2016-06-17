@@ -1,5 +1,5 @@
 module Performance
-  class ScalabilityChecker
+  class LowLatencyChecker
     def initialize(urls, report, threads = 10)
       @urls = urls
       @threads = threads
@@ -9,8 +9,7 @@ module Performance
     def report
       @urls.each do |url|
         print "\nAnalyzing #{url}..."
-        add_time_report(url, avg_time(url), :avg_time)
-        add_time_report(url, measure_request_time(url), :one_time)
+        add_latency_report(url, minimum_latency(url))
         puts "Done!"
       end
       @report
@@ -18,12 +17,12 @@ module Performance
 
     private
 
-    def avg_time(url)
+    def minimum_latency(url)
       threads = []
-      total_time = 0
-      @threads.times { threads << Thread.new { time = measure_request_time(url); total_time += time } }
+      times = []
+      @threads.times { threads << Thread.new { time = measure_request_time(url); times << time } }
       threads.each(&:join)
-      total_time / @threads
+      times.min
     end
 
     def measure_request_time(url)
@@ -36,13 +35,11 @@ module Performance
       Time.current - start_time
     end
 
-    def add_time_report(url, time, key)
+    def add_latency_report(url, time)
       if @report[:url][url]
-        @report[:url][url][key] = time
+        @report[:url][url][:minimum_latency] = time
       else
-        url_status = { url: url }
-        url_status[key] = time
-        @report[:url][url] = url_status
+        @report[:url][url] = { url: url, minimum_latency: time }
       end
     end
   end

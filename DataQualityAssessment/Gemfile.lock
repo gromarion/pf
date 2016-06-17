@@ -121,6 +121,8 @@ GEM
     rdf (2.0.0)
       hamster (~> 3.0)
       link_header (~> 0.0, >= 0.0.8)
+    rdf-n3 (2.0.0)
+      rdf (~> 2.0)
     rdoc (4.2.2)
       json (~> 1.4)
     sass (3.4.22)
@@ -174,6 +176,7 @@ DEPENDENCIES
   pry
   pry-doc
   rails (= 4.2.5)
+  rdf-n3
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   sparql-client
@@ -184,4 +187,4 @@ DEPENDENCIES
   web-console (~> 2.0)
 
 BUNDLED WITH
-   1.10.6
+   1.12.5

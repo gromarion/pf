@@ -5,7 +5,7 @@ class AvailabilityPipeline
   end
 
   def perform
-    report = {}
+    report = { url: {}, licensing: {} }
     @criteria.each { |criteria| report = criteria.constantize.new(@urls, report).report }
     report
   end
