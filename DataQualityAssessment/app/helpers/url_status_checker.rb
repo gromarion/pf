@@ -6,6 +6,10 @@ class UrlStatusChecker
 
   def report
     puts 'Checking url availability...'
+    if @urls.nil?
+      puts 'No URLs to analyze'
+      return
+    end
     @urls.each do |url|
       print "\nAnalyzing #{url}..."
       code = fetch_code(url)
