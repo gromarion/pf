@@ -32,7 +32,7 @@ module Performance
       http = Net::HTTP.new(uri.host, uri.port)
       request = Net::HTTP::Get.new(uri.request_uri)
       start_time = Time.current
-      http.request(request)
+      ans = http.request(request)
 
       Time.current - start_time
     end
