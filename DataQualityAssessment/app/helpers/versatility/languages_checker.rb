@@ -12,7 +12,7 @@ module Versatility
         obj = triple.object
         add_language(triple) if obj.is_a?(RDF::Literal) && obj.value.is_a?(String)
       end
-      @resources
+      { versatility: @resources }
     end
 
     private

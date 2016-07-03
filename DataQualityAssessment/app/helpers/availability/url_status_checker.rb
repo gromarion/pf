@@ -34,7 +34,7 @@ module Availability
 
       response.code
     rescue RestClient::ResourceNotFound
-      "404"
+      404
     end
 
     def add_code_report(code, url)

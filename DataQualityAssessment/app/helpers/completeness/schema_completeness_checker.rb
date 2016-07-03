@@ -17,7 +17,7 @@ module Completeness
         add_to_instances(triple) if triple.predicate.to_s.include?("type")
       end
       analyze_completeness
-      @report
+      { completeness: @report }
     end
 
     private
