@@ -220,7 +220,7 @@
     <!-- http://www.semanticweb.org/gromarion/ontologies/2016/3/game-ontology#PlasmaGun -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/gromarion/ontologies/2016/3/game-ontology#PlasmaGun">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/gromarion/ontologies/2016/3/game-ontology#FireGun"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/gromarion/ontologies/2016/3/game-ontology#Weapon"/>
         <rdfs:subClassOf>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://www.semanticweb.org/gromarion/ontologies/2016/3/game-ontology#isLoadedWith"/>
@@ -542,6 +542,21 @@
         <duration rdf:datatype="http://www.w3.org/2001/XMLSchema#float">20.0</duration>
     </owl:NamedIndividual>
     
+
+    <owl:InverseFunctionalProperty rdf:ID="isOwnerOf">
+      <rdfs:domain rdf:resource="#Player"/>
+      <rdfs:range rdf:resource="#FireGun"/>
+    </owl:InverseFunctionalProperty>
+
+    <owl:NamedIndividual rdf:about="German">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gromarion/ontologies/2016/3/game-ontology#Player"/>
+        <rdf:isOwnerOf rdf:resource="http://www.semanticweb.org/gromarion/ontologies/2016/3/game-ontology#Shotgun">
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="Facundo">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gromarion/ontologies/2016/3/game-ontology#Player"/>
+        <rdf:isOwnerOf rdf:resource="http://www.semanticweb.org/gromarion/ontologies/2016/3/game-ontology#Shotgun">
+    </owl:NamedIndividual>
 
 
     <!-- 
