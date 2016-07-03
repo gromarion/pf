@@ -19,7 +19,7 @@ module Availability
         return
       end
       @urls.each do |url|
-        print "\nAnalyzing #{url}..."
+        print "Analyzing #{url}..."
         code = fetch_code(url)
         add_code_report(code, url)
         puts 'Done!'
@@ -31,9 +31,10 @@ module Availability
 
     def fetch_code(url)
       response = RestClient.get(url)
-      binding.pry
 
-      res.code
+      response.code
+    rescue RestClient::ResourceNotFound
+      "404"
     end
 
     def add_code_report(code, url)

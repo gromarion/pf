@@ -13,7 +13,7 @@ module Licensing
       puts "LICENSING CHECKER REPORT RUNNING. THIS MAY TAKE A WHILE..."
       puts "=========================================================="
       @urls.each do |url|
-        print "\nAnalyzing #{url}..."
+        print "Analyzing #{url}..."
         if url.include?(HUMAN_READABLE_LICENSE)
           @report[:licensing][:human_readable_license] = true
         elsif url.include?(LICENSING)

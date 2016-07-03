@@ -11,7 +11,7 @@ module RepresentationalConciseness
       puts "URI LENGTH-QUERY PARAMS CHECKER REPORT RUNNING. THIS MAY TAKE A WHILE..."
       puts "========================================================================"
       @urls.each do |url|
-        print "\nAnalyzing #{url}..."
+        print "Analyzing #{url}..."
         add_url_report(url, :query_params) if url.include?("?")
         add_url_report(url, :too_long) if url.length > MAX_URL_LENGTH
         puts "Done!"

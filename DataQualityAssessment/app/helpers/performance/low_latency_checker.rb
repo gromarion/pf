@@ -10,7 +10,7 @@ module Performance
       puts "LOW LATENCY CHECKER REPORT RUNNING. THIS MAY TAKE A WHILE..."
       puts "============================================================"
       @urls.each do |url|
-        print "\nAnalyzing #{url}..."
+        print "Analyzing #{url}..."
         add_latency_report(url, minimum_latency(url))
         puts "Done!"
       end

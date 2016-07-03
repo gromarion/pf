@@ -12,7 +12,7 @@ module Interlinking
       puts "OPEN SAME AS CHECKER REPORT RUNNING. THIS MAY TAKE A WHILE..."
       puts "============================================================="
       @urls.each do |url|
-        print "\nAnalyzing #{url}..."
+        print "Analyzing #{url}..."
         if url.include?(SAME_AS)
           add_same_as_report(url, "success")
         else
