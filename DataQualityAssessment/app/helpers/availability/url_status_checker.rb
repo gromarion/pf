@@ -1,3 +1,5 @@
+require 'rest-client'
+
 module Availability
   class UrlStatusChecker
     OK = %w[200 201 202 203 204 205 206 207 208 226]
@@ -17,7 +19,7 @@ module Availability
         return
       end
       @urls.each do |url|
-        print "\nAnalyzing #{url}..."
+        print "Analyzing #{url}..."
         code = fetch_code(url)
         add_code_report(code, url)
         puts 'Done!'
@@ -28,12 +30,11 @@ module Availability
     private
 
     def fetch_code(url)
-      uri = URI.parse(url)
-      http = Net::HTTP.new(uri.host, uri.port)
-      request = Net::HTTP::Get.new(uri.request_uri)
-      res = http.request(request)
+      response = RestClient.get(url)
 
-      res.code
+      response.code
+    rescue RestClient::ResourceNotFound
+      404
     end
 
     def add_code_report(code, url)

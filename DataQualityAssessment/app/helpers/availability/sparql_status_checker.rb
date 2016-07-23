@@ -12,12 +12,12 @@ module Availability
       puts "SPARQL STATUS CHECKER REPORT RUNNING. THIS MAY TAKE A WHILE..."
       puts "=============================================================="
       @urls.each do |url|
-        print "\nAnalyzing #{url}..."
+        print "Analyzing #{url}..."
         begin
           client = SPARQL::Client.new(url)
           ans = client.query('SELECT * WHERE {?s ?p ?o}')
           ans.present? ? add_code_report(SUCCESS, url) : add_code_report(FAILURE, url)
-        rescue SPARQL::Client::ClientError
+        rescue
           add_code_report(FAILURE, url)
         end
         puts 'Done!'

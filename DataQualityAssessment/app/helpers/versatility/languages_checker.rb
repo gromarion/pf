@@ -6,11 +6,13 @@ module Versatility
     end
 
     def report
+      puts "LANGUAGES CHECKER REPORT RUNNING. THIS MAY TAKE A WHILE..."
+      puts "=========================================================="
       @rdf.each do |triple|
         obj = triple.object
         add_language(triple) if obj.is_a?(RDF::Literal) && obj.value.is_a?(String)
       end
-      @resources
+      { versatility: @resources }
     end
 
     private

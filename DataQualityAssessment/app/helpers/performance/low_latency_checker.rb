@@ -10,7 +10,7 @@ module Performance
       puts "LOW LATENCY CHECKER REPORT RUNNING. THIS MAY TAKE A WHILE..."
       puts "============================================================"
       @urls.each do |url|
-        print "\nAnalyzing #{url}..."
+        print "Analyzing #{url}..."
         add_latency_report(url, minimum_latency(url))
         puts "Done!"
       end
@@ -32,7 +32,7 @@ module Performance
       http = Net::HTTP.new(uri.host, uri.port)
       request = Net::HTTP::Get.new(uri.request_uri)
       start_time = Time.current
-      http.request(request)
+      ans = http.request(request)
 
       Time.current - start_time
     end
