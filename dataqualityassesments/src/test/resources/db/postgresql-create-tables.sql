@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS users;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE users (
-  uid SERIAL,
+  id SERIAL,
   googleid varchar(64) NOT NULL,
   name varchar(256) NOT NULL,
   picture varchar(256) NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE users (
   statR int NOT NULL DEFAULT '0',
   statT int NOT NULL DEFAULT '0',
   statD int NOT NULL DEFAULT '0',
-  PRIMARY KEY (uid),
+  PRIMARY KEY (id),
   UNIQUE(googleid)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -52,12 +52,12 @@ DROP TABLE IF EXISTS campaign;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE campaign (
-  cid SERIAL,
+  id SERIAL,
   cname varchar(256) NOT NULL,
   cendpoint varchar(256) NOT NULL,
   cgraphs varchar(512) NOT NULL,
   copened int NOT NULL,
-  PRIMARY KEY (cid),
+  PRIMARY KEY (id),
   UNIQUE(cname)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -78,13 +78,13 @@ DROP TABLE IF EXISTS classes;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE classes (
-  cid bigint NOT NULL,
+  id bigint NOT NULL,
   curi varchar(256) NOT NULL,
   cname varchar(256) NOT NULL,
   cparent bigint NOT NULL,
   count_cache bigint NOT NULL,
   is_leaf int NOT NULL,
-  PRIMARY KEY (cid)
+  PRIMARY KEY (id)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -104,14 +104,14 @@ DROP TABLE IF EXISTS errors;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE errors (
-  error_id bigint NOT NULL,
+  id bigint NOT NULL,
   error_title varchar(256) NOT NULL,
   example_uri varchar(256) NOT NULL,
   example_n3 varchar(512) NOT NULL,
   description varchar(10000) NOT NULL,
   error_parent bigint NOT NULL,
   is_leaf int NOT NULL,
-  PRIMARY KEY (error_id)
+  PRIMARY KEY (id)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -127,11 +127,11 @@ DROP TABLE IF EXISTS evaluation_session;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE evaluation_session (
-  sid SERIAL,
-  cid bigint NOT NULL REFERENCES campaign (cid),
-  uid bigint NOT NULL REFERENCES users (uid),
+  id SERIAL,
+  cid bigint NOT NULL REFERENCES campaign (id),
+  uid bigint NOT NULL REFERENCES users (id),
   timestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (sid)
+  PRIMARY KEY (id)
 );
 
 --
@@ -149,13 +149,13 @@ DROP TABLE IF EXISTS evaluated_resource;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE evaluated_resource (
-  rid SERIAL,
-  sid bigint NOT NULL REFERENCES evaluation_session (sid),
+  id SERIAL,
+  sid bigint NOT NULL REFERENCES evaluation_session (id),
   resource varchar(256) NOT NULL,
   comments varchar(10000) NOT NULL,
   class varchar(256) NOT NULL DEFAULT '',
   correct int NOT NULL,
-  PRIMARY KEY (rid)
+  PRIMARY KEY (id)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -174,13 +174,13 @@ DROP TABLE IF EXISTS evaluated_resource_details;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE evaluated_resource_details (
-  eid SERIAL,
-  rid bigint DEFAULT NULL REFERENCES evaluated_resource (rid),
+  id SERIAL,
+  rid bigint DEFAULT NULL REFERENCES evaluated_resource (id),
   predicate varchar(256) DEFAULT NULL,
   object varchar(10000) DEFAULT NULL,
   error_id bigint DEFAULT NULL,
   comment varchar(10000) DEFAULT NULL,
-  PRIMARY KEY (eid)
+  PRIMARY KEY (id)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
