@@ -4,7 +4,9 @@ import com.itba.domain.PersistentEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -18,6 +20,9 @@ public class User extends PersistentEntity {
     private Integer statr;
     private Integer statt;
     private Integer statd;
+
+    @OneToMany(mappedBy = "user")
+    private Set<EvaluationSession> sessions;
 
     User(){}
 

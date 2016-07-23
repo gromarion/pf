@@ -3,22 +3,26 @@ package com.itba.domain.model;
 import com.itba.domain.PersistentEntity;
 import org.joda.time.DateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "evaluation_session")
 public class EvaluationSession extends PersistentEntity {
 
-    @Column(name = "cid")
+    @ManyToOne
+//    @Column(name = "cid")
     private Campaign campaign;
 
-    @Column(name = "uid")
+    @ManyToOne
+//    @Column(name = "uid")
     private User user;
 
     @Column(name = "timestamp")
     private DateTime timestamp;
+
+    @OneToMany(mappedBy = "session")
+    private Set<EvaluatedResource> evaluatedResources;
 
     EvaluationSession() {}
 }

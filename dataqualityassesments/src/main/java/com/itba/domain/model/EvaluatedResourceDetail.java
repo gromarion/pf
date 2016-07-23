@@ -4,6 +4,7 @@ import com.itba.domain.PersistentEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.math.BigInteger;
 
@@ -11,7 +12,8 @@ import java.math.BigInteger;
 @Table(name = "evaluated_resource_details")
 public class EvaluatedResourceDetail extends PersistentEntity {
 
-    @Column(name = "rid")
+//    @Column(name = "rid")
+    @ManyToOne
     private EvaluatedResource resource;
 
     @Column(name = "predicate")
