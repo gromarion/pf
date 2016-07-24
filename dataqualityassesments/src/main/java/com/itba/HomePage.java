@@ -1,6 +1,9 @@
 package com.itba;
 
-import com.itba.domain.SparqlSuggestOracle;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.apache.wicket.ajax.json.JSONArray;
 import org.apache.wicket.ajax.json.JSONObject;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.AutoCompleteTextField;
@@ -9,9 +12,7 @@ import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import com.itba.domain.SparqlRequestHandler;
 
 @SuppressWarnings("serial")
 public class HomePage extends WebPage {
@@ -46,12 +47,11 @@ public class HomePage extends WebPage {
 		AutoCompleteTextField<String> autoCompleteTextField = new AutoCompleteTextField<String>("autoCompleteTextField", suggestionModel) {
 			@Override
 			protected Iterator<String> getChoices(String s) {
-				JSONArray choices = SparqlSuggestOracle.requestSuggestions(s);
+				JSONArray choices = SparqlRequestHandler.requestSuggestions(s);
 				List<String> list = new ArrayList<String>();
-				for (int i=0; i<choices.length(); i++) {
+				for (int i = 0; i < choices.length(); i++) {
 					list.add((String) ((JSONObject)(((JSONObject) choices.get(i)).get("s"))).get("value"));
 				}
-//				List<String> choices = Lists.newLinkedList();
 				return list.iterator();
 			}
 		};
