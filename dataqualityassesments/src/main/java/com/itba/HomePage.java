@@ -1,16 +1,13 @@
 package com.itba;
 
 import com.itba.domain.SparqlSuggestOracle;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
 import org.apache.wicket.ajax.json.JSONArray;
 import org.apache.wicket.ajax.json.JSONObject;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.AutoCompleteTextField;
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.PropertyModel;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -59,22 +56,28 @@ public class HomePage extends WebPage {
 			}
 		};
 
+		Button submit = new Button("submit") {
+			@Override
+			public void onSubmit() {
+				super.onSubmit();
+				String requestParam = suggestionModel.getObject();
+
+			}
+		};
+
+		form.add(submit);
 		form.add(autoCompleteTextField);
 		add(form);
 
-		final Label label = new Label("selection", new PropertyModel<String>(this, "values"));
-		label.setOutputMarkupId(true);
-		form.add(label);
-
-		autoCompleteTextField.add(new AjaxFormSubmitBehavior(form, "change") {
-			@Override
-			protected void onSubmit(AjaxRequestTarget target) {
-				target.add(label);
-			}
-
-			@Override
-			protected void onError(AjaxRequestTarget target) {
-			}
-		});
+//		autoCompleteTextField.add(new AjaxFormSubmitBehavior(form, "change") {
+//			@Override
+//			protected void onSubmit(AjaxRequestTarget target) {
+//				target.add(label);
+//			}
+//
+//			@Override
+//			protected void onError(AjaxRequestTarget target) {
+//			}
+//		});
 	}
 }
