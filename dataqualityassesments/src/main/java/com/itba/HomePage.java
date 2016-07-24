@@ -1,18 +1,78 @@
 package com.itba;
 
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.markup.html.basic.Label;
+import com.google.common.collect.Lists;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
+import org.apache.wicket.extensions.ajax.markup.html.autocomplete.AutoCompleteTextField;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
 
+import java.util.Iterator;
+import java.util.List;
+
+@SuppressWarnings("serial")
 public class HomePage extends WebPage {
-	private static final long serialVersionUID = 1L;
 
-	public HomePage(final PageParameters parameters) {
-		super(parameters);
+	private StringBuilder values = new StringBuilder();
 
-		add(new Label("version", getApplication().getFrameworkSettings().getVersion()));
 
-		// TODO Add your page's components here
+	@Override
+	protected void onInitialize() {
+		super.onInitialize();
+		Form<Void> form = new Form<>("form");
+		final IModel<String> suggestionModel = new IModel<String>() {
+			private String value = null;
 
-    }
+			@Override
+			public String getObject() {
+				return value;
+			}
+
+			@Override
+			public void setObject(String object) {
+				value = object;
+				values.append("\n");
+				values.append(value);
+			}
+
+			@Override
+			public void detach() {
+			}
+		};
+
+		AutoCompleteTextField<String> autoCompleteTextField = new AutoCompleteTextField<String>("autoCompleteTextField", suggestionModel) {
+			@Override
+			protected Iterator<String> getChoices(String s) {
+
+				List<String> choices = Lists.newLinkedList();
+				choices.add("Hola");
+				// buscar en la DB los resultados similares
+				System.out.println(s);
+
+
+				return choices.iterator();
+			}
+		};
+
+		form.add(autoCompleteTextField);
+		add(form);
+
+		final Label label = new Label("selection", new PropertyModel<String>(this, "values"));
+		label.setOutputMarkupId(true);
+		form.add(label);
+
+		autoCompleteTextField.add(new AjaxFormSubmitBehavior(form, "change") {
+			@Override
+			protected void onSubmit(AjaxRequestTarget target) {
+				target.add(label);
+			}
+
+			@Override
+			protected void onError(AjaxRequestTarget target) {
+			}
+		});
+	}
 }
