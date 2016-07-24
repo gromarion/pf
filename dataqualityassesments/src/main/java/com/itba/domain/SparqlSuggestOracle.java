@@ -20,7 +20,7 @@ public class SparqlSuggestOracle {
         );
         String query = endpoint.getQueryforAutocomplete(text);
         String queryURL = endpoint.generateQueryURL(query);
-        JSONObject response = RequestHandler.sendGet(queryURL);
+        JSONObject response = RequestHandler.jsonSendGet(queryURL);
 
         return (JSONArray) ((JSONObject) response.get("results")).get("bindings");
     }

@@ -8,7 +8,7 @@ import java.net.URL;
 import org.apache.wicket.ajax.json.JSONObject;
 
 public class RequestHandler {
-	public static JSONObject sendGet(String url) {
+	public static String sendGet(String url) {
 		try {
 			URL obj;
 			obj = new URL(url);
@@ -23,10 +23,14 @@ public class RequestHandler {
 				response.append(inputLine);
 			}
 			in.close();
-			return new JSONObject(response.toString());
+			return response.toString();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			return "";
 		}
     }
+	
+	public static JSONObject jsonSendGet(String url) {
+		return new JSONObject(sendGet(url));
+	}
 }
