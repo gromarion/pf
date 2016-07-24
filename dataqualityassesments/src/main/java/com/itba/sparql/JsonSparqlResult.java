@@ -1,4 +1,4 @@
-package sparql;
+package com.itba.sparql;
 
 public class JsonSparqlResult {
 //	public List<List<ResultItem>> data = new ArrayList<List<ResultItem>>();

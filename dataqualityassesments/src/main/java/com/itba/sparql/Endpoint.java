@@ -1,4 +1,4 @@
-package sparql;
+package com.itba.sparql;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;

@@ -1,4 +1,4 @@
-package sparql;
+package com.itba.sparql;
 
 import java.util.HashMap;
 
