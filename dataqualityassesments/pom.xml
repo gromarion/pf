@@ -106,8 +106,6 @@
 			<version>4.0.4.Final</version>
 		</dependency>
 
-
-
 		<!--<dependency>-->
 			<!--<groupId>org.hibernate</groupId>-->
 			<!--<artifactId>hibernate-core</artifactId>-->
@@ -118,11 +116,6 @@
 			<!--<artifactId>hibernate-annotations</artifactId>-->
 			<!--<version>3.4.0.GA</version>-->
 		<!--</dependency>-->
-
-
-
-
-
 
 		<dependency>
 			<groupId>joda-time</groupId>
@@ -148,9 +141,13 @@
 			<artifactId>commons-dbcp</artifactId>
 			<version>1.4</version>
 		</dependency>
-
-
-
+		
+		<dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+            <version>2.5.1</version>
+            <scope>provided</scope>
+        </dependency>
 
 		<!-- LOGGING DEPENDENCIES - LOG4J -->
 		<dependency>
