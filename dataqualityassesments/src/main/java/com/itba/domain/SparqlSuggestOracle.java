@@ -1,82 +1,66 @@
 package com.itba.domain;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.SuggestOracle;
-import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
-
+import org.apache.wicket.ajax.json.JSONArray;
+import org.apache.wicket.ajax.json.JSONObject;
 import sparql.Endpoint;
-import sparql.JsonSparqlResult;
-import sparql.ResultItem;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class SparqlSuggestOracle {
-	
-	private static boolean responseReceived;
 
-	public static List<Suggestion> requestSuggestions(String text) {
-		Endpoint endpoint = new Endpoint(
-            0,
-            "http://live.dbpedia.org/sparql",
-            "http://dbpedia.org",
-            "live.dbpedia.org/sparql"
+    public static JSONArray requestSuggestions(String text) {
+        Endpoint endpoint = new Endpoint(
+                0,
+                "http://live.dbpedia.org/sparql",
+                "http://dbpedia.org",
+                "live.dbpedia.org/sparql"
         );
-		final List<Suggestion> suggestions = new ArrayList<Suggestion>();
         if (text.length() > 2) {
+            String query = endpoint.getQueryforAutocomplete(text);
+            String queryURL = endpoint.generateQueryURL(query);
+
             try {
-                String query = endpoint.getQueryforAutocomplete(text);
-                String queryURL = endpoint.generateQueryURL(query);
-
-                RequestBuilder rb = new RequestBuilder(RequestBuilder.GET, queryURL);
-                rb.setCallback(new com.google.gwt.http.client.RequestCallback() {
-                    public void onResponseReceived(com.google.gwt.http.client.Request req, com.google.gwt.http.client.Response res) {
-                        try {
-                            JsonSparqlResult result = new JsonSparqlResult(res.getText());
-                            for (List<ResultItem> i : result.data) {
-                                if (i.size() == 1) {
-                                    suggestions.add(new SparqlSuggestItem(i.get(0).value));
-                                }
-                            }
-                            responseReceived = true;
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Window.alert("Error communicating with SPARQL Endpoint!");
-                        }
-                    }
-
-                    public void onError(com.google.gwt.http.client.Request request, Throwable exception) {
-                    }
-                });
-                rb.send();
-                while(!responseReceived) {
-                }
-                return suggestions;
-            } catch (RequestException e) {
-                Window.alert("Error occurred" + e.getMessage());
-                return suggestions;
+//                JsonSparqlResult result = new JsonSparqlResult(res.getText());
+//                for (List<ResultItem> i : result.data) {
+//                    if (i.size() == 1) {
+//                        suggestions.add(i.get(0).value);
+//                    }
+//                }
+//                responseReceived = true;
+                JSONObject response = sendGet(queryURL);
+                return (JSONArray) ((JSONObject) response.get("results")).get("bindings");
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+            return new JSONArray();
         }
-        return suggestions;
+        return new JSONArray();
     }
-	
-	public static class SparqlSuggestItem implements SuggestOracle.Suggestion, Serializable {
-        private static final long serialVersionUID = 1L;
-        public String uri;
 
-        public SparqlSuggestItem(String uri) {
-            this.uri = uri;
-        }
+    private static JSONObject sendGet(String url) throws Exception {
+        URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
-        public String getDisplayString() {
-            return this.uri;
-        }
+        // optional default is GET
+        con.setRequestMethod("GET");
 
-        public String getReplacementString() {
-            return this.uri;
+        int responseCode = con.getResponseCode();
+        System.out.println("\nSending 'GET' request to URL : " + url);
+        System.out.println("Response Code : " + responseCode);
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
         }
+        in.close();
+
+        return new JSONObject(response.toString());
     }
 }

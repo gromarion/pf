@@ -1,16 +1,16 @@
 package sparql;
 
-import com.google.gwt.http.client.URL;
-import com.google.gwt.user.client.Random;
-
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class Endpoint implements Serializable {
-	private static final long serialVersionUID = 1L;
-	private long endpointID = 0;
+    private static final long serialVersionUID = 1L;
+    private long endpointID = 0;
     private String endpoint;
     private List<String> graphs = new ArrayList<String>();
     private String name;
@@ -55,7 +55,11 @@ public class Endpoint implements Serializable {
         retVal += endpoint;
         //retVal += "?default-graph-uri=" + URL.encode(graphs.get(0));
         retVal += "?format=json&query=";
-        retVal += URL.encode(sparqlQuery).replace("#", "%23");
+        try {
+            retVal += URLEncoder.encode(sparqlQuery, "UTF-8").replace("#", "%23");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         return retVal;
     }
 
@@ -72,7 +76,7 @@ public class Endpoint implements Serializable {
 
     public String getQueryforRandomResource() {
 
-        int offset = Random.nextInt(760129);
+        int offset = new Random().nextInt(760129);
         String from = "";
         for (String g : graphs)
             from += " FROM <" + g + "> ";
@@ -82,7 +86,7 @@ public class Endpoint implements Serializable {
 
     public String getQueryforRandomClassResource(String classURI, long maxRand) {
 
-        int offset = Random.nextInt((int) maxRand);
+        int offset = new Random().nextInt((int) maxRand);
         String from = "";
         for (String g : graphs)
             from += " FROM <" + g + "> ";
