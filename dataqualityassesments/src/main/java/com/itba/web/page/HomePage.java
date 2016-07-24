@@ -1,9 +1,6 @@
-package com.itba;
+package com.itba.web.page;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
+import com.itba.domain.SparqlRequestHandler;
 import org.apache.wicket.ajax.json.JSONArray;
 import org.apache.wicket.ajax.json.JSONObject;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.AutoCompleteTextField;
@@ -11,14 +8,16 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.itba.domain.SparqlRequestHandler;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 @SuppressWarnings("serial")
 public class HomePage extends WebPage {
 
 	private StringBuilder values = new StringBuilder();
-
 
 	@Override
 	protected void onInitialize() {
@@ -60,8 +59,9 @@ public class HomePage extends WebPage {
 			@Override
 			public void onSubmit() {
 				super.onSubmit();
-				String requestParam = suggestionModel.getObject();
-
+				PageParameters parameters = new PageParameters();
+				parameters.add("selection", suggestionModel.getObject());
+				setResponsePage(ResultItemPage.class, parameters);
 			}
 		};
 
@@ -69,15 +69,5 @@ public class HomePage extends WebPage {
 		form.add(autoCompleteTextField);
 		add(form);
 
-//		autoCompleteTextField.add(new AjaxFormSubmitBehavior(form, "change") {
-//			@Override
-//			protected void onSubmit(AjaxRequestTarget target) {
-//				target.add(label);
-//			}
-//
-//			@Override
-//			protected void onError(AjaxRequestTarget target) {
-//			}
-//		});
 	}
 }

@@ -1,6 +1,7 @@
 package com.itba;
 
 import com.itba.common.HibernateRequestCycleListener;
+import com.itba.web.page.HomePage;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;

@@ -1,13 +1,9 @@
 package com.itba.domain;
 
-import javax.xml.ws.Response;
-
-import org.aksw.TripleCheckMate.shared.evaluate.SessionContext;
-import org.apache.wicket.ajax.json.JSONArray;
-import org.apache.wicket.ajax.json.JSONObject;
-
 import com.itba.networking.RequestHandler;
 import com.itba.sparql.Endpoint;
+import org.apache.wicket.ajax.json.JSONArray;
+import org.apache.wicket.ajax.json.JSONObject;
 
 public class SparqlRequestHandler {
 

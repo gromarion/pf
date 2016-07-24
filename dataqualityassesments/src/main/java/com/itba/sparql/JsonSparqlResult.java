@@ -1,14 +1,16 @@
-import java.util.ArrayList;
-import java.util.List;
+package com.itba.sparql;
 
 import org.apache.wicket.ajax.json.JSONArray;
 import org.apache.wicket.ajax.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class JsonSparqlResult {
     public List<List<ResultItem>> data = new ArrayList<List<ResultItem>>();
     public List<String> head = new ArrayList<String>();
 
-    public JsonSparqlResult(String json) throws Exception {
+    public JsonSparqlResult(String json) {
         try {
             JSONObject obj = new JSONObject(json);
 
@@ -31,16 +33,16 @@ public class JsonSparqlResult {
                     for (int j = 0; j < head.size(); j++) {
                         JSONObject rowItem = (JSONObject) current.get(head.get(j));
                         String sValue = "";
-                        if (rowItem.get("value") != null)
+                        if (rowItem.has("value"))
                             sValue = ((String) rowItem.get("value")).trim();
                         String sType = "";
-                        if (rowItem.get("type") != null)
+                        if (rowItem.has("type"))
                             sType = ((String) rowItem.get("type")).trim();
                         String sLang = "";
-                        if (rowItem.get("xml:lang") != null)
+                        if (rowItem.has("xml:lang"))
                             sLang = ((String) rowItem.get("xml:lang")).trim();
                         String sDatatype = "";
-                        if (rowItem.get("datatype") != null)
+                        if (rowItem.has("datatype"))
                             sDatatype = ((String) rowItem.get("datatype")).trim();
                         item.add(new ResultItem(sValue, sType, sLang, sDatatype));
                     }
@@ -49,7 +51,6 @@ public class JsonSparqlResult {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new Exception();
         }
     }
 
