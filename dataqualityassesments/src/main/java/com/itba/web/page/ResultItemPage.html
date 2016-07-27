@@ -1,26 +1,16 @@
-<!DOCTYPE html>
-<html xmlns:wicket="http://wicket.apache.org">
-<head>
-    <meta charset="utf-8" />
-    <title>Data Quality Assesment</title>
-    <link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:regular,bold' rel='stylesheet' type='text/css' />
-    <link rel="stylesheet" href="style.css" type="text/css" media="screen" title="Stylesheet" />
-</head>
-<body>
-
-<table class="table table-striped">
-    <thead>
-    <tr>
-        <th>Predicate</th>
-        <th>Object</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr wicket:id="resultItemList">
-        <td><span wicket:id="predicate"></span></td>
-        <td><span wicket:id="object"></span></td>
-    </tr>
-    </tbody>
-</table>
-</body>
-</html>
+<wicket:extend xmlns:wicket="http://www.w3.org/1999/xhtml">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Predicate</th>
+            <th>Object</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr wicket:id="resultItemList">
+            <td><span wicket:id="predicate"></span></td>
+            <td><span wicket:id="object"></span></td>
+        </tr>
+        </tbody>
+    </table>
+</wicket:extend>

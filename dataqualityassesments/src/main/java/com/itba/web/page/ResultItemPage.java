@@ -3,7 +3,6 @@ package com.itba.web.page;
 import com.itba.domain.SparqlRequestHandler;
 import com.itba.sparql.JsonSparqlResult;
 import com.itba.sparql.ResultItem;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -12,8 +11,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import java.util.List;
 
 @SuppressWarnings("serial")
-public class ResultItemPage extends WebPage {
-
+public class ResultItemPage extends BasePage {
 
     public ResultItemPage(PageParameters parameters) {
 

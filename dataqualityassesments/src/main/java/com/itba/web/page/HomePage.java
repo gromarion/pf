@@ -4,7 +4,6 @@ import com.itba.domain.SparqlRequestHandler;
 import org.apache.wicket.ajax.json.JSONArray;
 import org.apache.wicket.ajax.json.JSONObject;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.AutoCompleteTextField;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
@@ -15,7 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 
 @SuppressWarnings("serial")
-public class HomePage extends WebPage {
+public class HomePage extends BasePage {
 
 	private StringBuilder values = new StringBuilder();
 
