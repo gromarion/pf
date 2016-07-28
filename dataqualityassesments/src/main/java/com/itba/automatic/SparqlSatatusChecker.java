@@ -9,10 +9,9 @@ public class SparqlSatatusChecker {
 	public static boolean check (String endpointUrl, String graphs, String name) {
 		Endpoint endpoint = new Endpoint(0, endpointUrl, graphs, name);
 		String queryURL = endpoint.generateQueryURL("ASK {}");
-		URL url;
 		try {
-			url = new URL(queryURL);
-			HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+			URL url = new URL(queryURL);
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod("GET");
 			connection.connect();
 			
