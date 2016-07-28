@@ -53,7 +53,6 @@ public class Endpoint implements Serializable {
     public String generateQueryURL(String sparqlQuery) {
         String retVal = "";
         retVal += endpoint;
-        //retVal += "?default-graph-uri=" + URL.encode(graphs.get(0));
         retVal += "?format=json&query=";
         try {
             retVal += URLEncoder.encode(sparqlQuery, "UTF-8").replace("#", "%23");
