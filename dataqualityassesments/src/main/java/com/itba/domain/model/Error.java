@@ -26,8 +26,5 @@ public class Error extends PersistentEntity {
     @Column(name = "error_parent")
     private BigInteger errorParent;
 
-    @Column(name = "is_leaf")
-    private Boolean isLeaf;
-
     Error() {}
 }
