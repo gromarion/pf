@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 --CREATE DATABASE evaluation
 --  WITH OWNER = finalproject
 --       ENCODING = 'UTF8'
@@ -7,6 +8,7 @@
 --       CONNECTION LIMIT = -1;
 
 DROP TABLE IF EXISTS users;
+
 CREATE TABLE users (
   id SERIAL,
   googleid varchar(64) NOT NULL,
@@ -38,9 +40,9 @@ CREATE TABLE classes (
   id serial NOT NULL,
   curi varchar(256) NOT NULL,
   cname varchar(256) NOT NULL,
-  cparent numeric(19,2) NOT NULL,
-  count_cache numeric(19,2) NOT NULL,
-  is_leaf int NOT NULL,
+  cparent bigint NOT NULL,
+  count_cache bigint NOT NULL,
+  is_leaf boolean NOT NULL,
   PRIMARY KEY (id)
 );
 
@@ -247,7 +249,7 @@ CREATE TABLE evaluated_resource (
   resource varchar(256) NOT NULL,
   comments varchar(10000) NOT NULL,
   class varchar(256) NOT NULL DEFAULT '',
-  correct int NOT NULL,
+  correct boolean NOT NULL,
   PRIMARY KEY (id)
 );
 
