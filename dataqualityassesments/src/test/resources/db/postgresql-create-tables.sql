@@ -1,15 +1,16 @@
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
   id serial NOT NULL,
-  googleid character varying(255),
+--  googleid character varying(255),
   name character varying(255),
-  picture character varying(255),
-  profile character varying(255),
-  statr integer NOT NULL DEFAULT '0',
-  statt integer NOT NULL DEFAULT '0',
-  statd integer NOT NULL DEFAULT '0',
-  CONSTRAINT users_pkey PRIMARY KEY (id),
-  UNIQUE(googleid)
+  password character varying(255),
+--  picture character varying(255),
+--  profile character varying(255),
+--  statr integer NOT NULL DEFAULT '0',
+--  statt integer NOT NULL DEFAULT '0',
+--  statd integer NOT NULL DEFAULT '0',
+  CONSTRAINT users_pkey PRIMARY KEY (id)
+--  UNIQUE(googleid)
 );
 
 DROP TABLE IF EXISTS campaign;

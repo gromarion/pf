@@ -27,4 +27,24 @@ public class Error extends PersistentEntity {
     private BigInteger errorParent;
 
     Error() {}
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getExampleUri() {
+        return exampleUri;
+    }
+
+    public String getExampleN3() {
+        return exampleN3;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public BigInteger getErrorParent() {
+        return errorParent;
+    }
 }
