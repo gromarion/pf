@@ -147,6 +147,13 @@
 			<artifactId>guava</artifactId>
 			<version>19.0</version>
 		</dependency>
+		
+		<!-- Dependency for measuring server performance -->
+		<dependency>
+		    <groupId>io.parallec</groupId>
+		    <artifactId>parallec-core</artifactId>
+		    <version>0.9.3</version>
+		</dependency>
 
 		<!-- LOGGING DEPENDENCIES - LOG4J -->
 		<dependency>
