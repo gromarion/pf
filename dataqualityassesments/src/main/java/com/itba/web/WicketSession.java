@@ -3,11 +3,13 @@ package com.itba.web;
 import com.itba.domain.EntityModel;
 import com.itba.domain.UserRepo;
 import com.itba.domain.model.User;
+
 import org.apache.wicket.Session;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.request.Request;
 
+@SuppressWarnings("serial")
 public class WicketSession extends WebSession {
 
     private IModel<User> user = new EntityModel<User>(User.class);
