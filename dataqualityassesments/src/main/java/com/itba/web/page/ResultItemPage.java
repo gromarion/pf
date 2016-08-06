@@ -16,8 +16,8 @@ import java.util.List;
 public class ResultItemPage extends BasePage {
 
     public ResultItemPage(PageParameters parameters) {
-        final String selection = parameters.get("selection").toString();
-        List<List<ResultItem>> results = new JsonSparqlResult(SparqlRequestHandler.requestResource(selection).toString()).data;
+        final String resource = parameters.get("selection").toString();
+        List<List<ResultItem>> results = new JsonSparqlResult(SparqlRequestHandler.requestResource(resource).toString()).data;
         add(new ListView<List<ResultItem>>("resultItemList", results) {
             @Override
             protected void populateItem(ListItem<List<ResultItem>> listItem) {
@@ -29,6 +29,7 @@ public class ResultItemPage extends BasePage {
                     public void onClick(AjaxRequestTarget target) {
                         PageParameters parameters = new PageParameters();
                         parameters.add("resultItem", resultItem);
+                        parameters.add("resource", resource);
                         setResponsePage(ErrorSelectionPage.class, parameters);
                     }
                 });

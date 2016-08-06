@@ -29,5 +29,7 @@ public class Campaign extends PersistentEntity {
 
     Campaign() {}
 
-
+    public String getName() {
+        return this.name;
+    }
 }

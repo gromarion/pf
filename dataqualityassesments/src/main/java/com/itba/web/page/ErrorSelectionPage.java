@@ -3,7 +3,6 @@ package com.itba.web.page;
 import com.itba.domain.EntityModel;
 import com.itba.domain.ErrorRepo;
 import com.itba.domain.model.Error;
-import com.itba.sparql.ResultItem;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -23,10 +22,16 @@ public class ErrorSelectionPage extends BasePage {
 
     public ErrorSelectionPage(PageParameters parameters) {
 
-        List<ResultItem> resultItem = (List<ResultItem>) parameters.get("resultItem");
+        String predicate = parameters.get("predicate").toString();
+        String object = parameters.get("object").toString();
+        String resource = parameters.get("resource").toString();
+
 
 
 //        errorModel.setObject(errorRepo.get(parameters.get("errorId").toInteger()));
+
+        // agregar un select bullet para los errores, y un textarea para el comentario
+        // rescatar de la base de datos el resource
 
         List<Error> errorList = errorRepo.getAll();
         add(new ListView<Error>("errorList", errorList) {

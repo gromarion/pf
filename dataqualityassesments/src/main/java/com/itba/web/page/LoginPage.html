@@ -32,7 +32,6 @@
             <div wicket:id="feedbackPanel"></div>
 
             <form wicket:id="loginForm" method="post" class="form-horizontal">
-
                 <div class="control-group">
                     <label class="control-label">
                         <wicket:message key="name">Email</wicket:message>
@@ -41,13 +40,20 @@
                         <input type="text" wicket:id="name" />
                     </div>
                 </div>
-
                 <div class="control-group">
                     <label class="control-label">
                         <wicket:message key="password">Password</wicket:message>
                     </label>
                     <div class="controls">
                         <input type="password" wicket:id="password" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">
+                        <wicket:message key="campaign">Campaign</wicket:message>
+                    </label>
+                    <div class="controls">
+                        <select wicket:id="campaigns"></select>
                     </div>
                 </div>
 
