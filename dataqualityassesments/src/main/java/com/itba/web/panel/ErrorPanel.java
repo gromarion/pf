@@ -2,6 +2,7 @@ package com.itba.web.panel;
 
 import com.itba.domain.ErrorRepo;
 import com.itba.domain.model.Error;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -21,23 +22,11 @@ public class ErrorPanel extends Panel {
 		super(id);
 
 		List<Error> errorList = errorRepo.getAll();
-		add(new ListView<Error>("resultItemList", errorList) {
+		add(new ListView<Error>("errorList", errorList) {
 			@Override
 			protected void populateItem(ListItem<Error> listItem) {
 				Error error = listItem.getModelObject();
-
-
-
-
-//				listItem.add(new Label("predicate", resultItem.get(0)));
-//				listItem.add(new Label("object", resultItem.get(1)));
-//				listItem.add(new AjaxLink<Void>("showModalLink") {
-//					@Override
-//					public void onClick(AjaxRequestTarget target)
-//					{
-//						errorModalWindow.show(target);
-//					}
-//				});
+				listItem.add(new Label("title", error.getTitle()));
 			}
 		});
 

@@ -19,4 +19,10 @@ public class HibernateErrorRepo extends AbstractHibernateRepo implements ErrorRe
     public List<Error> getAll() {
         return find("from Error");
     }
+
+    @Override
+    public Error get(int errorId) {
+        return get(Error.class, errorId);
+    }
+
 }

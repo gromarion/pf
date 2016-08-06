@@ -1,13 +1,18 @@
 package com.itba;
 
-import com.itba.common.HibernateRequestCycleListener;
-import com.itba.web.page.HomePage;
+import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.request.Request;
+import org.apache.wicket.request.Response;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.itba.common.HibernateRequestCycleListener;
+import com.itba.web.WicketSession;
+import com.itba.web.page.LoginPage;
 
 @Component
 public class WicketApplication extends WebApplication
@@ -23,7 +28,7 @@ public class WicketApplication extends WebApplication
 	@Override
 	public Class<? extends WebPage> getHomePage()
 	{
-		return HomePage.class;
+		return LoginPage.class;
 	}
 
 	@Override
@@ -35,5 +40,10 @@ public class WicketApplication extends WebApplication
 		getComponentInstantiationListeners().add(new SpringComponentInjector(this));
 		getRequestCycleListeners().add(new HibernateRequestCycleListener(sessionFactory));
 
+	}
+	
+	@Override
+	public Session newSession(Request request, Response response) {
+		return new WicketSession(request);
 	}
 }
