@@ -1,5 +1,20 @@
 package com.itba.web.page;
 
+import java.util.List;
+
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.PasswordTextField;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.joda.time.DateTime;
+
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.itba.domain.CampaignRepo;
@@ -10,18 +25,11 @@ import com.itba.domain.model.EvaluationSession;
 import com.itba.domain.model.User;
 import com.itba.web.WicketSession;
 import com.itba.web.feedback.CustomFeedbackPanel;
-import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.markup.html.form.*;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.joda.time.DateTime;
-
-import java.util.List;
 
 public class LoginPage extends WebPage {
+	private static final long serialVersionUID = 1L;
 
-    @SpringBean
+	@SpringBean
     private UserRepo users;
 
     @SpringBean
@@ -45,8 +53,9 @@ public class LoginPage extends WebPage {
         if (!availableCampaigns.isEmpty()) selectedCampaign = availableCampaigns.get(0);
         Form<LoginPage> form = new Form<LoginPage>("loginForm",
                 new CompoundPropertyModel<LoginPage>(this)) {
+			private static final long serialVersionUID = 1L;
 
-            @Override
+			@Override
             protected void onSubmit() {
                 User user = users.getByName(name);
                 if (selectedCampaign == null) {
@@ -76,5 +85,6 @@ public class LoginPage extends WebPage {
         form.add(new PasswordTextField("password").setRequired(true));
         form.add(new Button("login"));
         add(form);
+        add(new BookmarkablePageLink<RegisterUserPage>("registerLink", RegisterUserPage.class));
     }
 }

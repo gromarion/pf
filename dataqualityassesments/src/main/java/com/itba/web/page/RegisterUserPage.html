@@ -26,11 +26,12 @@
 <body>
     <div class="row">
         <div class="container">
-            <h2><wicket:message key="title">Login</wicket:message></h2>
+
+            <h2><wicket:message key="title">Register</wicket:message></h2>
 
             <div wicket:id="feedbackPanel"></div>
 
-            <form wicket:id="loginForm" method="post" class="form-horizontal">
+            <form wicket:id="registerUserForm" method="post" class="form-horizontal">
                 <div class="control-group">
                     <label class="control-label">
                         <wicket:message key="name">Email</wicket:message>
@@ -49,22 +50,23 @@
                 </div>
                 <div class="control-group">
                     <label class="control-label">
-                        <wicket:message key="campaign">Campaign</wicket:message>
+                        <wicket:message key="confirmedPassword">Password</wicket:message>
                     </label>
                     <div class="controls">
-                        <select wicket:id="campaigns"></select>
+                        <input type="password" wicket:id="confirmedPassword" />
                     </div>
                 </div>
 
                 <div class="control-group">
                     <div class="controls">
-                        <button wicket:id="login" type="submit" class="btn btn-primary">
+                        <button wicket:id="register" type="submit" class="btn btn-primary">
                             <wicket:message key="submit">Submit</wicket:message>
                         </button>
                     </div>
                 </div>
+
             </form>
-            <a href="#" wicket:id="registerLink">Not a user? Register now!</a>
+
         </div>
     </div>
 </body>
