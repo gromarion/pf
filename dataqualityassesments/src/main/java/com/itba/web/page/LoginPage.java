@@ -1,10 +1,12 @@
 package com.itba.web.page;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.itba.domain.CampaignRepo;
 import com.itba.domain.EvaluationSessionRepo;
 import com.itba.domain.UserRepo;
 import com.itba.domain.model.Campaign;
+import com.itba.domain.model.EvaluationSession;
 import com.itba.domain.model.User;
 import com.itba.web.WicketSession;
 import com.itba.web.feedback.CustomFeedbackPanel;
@@ -13,6 +15,7 @@ import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.joda.time.DateTime;
 
 import java.util.List;
 
@@ -27,6 +30,7 @@ public class LoginPage extends WebPage {
     @SpringBean
     private EvaluationSessionRepo evaluationSessions;
 
+    // TODO: manejar esto con modelos para evitar los errores de serialización
     private List<Campaign> availableCampaigns = Lists.newLinkedList();
 
     private String name;
@@ -48,16 +52,17 @@ public class LoginPage extends WebPage {
                 if (selectedCampaign == null) {
                     error(getString("campaignNotFoundError"));
                 } else if (user != null && user.checkPassword(password)) {
-                    WicketSession session = WicketSession.get();
-                    // TODO: instanciar el nuevo EvaluationSession, y que ese sea el objeto que se guarda en la sesión!!
-
-                    if (session.signIn(user.getName(), user.getPassword(), selectedCampaign, users)){
-
-                        setResponsePage(HomePage.class);
-
-                    } else {
-                        error(getString("unknownSignInError"));
+                    WicketSession appSession = WicketSession.get();
+                    DateTime nowTime = DateTime.now();
+                    DateTime validTo = nowTime.minusHours(1); // TODO: la sesión dura 1 hora. Puede modificarse
+                    Optional<EvaluationSession> session = evaluationSessions
+                            .getForCampaignAndUserWithinRange(selectedCampaign, user, validTo, nowTime);
+                    if (!session.isPresent()) {
+                        EvaluationSession newSession = new EvaluationSession(selectedCampaign, user, nowTime);
+                        evaluationSessions.save(newSession);
+                        session = Optional.of(newSession);
                     }
+                    appSession.signIn(session.get());
                 } else {
                     error(getString("invalidCredentials"));
                 }

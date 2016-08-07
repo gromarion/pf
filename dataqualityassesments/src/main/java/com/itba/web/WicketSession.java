@@ -1,9 +1,8 @@
 package com.itba.web;
 
+import com.google.common.base.Optional;
 import com.itba.domain.EntityModel;
-import com.itba.domain.UserRepo;
-import com.itba.domain.model.Campaign;
-import com.itba.domain.model.User;
+import com.itba.domain.model.EvaluationSession;
 import org.apache.wicket.Session;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.protocol.http.WebSession;
@@ -12,8 +11,7 @@ import org.apache.wicket.request.Request;
 @SuppressWarnings("serial")
 public class WicketSession extends WebSession {
 
-    private IModel<User> user = new EntityModel<User>(User.class);
-    private IModel<Campaign> campaign = new EntityModel<Campaign>(Campaign.class);
+    private IModel<EvaluationSession> evaluationSessionModel = new EntityModel<EvaluationSession>(EvaluationSession.class);
 
     public static WicketSession get() {
         return (WicketSession) Session.get();
@@ -23,28 +21,16 @@ public class WicketSession extends WebSession {
         super(request);
     }
 
-    public User getUser() {
-        return (user != null) ? user.getObject() : null;
+    public Optional<EvaluationSession> getEvaluationSession() {
+        return Optional.fromNullable(evaluationSessionModel.getObject());
     }
 
-    public Campaign getCampaign() {
-        return (campaign != null) ? campaign.getObject() : null;
-    }
-
-    public boolean signIn(String name, String password, Campaign campaign, UserRepo users) {
-        if (this.user.getObject() != null)
-            return true;
-        User user = users.getByName(name);
-        if (user != null && user.checkPassword(password)) {
-            this.user.setObject(user);
-            this.campaign.setObject(campaign);
-            return true;
-        }
-        return false;
+    public void signIn(EvaluationSession evaluationSession) {
+        this.evaluationSessionModel.setObject(evaluationSession);
     }
 
     public boolean isSignedIn() {
-        return user.getObject() != null;
+        return evaluationSessionModel.getObject() != null;
     }
 
     public void signOut() {
@@ -55,7 +41,6 @@ public class WicketSession extends WebSession {
     @Override
     public void detach() {
         super.detach();
-        if (user != null) user.detach();
-        if (campaign != null) campaign.detach();
+        if (evaluationSessionModel != null) evaluationSessionModel.detach();
     }
 }
