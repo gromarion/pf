@@ -13,7 +13,6 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.joda.time.DateTime;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
@@ -62,12 +61,11 @@ public class LoginPage extends WebPage {
                     error(getString("campaignNotFoundError"));
                 } else if (user != null && user.checkPassword(password)) {
                     WicketSession appSession = WicketSession.get();
-                    DateTime nowTime = DateTime.now();
-                    DateTime validTo = nowTime.minusHours(1); // TODO: la sesión dura 1 hora. Puede modificarse
-                    Optional<EvaluationSession> session = evaluationSessions
-                            .getForCampaignAndUserWithinRange(selectedCampaign, user, validTo, nowTime);
+//                    DateTime nowTime = DateTime.now();
+//                    DateTime validTo = nowTime.minusHours(1); // TODO: la sesión dura 1 hora. Puede modificarse
+                    Optional<EvaluationSession> session = evaluationSessions.getForCampaignAndUser(selectedCampaign, user);
                     if (!session.isPresent()) {
-                        EvaluationSession newSession = new EvaluationSession(selectedCampaign, user, nowTime);
+                        EvaluationSession newSession = new EvaluationSession(selectedCampaign, user);
                         evaluationSessions.save(newSession);
                         session = Optional.of(newSession);
                     }

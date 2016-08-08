@@ -229,7 +229,7 @@ CREATE TABLE evaluation_session (
   id SERIAL,
   campaign_id integer,
   user_id integer,
-  "timestamp" timestamp without time zone,
+  -- "timestamp" timestamp without time zone,
     CONSTRAINT evaluation_session_pkey PRIMARY KEY (id),
     CONSTRAINT fke91f34937bce73b2 FOREIGN KEY (campaign_id)
         REFERENCES campaign (id) MATCH SIMPLE
