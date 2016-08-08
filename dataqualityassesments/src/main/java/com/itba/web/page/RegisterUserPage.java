@@ -5,6 +5,7 @@ import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -51,5 +52,6 @@ public class RegisterUserPage extends WebPage {
         form.add(new PasswordTextField("confirmedPassword").setRequired(true));
         form.add(new Button("register"));
         add(form);
+        add(new BookmarkablePageLink<LoginPage>("loginLink", LoginPage.class));
     }
 }

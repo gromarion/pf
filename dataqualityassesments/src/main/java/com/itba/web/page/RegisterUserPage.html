@@ -26,11 +26,8 @@
 <body>
     <div class="row">
         <div class="container">
-
             <h2><wicket:message key="title">Register</wicket:message></h2>
-
             <div wicket:id="feedbackPanel"></div>
-
             <form wicket:id="registerUserForm" method="post" class="form-horizontal">
                 <div class="control-group">
                     <label class="control-label">
@@ -56,7 +53,6 @@
                         <input type="password" wicket:id="confirmedPassword" />
                     </div>
                 </div>
-
                 <div class="control-group">
                     <div class="controls">
                         <button wicket:id="register" type="submit" class="btn btn-primary">
@@ -64,9 +60,8 @@
                         </button>
                     </div>
                 </div>
-
             </form>
-
+			<a href="#" wicket:id="loginLink">Already registered? Login now!</a>
         </div>
     </div>
 </body>
