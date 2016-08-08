@@ -24,7 +24,7 @@ CREATE TABLE campaign (
   UNIQUE(cname)
 );
 
-INSERT INTO campaign VALUES (1,'DBpedia Evaluation Campaign','http://live.dbpedia.org/sparql','http://live.dbpedia.org',1);
+INSERT INTO campaign (id, cname, cendpoint, cgraphs, copened) VALUES (1,'DBpedia Evaluation Campaign','http://live.dbpedia.org/sparql','http://live.dbpedia.org',1);
 
 DROP TABLE IF EXISTS classes;
 CREATE TABLE classes (
@@ -37,7 +37,7 @@ CREATE TABLE classes (
   CONSTRAINT classes_pkey PRIMARY KEY (id)
 );
 
-INSERT INTO classes VALUES
+INSERT INTO classes (id, curi, cname, cparent, count_cache, is_leaf) VALUES
 	(0,'http://www.w3.org/2002/07/owl#Thing','owl:Thing',-1,2350906,false),
 	(1,'http://dbpedia.org/ontology/BasketballLeague','BasketballLeague',220,0,true),
 	(2,'http://dbpedia.org/ontology/LunarCrater','LunarCrater',81,0,true),
@@ -205,7 +205,7 @@ CREATE TABLE errors (
   CONSTRAINT errors_pkey PRIMARY KEY (id)
 );
 
-INSERT INTO errors VALUES
+INSERT INTO errors (id,error_title,example_uri,example_n3,description,error_parent) VALUES
 	(3,'Object value is incorrectly extracted','http://dbpedia.org/resource/Oregon_Route_238','dbpprop:map \"238.0\"^^<http://dbpedia.org/datatype/second> .','The resource is about a \"Oregon Route 238\", which is a state highway and the property map has the value 238 which is incorrect. This is because Wikipedia has an attribute map, which has the image name as the value: map=Oregon Route 238.svg. The dbprop only extracted the value 238 from his attribute value and gave it a dataype second. ',2),
 	(4,'Object value is incompletely extracted','http://dbpedia.org/resource/Dave_Dobbyn','dbpprop:dateOfBirth \"3\"^^<http://www.w3.org/2001/XMLSchema#int> .','In this example, only the day of birth of a person is extracted and mapped to the dateofBirth property when it should have been the entire date ie. day,month and year. ',2),
 	(5,'Special template not properly recognized','http://dbpedia.org/page/328_Gudrun','dbpprop:auto \"yes\"@en .','Many Wikipedia articles have an indication on top of the page, which says: \"This article does not cite any references or sources.\" referring to the fact that it is unreferenced. This information is stored in an attribute \"Unreferenced stub|auto=yes\". DBpedia thus extracts this attribute auto and value yes as a triple, which is not meaningful by itself and should not be extracted. ',2),
