@@ -39,14 +39,11 @@ public class ErrorSelectionPage extends BasePage {
             protected void populateItem(ListItem<Error> listItem) {
                 Error error = listItem.getModelObject();
                 listItem.add(new Label("title", error.getTitle()));
+                listItem.add(new Label("description", error.getDescription()));
+                listItem.add(new Label("example", error.getExampleN3()));
             }
         });
-
     }
-
-
-
-
 
     @Override
     protected void onDetach() {
