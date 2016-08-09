@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 
 @SuppressWarnings("serial")
-public class HomePage extends BasePage {
+public class ResourceSearchPage extends BasePage {
 
 	private StringBuilder values = new StringBuilder();
 

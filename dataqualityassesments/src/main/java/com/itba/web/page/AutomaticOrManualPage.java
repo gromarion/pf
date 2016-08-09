@@ -9,6 +9,6 @@ public class AutomaticOrManualPage extends BasePage {
     protected void onInitialize() {
 		super.onInitialize();
 		add(new BookmarkablePageLink<RegisterUserPage>("automaticCheckLink", AutomaticCheckPage.class));
-		add(new BookmarkablePageLink<RegisterUserPage>("manualCheckLink", HomePage.class));
+		add(new BookmarkablePageLink<RegisterUserPage>("manualCheckLink", ResourceSearchPage.class));
 	}
 }
