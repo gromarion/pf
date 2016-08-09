@@ -4,15 +4,12 @@ import java.util.List;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Button;
-import org.apache.wicket.markup.html.form.ChoiceRenderer;
-import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.google.common.base.Optional;
@@ -75,7 +72,7 @@ public class LoginPage extends WebPage {
                         session = Optional.of(newSession);
                     }
                     appSession.signIn(session.get());
-                    setResponsePage(HomePage.class);
+                    setResponsePage(AutomaticOrManualPage.class);
                 } else {
                     error(getString("invalidCredentials"));
                 }
