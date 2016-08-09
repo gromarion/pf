@@ -30,4 +30,16 @@ public class EvaluatedResource extends PersistentEntity {
 
     EvaluatedResource() {}
 
+    public EvaluatedResource(EvaluationSession session, String resource) {
+        this.session = session;
+        this.resource = resource;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
 }

@@ -1,9 +1,28 @@
 <wicket:extend xmlns:wicket="http://www.w3.org/1999/xhtml">
+
+	<h2><wicket:message key="title">Title</wicket:message></h2>
+
+	<div wicket:id="feedbackPanel"></div>
+
 	<form wicket:id="form">
 		<div class="input-append">
 			<input type="text" class="span2 search-query" wicket:id="autoCompleteTextField"
 				style="width:500px">
 			<button wicket:id="submit" type="submit" class="btn">Search</button>
 		</div>
+
+
+		<div class="control-group">
+			<label class="control-label">
+				<wicket:message key="comments">Comments</wicket:message>
+			</label>
+			<div class="controls">
+				<textarea wicket:id="comments" rows="6" cols="40"></textarea>
+			</div>
+		</div>
+
+
+
+
 	</form>
 </wicket:extend>
