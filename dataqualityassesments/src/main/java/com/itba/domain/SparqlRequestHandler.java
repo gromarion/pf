@@ -7,15 +7,10 @@ import org.apache.wicket.ajax.json.JSONObject;
 
 public class SparqlRequestHandler {
 
-    public static JSONArray requestSuggestions(String text) {
+    public static JSONArray requestSuggestions(String text, Endpoint endpoint) {
     	if (text.length() <= 2) {
     		return new JSONArray();
     	}
-        Endpoint endpoint = new Endpoint(
-                "http://live.dbpedia.org/sparql",
-                "http://dbpedia.org",
-                "live.dbpedia.org/sparql"
-        );
         String query = endpoint.getQueryforAutocomplete(text);
         String queryURL = endpoint.generateQueryURL(query);
         JSONObject response = RequestHandler.jsonSendGet(queryURL);

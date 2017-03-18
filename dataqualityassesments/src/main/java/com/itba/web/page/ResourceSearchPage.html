@@ -5,6 +5,14 @@
 	<div wicket:id="feedbackPanel"></div>
 
 	<form wicket:id="form">
+		<div class="control-group">
+			<div class="controls">
+				<select wicket:id="endpointChoices">
+					<option>Option 1</option>
+				</select>
+			</div>
+		</div>
+
 		<div class="input-append">
 			<input type="text" class="span2 search-query" wicket:id="autoCompleteTextField"
 				style="width:500px">
@@ -20,9 +28,6 @@
 				<textarea wicket:id="comments" rows="6" cols="40"></textarea>
 			</div>
 		</div>
-
-
-
 
 	</form>
 </wicket:extend>
