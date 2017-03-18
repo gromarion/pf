@@ -12,7 +12,6 @@ public class SparqlRequestHandler {
     		return new JSONArray();
     	}
         Endpoint endpoint = new Endpoint(
-                0,
                 "http://live.dbpedia.org/sparql",
                 "http://dbpedia.org",
                 "live.dbpedia.org/sparql"
@@ -26,7 +25,6 @@ public class SparqlRequestHandler {
     
     public static JSONObject requestResource(String resource) {
     	Endpoint endpoint = new Endpoint(
-                0,
                 "http://live.dbpedia.org/sparql",
                 "http://dbpedia.org",
                 "live.dbpedia.org/sparql"
