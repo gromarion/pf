@@ -1,13 +1,9 @@
 package com.itba.web.page;
 
-import com.google.common.base.Optional;
-import com.itba.domain.EvaluatedResourceRepo;
-import com.itba.domain.SparqlRequestHandler;
-import com.itba.domain.model.EvaluatedResource;
-import com.itba.domain.model.EvaluationSession;
-import com.itba.sparql.Endpoint;
-import com.itba.web.WicketSession;
-import com.itba.web.feedback.CustomFeedbackPanel;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.json.JSONArray;
@@ -23,14 +19,24 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import com.google.common.base.Optional;
+import com.itba.domain.CampaignRepo;
+import com.itba.domain.EntityModel;
+import com.itba.domain.EvaluatedResourceRepo;
+import com.itba.domain.SparqlRequestHandler;
+import com.itba.domain.model.Campaign;
+import com.itba.domain.model.EvaluatedResource;
+import com.itba.domain.model.EvaluationSession;
+import com.itba.web.WicketSession;
+import com.itba.web.feedback.CustomFeedbackPanel;
 
 @SuppressWarnings("serial")
 public class ResourceSearchPage extends BasePage {
 	@SpringBean
 	EvaluatedResourceRepo evaluatedResourceRepo;
+	
+	@SpringBean
+	CampaignRepo campaignRepo;
 
 	private StringBuilder values = new StringBuilder();
 	
@@ -58,27 +64,18 @@ public class ResourceSearchPage extends BasePage {
 			public void detach() {
 			}
 		};
-		List<Endpoint> endpointChoices = new ArrayList<>();
-		Endpoint endpoint = new Endpoint(
-            "http://live.dbpedia.org/sparql",
-            "http://dbpedia.org",
-            "live.dbpedia.org/sparql"
-        );
-		endpointChoices.add(endpoint);
-		final IModel<Endpoint> endpointChoiceModel = Model.of(endpointChoices.get(0));
 		
-		ChoiceRenderer<Endpoint> choiceRenderer = new ChoiceRenderer<>("endpoint");
 		final TextArea<String> comments = new TextArea<String>("comments", Model.of(""));
 		comments.setOutputMarkupId(true);
-		final DropDownChoice<Endpoint> endpointDropdownChoices = new DropDownChoice<>("endpointChoices", endpointChoiceModel, endpointChoices, choiceRenderer);
 		final AutoCompleteTextField<String> autoCompleteTextField = new AutoCompleteTextField<String>("autoCompleteTextField", suggestionModel) {
 			@Override
 			protected Iterator<String> getChoices(String s) {
-				JSONArray choices = SparqlRequestHandler.requestSuggestions(s, endpointChoiceModel.getObject());
 				List<String> list = new ArrayList<String>();
+				JSONArray choices = SparqlRequestHandler.requestSuggestions(s, WicketSession.get().getEvaluationSession().get().getCampaign());
+
 				for (int i = 0; i < choices.length(); i++) {
 					list.add((String) ((JSONObject)(((JSONObject) choices.get(i)).get("s"))).get("value"));
-				}
+				}					
 				return list.iterator();
 			}
 		};
@@ -117,7 +114,6 @@ public class ResourceSearchPage extends BasePage {
 
 		form.add(comments);
 		form.add(submit);
-		form.add(endpointDropdownChoices);
 		form.add(autoCompleteTextField);
 		add(form);
 	}

@@ -34,4 +34,8 @@ public class EvaluationSession extends PersistentEntity {
         this.user = user;
 //        this.timestamp = dateTime;
     }
+    
+    public Campaign getCampaign() {
+    	return campaign;
+    }
 }

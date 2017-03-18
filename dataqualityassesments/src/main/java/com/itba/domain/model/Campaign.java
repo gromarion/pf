@@ -1,12 +1,16 @@
 package com.itba.domain.model;
 
-import com.itba.domain.PersistentEntity;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Random;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.Set;
+
+import com.itba.domain.PersistentEntity;
 
 @Entity
 @Table(name = "campaign")
@@ -31,5 +35,66 @@ public class Campaign extends PersistentEntity {
 
     public String getName() {
         return this.name;
+    }
+    
+    public String generateQueryURL(String sparqlQuery) {
+        String retVal = "";
+        retVal += endpoint;
+        retVal += "?format=json&query=";
+        try {
+            retVal += URLEncoder.encode(sparqlQuery, "UTF-8").replace("#", "%23");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return retVal;
+    }
+
+    public String getQueryforResourceTriples(String resource) {
+        String from = "";
+        for (String g : graphs.split(";"))
+            from += " FROM <" + g + "> ";
+        return "select ?p ?o " +
+                from +
+                "where {<" +
+                resource +
+                "> ?p ?o} ORDER BY ?p";
+    }
+
+    public String getQueryforRandomResource() {
+
+        int offset = new Random().nextInt(760129);
+        String from = "";
+        for (String g : graphs.split(";"))
+            from += " FROM <" + g + "> ";
+        return " SELECT ?s " + from +
+                " WHERE { ?s foaf:isPrimaryTopicOf ?o } LIMIT 1 OFFSET " + offset;
+    }
+
+    public String getQueryforRandomClassResource(String classURI, long maxRand) {
+
+        int offset = new Random().nextInt((int) maxRand);
+        String from = "";
+        for (String g : graphs.split(";"))
+            from += " FROM <" + g + "> ";
+        return " SELECT ?s " + from +
+                " WHERE { ?s rdf:type <" + classURI + "> } LIMIT 1 OFFSET " + offset;
+    }
+
+    public String getQueryforClassCount(String classURI) {
+
+        String from = "";
+        for (String g : graphs.split(";"))
+            from += " FROM <" + g + "> ";
+        return " SELECT count(?s) " + from +
+                " WHERE { ?s rdf:type <" + classURI + "> }";
+    }
+
+    public String getQueryforAutocomplete(String namepart) {
+        String from = "";
+        for (String g : graphs.split(";"))
+            from += " FROM <" + g + "> ";
+        return " SELECT ?s " + from +
+                " WHERE { ?s foaf:isPrimaryTopicOf ?o . " +
+                " FILTER regex(str(?s), '" + namepart + "', 'i'). } LIMIT 10";
     }
 }
