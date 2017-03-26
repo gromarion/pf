@@ -67,7 +67,7 @@ public class ResourceSearchPage extends BasePage {
 			@Override
 			protected Iterator<String> getChoices(String s) {
 				List<String> list = new ArrayList<String>();
-				JSONArray choices = SparqlRequestHandler.requestSuggestions(s, WicketSession.get().getEvaluationSession().get().getCampaign());
+				JSONArray choices = SparqlRequestHandler.requestSuggestions(s);
 
 				for (int i = 0; i < choices.length(); i++) {
 					list.add((String) ((JSONObject)(((JSONObject) choices.get(i)).get("s"))).get("value"));
