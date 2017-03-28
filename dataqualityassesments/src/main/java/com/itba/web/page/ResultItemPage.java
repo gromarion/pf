@@ -5,6 +5,8 @@ import com.itba.domain.SparqlRequestHandler;
 import com.itba.domain.model.Campaign;
 import com.itba.sparql.JsonSparqlResult;
 import com.itba.sparql.ResultItem;
+import com.itba.web.WicketSession;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
@@ -22,7 +24,7 @@ public class ResultItemPage extends BasePage {
 
     public ResultItemPage(PageParameters parameters) {
         final String resource = parameters.get("selection").toString();
-        final Campaign campaign = campaignRepo.get(Campaign.class, parameters.get("campaignId").toInt());
+        final Campaign campaign = campaignRepo.get(Campaign.class, WicketSession.get().getEvaluationSession().get().getCampaign().getId());
         List<List<ResultItem>> results = new JsonSparqlResult(SparqlRequestHandler.requestResource(resource, campaign).toString()).data;
         add(new ListView<List<ResultItem>>("resultItemList", results) {
             @Override

@@ -11,7 +11,6 @@ public class BasePage extends WebPage {
         if (!session.isSignedIn()) {
             redirectToInterceptPage(new LoginPage());
         }
-
     }
 
     protected WicketSession getAppSession() {

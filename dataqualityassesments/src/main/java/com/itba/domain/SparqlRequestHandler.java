@@ -8,11 +8,8 @@ import com.itba.networking.RequestHandler;
 
 public class SparqlRequestHandler {
 
-    public static JSONArray requestSuggestions(String text, Campaign campaign) {
-    	if (text.length() <= 2) {
-    		return new JSONArray();
-    	}
-        String query = campaign.getQueryforAutocomplete(text);
+    public static JSONArray requestSuggestions(String search, Campaign campaign) {
+        String query = campaign.getQueryforSearchResultPage(search);
         String queryURL = campaign.generateQueryURL(query);
         JSONObject response = RequestHandler.jsonSendGet(queryURL);
 
@@ -22,7 +19,7 @@ public class SparqlRequestHandler {
     public static JSONObject requestResource(String resource, Campaign campaign) {
     	String sparqlQuery = campaign.getQueryforResourceTriples(resource);
         String queryURL = campaign.generateQueryURL(sparqlQuery);
-        JSONObject response = RequestHandler.jsonSendGet(queryURL);
-        return response;
+
+        return RequestHandler.jsonSendGet(queryURL);
     }
 }
