@@ -89,12 +89,14 @@ public class Campaign extends PersistentEntity {
                 " WHERE { ?s rdf:type <" + classURI + "> }";
     }
 
-    public String getQueryforSearchResultPage(String namepart) {
+    public String getQueryforSearchResultPage(String namepart, int offset, int limit) {
         String from = "";
         for (String g : graphs.split(";"))
             from += " FROM <" + g + "> ";
         return " SELECT ?s " + from +
                 " WHERE { ?s foaf:isPrimaryTopicOf ?o . " +
-                " FILTER regex(str(?s), '" + namepart + "', 'i'). } LIMIT 100";
+                " FILTER regex(str(?s), '" + namepart + "', 'i'). }" +
+                " LIMIT " + limit +
+                " OFFSET " + offset;
     }
 }

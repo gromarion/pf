@@ -33,11 +33,11 @@ public class HibernateEntityResolver implements EntityResolver {
         Assert.isInstanceOf(PersistentEntity.class, object, "This entity resolver only hanldes objects implementing PersistentEntity");
         try {
             getSession().flush();
-            Integer id = ((PersistentEntity) object).getId();
-            if (id == null) {
+            PersistentEntity entity = (PersistentEntity) object;
+            if (entity == null) {
                 throw new TransientObjectException("Object doesn't have an id associated!");
             }
-            return id;
+            return entity.getId();
         } catch (HibernateException ex) {
             throw new HibernateException("Problem while retrieving id for " + object.toString(), ex);
         }

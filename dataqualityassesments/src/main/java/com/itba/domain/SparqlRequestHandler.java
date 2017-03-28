@@ -8,8 +8,8 @@ import com.itba.networking.RequestHandler;
 
 public class SparqlRequestHandler {
 
-    public static JSONArray requestSuggestions(String search, Campaign campaign) {
-        String query = campaign.getQueryforSearchResultPage(search);
+    public static JSONArray requestSuggestions(String search, Campaign campaign, int offset, int limit) {
+        String query = campaign.getQueryforSearchResultPage(search, offset, limit);
         String queryURL = campaign.generateQueryURL(query);
         JSONObject response = RequestHandler.jsonSendGet(queryURL);
 
