@@ -7,6 +7,9 @@
         </tr>
         </tbody>
     </table>
-    <a wicket:id="previousPageLink" href="#"><wicket:message key="previousPage"></wicket:message></a>
-    <a wicket:id="nextPageLink" href="#"><wicket:message key="nextPage"></wicket:message></a>
+    <div class="paginator">
+    	<a wicket:id="previousPageLink" href="#" class="btn btn-primary"><wicket:message key="previousPage"></wicket:message></a>
+    	<wicket:message key="page">Página</wicket:message> <span wicket:id="currentPage">1</span>
+    	<a wicket:id="nextPageLink" href="#" class="btn btn-primary"><wicket:message key="nextPage"></wicket:message></a>
+    </div>
 </wicket:extend>

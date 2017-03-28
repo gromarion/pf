@@ -69,6 +69,7 @@ public class SearchResultPage extends BasePage {
                 setResponsePage(SearchResultPage.class, parameters);
             }
         };
+        add(new Label("currentPage", offset + 1));
         add(previousPageLink);
         add(nextPageLink);
 		add(new Label("searchWord", search));
