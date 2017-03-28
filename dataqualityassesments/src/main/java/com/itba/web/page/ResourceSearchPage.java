@@ -27,7 +27,6 @@ public class ResourceSearchPage extends BasePage {
 		super.onInitialize();
 		add(new CustomFeedbackPanel("feedbackPanel"));
 		Form<Void> form = new Form<>("form");
-		
 		final TextArea<String> comments = new TextArea<String>("comments", Model.of(""));
 		comments.setOutputMarkupId(true);
 		final TextField<String> textField = new TextField<String>("textField", Model.of(""));
