@@ -25,9 +25,8 @@ import com.itba.web.WicketSession;
 import com.itba.web.feedback.CustomFeedbackPanel;
 import com.itba.web.panel.CampaignDropDownChoice;
 
+@SuppressWarnings("serial")
 public class LoginPage extends WebPage {
-	private static final long serialVersionUID = 1L;
-
 	@SpringBean
     private UserRepo users;
 
@@ -46,15 +45,17 @@ public class LoginPage extends WebPage {
     @Override
     protected void onInitialize() {
         super.onInitialize();
+        if (((WicketSession) getSession()).isSignedIn()) {
+        	setResponsePage(AutomaticOrManualPage.class);
+		}
         add(new CustomFeedbackPanel("feedbackPanel"));
         for (Campaign c : campaigns.getAll()) {
         	availableCampaigns.add(new EntityModel<Campaign>(Campaign.class, c));
         }
         
         if (!availableCampaigns.isEmpty()) selectedCampaignModel.setObject(availableCampaigns.get(0).getObject());
-        Form<LoginPage> form = new Form<LoginPage>("loginForm",
+		Form<LoginPage> form = new Form<LoginPage>("loginForm",
                 new CompoundPropertyModel<LoginPage>(this)) {
-			private static final long serialVersionUID = 1L;
 
 			@Override
             protected void onSubmit() {
@@ -62,7 +63,7 @@ public class LoginPage extends WebPage {
                 if (selectedCampaignModel.getObject() == null) {
                     error(getString("campaignNotFoundError"));
                 } else if (user != null && user.checkPassword(password)) {
-                    WicketSession appSession = WicketSession.get();
+                    WicketSession appSession = (WicketSession) getSession();
 //                    DateTime nowTime = DateTime.now();
 //                    DateTime validTo = nowTime.minusHours(1); // TODO: la sesión duraría 1 hora. Puede modificarse
                     Optional<EvaluationSession> session = evaluationSessions.getForCampaignAndUser(selectedCampaignModel.getObject(), user);
