@@ -22,7 +22,7 @@ public class SearchResultPage extends BasePage {
 	public static int PAGE_LIMIT = 25;
 
 	public SearchResultPage(PageParameters parameters) {
-		final String search      = parameters.get("search").toString();
+		final String search      = formatSearch(parameters.get("search").toString());
 		final int offset         = fetchOffset(parameters);
 		Campaign campaign        = WicketSession.get().getEvaluationSession().get().getCampaign();
 		JSONArray choices        = SparqlRequestHandler.requestSuggestions(search, campaign, offset * PAGE_LIMIT, PAGE_LIMIT);
@@ -83,5 +83,9 @@ public class SearchResultPage extends BasePage {
 		} else {
 			return Integer.parseInt(offsetParameter);
 		}
+	}
+	
+	private String formatSearch(String search) {
+		return search.replaceAll(" ", "_");
 	}
 }

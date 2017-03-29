@@ -22,9 +22,9 @@ public class ErrorSelectionPage extends BasePage {
 
     public ErrorSelectionPage(PageParameters parameters) {
 
-        String predicate = parameters.get("predicate").toString();
-        String object = parameters.get("object").toString();
-        String resource = parameters.get("resource").toString();
+//        String predicate = parameters.get("predicate").toString();
+//        String object = parameters.get("object").toString();
+//        String resource = parameters.get("resource").toString();
 
 
 
