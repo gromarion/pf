@@ -32,6 +32,11 @@ public class Campaign extends PersistentEntity {
     private Set<EvaluationSession> sessions;
 
     Campaign() {}
+    
+    public Campaign(String name, String endpoint) {
+    	this.name = name;
+    	this.endpoint = endpoint;
+    }
 
     public String getName() {
         return this.name;
