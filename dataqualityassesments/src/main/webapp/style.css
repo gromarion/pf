@@ -110,8 +110,10 @@ h3 {
 
 .session {
 	top: 0;
-	position: absolute;
-	right: 10px;
+	position: absolute !important;
+	right: 0;
+	padding-right: 10px;
+	margin-top: 15px;
 }
 
 .user-session {
@@ -135,5 +137,12 @@ a, a :visited, a :hover {
   display: inline-block;
   padding: 10px;
   vertical-align: middle;
+}
+
+.dropdown-menu {
+	top: 65% !important;
+	left: auto !important;
+	right: 0;
+	border-radius: 0px !important;
 }
 

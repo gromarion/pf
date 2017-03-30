@@ -30,12 +30,15 @@
 			<div class="top-bar-element title">
 				<a wicket:id="home" class="home-link"><wicket:message key="home">Home</wicket:message></a>
 			</div>
-			<div class="top-bar-element session">
-				<div class="user-session">
-					<p>
+			<div class="user-session">
+				<div class="top-bar-element session dropdown">
+					<a href="#" data-toggle="dropdown">
 						<span wicket:id="user">user</span>
-					</p>
-					<br> <a wicket:id="logout"><wicket:message key="logout">Log out</wicket:message></a>
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a wicket:id="logout"><wicket:message key="logout">Log out</wicket:message></a></li>
+					</ul>
 				</div>
 			</div>
 		</div>
