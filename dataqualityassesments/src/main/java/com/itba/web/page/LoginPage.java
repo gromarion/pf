@@ -12,15 +12,12 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.itba.domain.CampaignRepo;
 import com.itba.domain.EntityModel;
 import com.itba.domain.EvaluationSessionRepo;
 import com.itba.domain.UserRepo;
 import com.itba.domain.model.Campaign;
-import com.itba.domain.model.EvaluationSession;
-import com.itba.domain.model.User;
 import com.itba.web.WicketSession;
 import com.itba.web.feedback.CustomFeedbackPanel;
 import com.itba.web.panel.CampaignDropDownChoice;
@@ -59,20 +56,10 @@ public class LoginPage extends WebPage {
 
 			@Override
             protected void onSubmit() {
-                User user = users.getByName(name);
+                WicketSession appSession = (WicketSession) getSession();
                 if (selectedCampaignModel.getObject() == null) {
                     error(getString("campaignNotFoundError"));
-                } else if (user != null && user.checkPassword(password)) {
-                    WicketSession appSession = (WicketSession) getSession();
-//                    DateTime nowTime = DateTime.now();
-//                    DateTime validTo = nowTime.minusHours(1); // TODO: la sesión duraría 1 hora. Puede modificarse
-                    Optional<EvaluationSession> session = evaluationSessions.getForCampaignAndUser(selectedCampaignModel.getObject(), user);
-                    if (!session.isPresent()) {
-                        EvaluationSession newSession = new EvaluationSession(selectedCampaignModel.getObject(), user);
-                        evaluationSessions.save(newSession);
-                        session = Optional.of(newSession);
-                    }
-                    appSession.signIn(session.get());
+                } else if (appSession.signIn(name, password, selectedCampaignModel.getObject(), users, evaluationSessions)) {
                     setResponsePage(AutomaticOrManualPage.class);
                 } else {
                     error(getString("invalidCredentials"));

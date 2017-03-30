@@ -4,7 +4,6 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 
-import com.itba.domain.model.User;
 import com.itba.web.WicketSession;
 
 @SuppressWarnings("serial")
@@ -35,7 +34,7 @@ public class BasePage extends WebPage {
 			}
 		};
 		add(logout);
-		Label user = new Label("user", "gromarion");
+		Label user = new Label("user", WicketSession.get().getUsername());
 		add(user);
 
 		if (!WicketSession.get().isSignedIn()) {
