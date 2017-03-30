@@ -1,34 +1,49 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org">
-<head>
-    <meta charset="utf-8" />
-    <title>Data Quality Assesment</title>
-    <link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:regular,bold' rel='stylesheet' type='text/css' />
-    <link rel="stylesheet" href="style.css" type="text/css" media="screen" title="Stylesheet" />
-    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css" />
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-    <script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
-    <script type="text/javascript" src="bootstrap/js/dropdown.js"></script>
-    <style>
-                div.wicket-aa {
-                    font-family: "Lucida Grande","Lucida Sans Unicode",Tahoma,Verdana;
-                    font-size: 12px;
-                    background-color: white;
-                    border-width: 1px;
-                    border-color: #cccccc;
-                    border-style: solid;
-                    padding: 2px;
-                    margin: 1px 0 0 0;
-                    text-align:left;
-                }
-                div.wicket-aa ul { list-style:none; padding: 2px; margin:0; }
-                div.wicket-aa ul li.selected { background-color: #FFFF00; padding: 2px; margin:0; }
-            </style>
-</head>
-<body>
-<div class="container">
-    <wicket:child />
-
-</div>
-</body>
+	<head>
+	    <meta charset="utf-8" />
+	    <title>Data Quality Assesment</title>
+	    <link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:regular,bold' rel='stylesheet' type='text/css' />
+	    <link rel="stylesheet" href="style.css" type="text/css" media="screen" title="Stylesheet" />
+	    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css" />
+	    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+	    <script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
+	    <script type="text/javascript" src="bootstrap/js/dropdown.js"></script>
+	    <style>
+	                div.wicket-aa {
+	                    font-family: "Lucida Grande","Lucida Sans Unicode",Tahoma,Verdana;
+	                    font-size: 12px;
+	                    background-color: white;
+	                    border-width: 1px;
+	                    border-color: #cccccc;
+	                    border-style: solid;
+	                    padding: 2px;
+	                    margin: 1px 0 0 0;
+	                    text-align:left;
+	                }
+	                div.wicket-aa ul { list-style:none; padding: 2px; margin:0; }
+	                div.wicket-aa ul li.selected { background-color: #FFFF00; padding: 2px; margin:0; }
+	            </style>
+	</head>
+	<body>
+		<div class="top-bar">
+			<div class="top-bar-element title">
+				<span>Web Semantic Data Quality Checker</span>
+			</div>
+			<div class="top-bar-element session">
+				<div class="home-link">
+					<a wicket:id="home"><wicket:message key="home">Home</wicket:message></a>
+				</div>
+				<div class="user-session">
+					<p>
+						<span wicket:id="user">user</span>
+					</p>
+					<br> <a wicket:id="logout"><wicket:message key="logout">Log out</wicket:message></a>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+		    <wicket:child />
+		</div>
+	</body>
 </html>
