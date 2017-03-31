@@ -28,7 +28,7 @@ public class BasePage extends WebPage {
 
 			@Override
 			public void onClick() {
-				setResponsePage(EditUserProfilePage.class);
+				setResponsePage(new EditUserProfilePage(WicketSession.get().getUser()));
 			}
 		};
 		

@@ -62,6 +62,7 @@ public class WicketSession extends WebSession {
     public void detach() {
         super.detach();
         if (evaluationSessionModel != null) evaluationSessionModel.detach();
+        if (user != null) user.detach();
     }
     
     public User getUser() {

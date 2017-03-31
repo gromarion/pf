@@ -9,16 +9,11 @@ import org.apache.wicket.model.CompoundPropertyModel;
 
 import com.itba.domain.EntityModel;
 import com.itba.domain.model.User;
-import com.itba.web.WicketSession;
 
 @SuppressWarnings("serial")
 public class EditUserProfilePage extends BasePage {
 
-	@Override
-    protected void onInitialize() {
-		super.onInitialize();
-
-		User user = WicketSession.get().getUser();
+	public EditUserProfilePage(User user) {
 		Form<User> form = new Form<User>("editUserForm",
 				new CompoundPropertyModel<User>(new EntityModel<User>(User.class, user))) {
 
