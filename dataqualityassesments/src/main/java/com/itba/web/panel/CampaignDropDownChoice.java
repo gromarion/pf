@@ -11,6 +11,7 @@ import com.itba.domain.EntityModel;
 import com.itba.domain.model.Campaign;
 
 @SuppressWarnings("serial")
+@Deprecated
 public class CampaignDropDownChoice extends DropDownChoice<IModel<Campaign>> {
 
 	private IModel<Campaign> campaignModel = new EntityModel<>(Campaign.class);
@@ -41,14 +42,12 @@ public class CampaignDropDownChoice extends DropDownChoice<IModel<Campaign>> {
 
 		@Override
 		public String getIdValue(IModel<Campaign> object, int index) {
-			return Strings.toString(index);
+			return Strings.toString(object.getObject().getId());
 		}
 
 		@Override
-		public IModel<Campaign> getObject(String id,
-				IModel<? extends List<? extends IModel<Campaign>>> choices) {
-			// TODO Auto-generated method stub
-			return null;
+		public IModel<Campaign> getObject(String id, IModel<? extends List<? extends IModel<Campaign>>> choices) {
+			return choices.getObject().get(Integer.parseInt(id) - 1);
 		}
 	}
 }

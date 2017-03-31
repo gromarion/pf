@@ -4,12 +4,15 @@ import java.util.List;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
+import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.google.common.collect.Lists;
@@ -20,7 +23,6 @@ import com.itba.domain.UserRepo;
 import com.itba.domain.model.Campaign;
 import com.itba.web.WicketSession;
 import com.itba.web.feedback.CustomFeedbackPanel;
-import com.itba.web.panel.CampaignDropDownChoice;
 
 @SuppressWarnings("serial")
 public class LoginPage extends WebPage {
@@ -67,9 +69,16 @@ public class LoginPage extends WebPage {
             }
         };
         
-        CampaignDropDownChoice campaignDropDownChoice = new CampaignDropDownChoice("campaigns", availableCampaigns, selectedCampaignModel);
-//        DropDownChoice<Campaign> listCampaigns = new DropDownChoice<Campaign>(
-//                "campaigns", selectedCampaignModel, availableCampaigns, new ChoiceRenderer<Campaign>("name"));
+        DropDownChoice<Campaign> campaignDropDownChoice = 
+                new DropDownChoice<Campaign>("campaigns", selectedCampaignModel,
+                        new LoadableDetachableModel<List<Campaign>>() {
+                            @Override
+                            protected List<Campaign> load() { 
+                                return campaigns.getAll();
+                            }
+                        }
+                    , new ChoiceRenderer<Campaign>("endpoint"));
+        
         form.add(campaignDropDownChoice);
         form.add(new TextField<String>("name").setRequired(true));
         form.add(new PasswordTextField("password").setRequired(true));
