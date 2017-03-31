@@ -41,8 +41,24 @@ public class User extends PersistentEntity {
     public String getPassword() {
         return password;
     }
+    
+    public String getConfirmedPassword() {
+		return password;
+	}
 
     public Set<EvaluationSession> getSessions() {
         return sessions;
+    }
+    
+    public void setFullName(String fullName) {
+    	this.fullName = fullName;
+    }
+    
+    public void setUsername(String username) {
+    	this.username = username;
+    }
+    
+    public void setPassword(String password) {
+    	this.password = password;
     }
 }

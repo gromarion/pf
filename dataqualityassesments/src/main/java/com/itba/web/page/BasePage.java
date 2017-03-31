@@ -17,14 +17,22 @@ public class BasePage extends WebPage {
         }
         
         add(new Link<Void>("home") {
-
 			@Override
 			public void onClick() {
 				setResponsePage(getApplication().getHomePage());
 			}
-
 		});
-        Link<Void> logout = new Link<Void>("logout") {
+        
+        Link<Void> editUserProfile = new Link<Void>("editUserProfile") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick() {
+				setResponsePage(EditUserProfilePage.class);
+			}
+		};
+		
+		Link<Void> logout = new Link<Void>("logout") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -33,6 +41,8 @@ public class BasePage extends WebPage {
 				setResponsePage(getApplication().getHomePage());
 			}
 		};
+
+		add(editUserProfile);
 		add(logout);
 		Label user = new Label("user", WicketSession.get().getFullName());
 		add(user);

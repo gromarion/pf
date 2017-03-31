@@ -64,6 +64,10 @@ public class WicketSession extends WebSession {
         if (evaluationSessionModel != null) evaluationSessionModel.detach();
     }
     
+    public User getUser() {
+    	return user.getObject();
+    }
+    
     public String getUsername() {
 		return user.getObject().getUsername();
 	}

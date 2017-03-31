@@ -1,0 +1,40 @@
+<wicket:extend xmlns:wicket="http://www.w3.org/1999/xhtml">
+    <div class="row">
+        <div class="container">
+            <h2><wicket:message key="title">Edit profile</wicket:message></h2>
+            <form wicket:id="editUserForm" method="post" class="form-horizontal">
+            	<div class="control-group">
+                    <label class="control-label">
+                        <wicket:message key="fullName">Full name</wicket:message>
+                    </label>
+                    <div class="controls">
+                        <input type="text" wicket:id="fullName" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">
+                        <wicket:message key="password">Password</wicket:message>
+                    </label>
+                    <div class="controls">
+                        <input type="password" wicket:id="password" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">
+                        <wicket:message key="confirmedPassword">Password</wicket:message>
+                    </label>
+                    <div class="controls">
+                        <input type="password" wicket:id="confirmedPassword" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button wicket:id="submit" type="submit" class="btn btn-primary">
+                            <wicket:message key="submit">Submit</wicket:message>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</wicket:extend>
