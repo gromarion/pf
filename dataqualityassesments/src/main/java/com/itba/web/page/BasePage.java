@@ -34,7 +34,7 @@ public class BasePage extends WebPage {
 			}
 		};
 		add(logout);
-		Label user = new Label("user", WicketSession.get().getUsername());
+		Label user = new Label("user", WicketSession.get().getFullName());
 		add(user);
 
 		if (!WicketSession.get().isSignedIn()) {

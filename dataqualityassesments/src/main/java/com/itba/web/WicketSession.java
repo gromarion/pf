@@ -16,8 +16,8 @@ import com.itba.domain.model.User;
 @SuppressWarnings("serial")
 public class WicketSession extends WebSession {
 
-	private String username;
     private IModel<EvaluationSession> evaluationSessionModel = new EntityModel<EvaluationSession>(EvaluationSession.class);
+    private IModel<User> user;
 
     public static WicketSession get() {
         return (WicketSession) Session.get();
@@ -35,7 +35,7 @@ public class WicketSession extends WebSession {
 		User user = users.getByUsername(username);
 
 		if (user != null && user.checkPassword(password)) {
-			this.username = username;
+			this.user = new EntityModel<User>(User.class, user);
 			Optional<EvaluationSession> session = evaluationSessions.getForCampaignAndUser(campaign, user);
 	    	
 	        if (!session.isPresent()) {
@@ -65,6 +65,10 @@ public class WicketSession extends WebSession {
     }
     
     public String getUsername() {
-		return username;
+		return user.getObject().getUsername();
+	}
+    
+    public String getFullName() {
+		return user.getObject().getFullName();
 	}
 }
