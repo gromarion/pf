@@ -1,5 +1,4 @@
 <wicket:extend xmlns:wicket="http://www.w3.org/1999/xhtml">
-
 	<h2><wicket:message key="title">Title</wicket:message></h2>
 
 	<div wicket:id="feedbackPanel"></div>
@@ -8,9 +7,8 @@
 		<div class="input-append">
 			<input type="text" class="span2 search-query" wicket:id="textField"
 				style="width:500px">
-			<button wicket:id="submit" type="submit" class="btn">Search</button>
+			<button wicket:id="submit" type="submit" class="btn"><wicket:message key="searchButton">Search</wicket:message></button>
 		</div>
-
 
 		<div class="control-group">
 			<label class="control-label">
@@ -20,6 +18,5 @@
 				<textarea wicket:id="comments" rows="6" cols="40"></textarea>
 			</div>
 		</div>
-
 	</form>
 </wicket:extend>

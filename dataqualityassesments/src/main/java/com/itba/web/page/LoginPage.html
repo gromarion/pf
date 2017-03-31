@@ -33,10 +33,10 @@
             <form wicket:id="loginForm" method="post" class="form-horizontal">
                 <div class="control-group">
                     <label class="control-label">
-                        <wicket:message key="name">Email</wicket:message>
+                        <wicket:message key="username">Email</wicket:message>
                     </label>
                     <div class="controls">
-                        <input type="text" wicket:id="name" />
+                        <input type="text" wicket:id="username" />
                     </div>
                 </div>
                 <div class="control-group">
@@ -64,7 +64,7 @@
                     </div>
                 </div>
             </form>
-            <a href="#" wicket:id="registerLink">Not a user? Register now!</a>
+            <a href="#" wicket:id="registerLink"><wicket:message key="registerLink">"Not a user? Register now!</wicket:message></a>
         </div>
     </div>
 </body>

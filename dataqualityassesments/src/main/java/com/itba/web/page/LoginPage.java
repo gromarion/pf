@@ -37,7 +37,7 @@ public class LoginPage extends WebPage {
 
     private List<IModel<Campaign>> availableCampaigns = Lists.newLinkedList();
 
-    private String name;
+    private String username;
     private String password;
     private IModel<Campaign> selectedCampaignModel = new EntityModel<Campaign>(Campaign.class);
 
@@ -61,7 +61,7 @@ public class LoginPage extends WebPage {
                 WicketSession appSession = (WicketSession) getSession();
                 if (selectedCampaignModel.getObject() == null) {
                     error(getString("campaignNotFoundError"));
-                } else if (appSession.signIn(name, password, selectedCampaignModel.getObject(), users, evaluationSessions)) {
+                } else if (appSession.signIn(username, password, selectedCampaignModel.getObject(), users, evaluationSessions)) {
                     setResponsePage(AutomaticOrManualPage.class);
                 } else {
                     error(getString("invalidCredentials"));
@@ -80,7 +80,7 @@ public class LoginPage extends WebPage {
                     , new ChoiceRenderer<Campaign>("endpoint"));
         
         form.add(campaignDropDownChoice);
-        form.add(new TextField<String>("name").setRequired(true));
+        form.add(new TextField<String>("username").setRequired(true));
         form.add(new PasswordTextField("password").setRequired(true));
         form.add(new Button("login"));
         add(form);
