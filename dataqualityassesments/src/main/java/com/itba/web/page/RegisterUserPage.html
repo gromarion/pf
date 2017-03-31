@@ -29,12 +29,20 @@
             <h2><wicket:message key="title">Register</wicket:message></h2>
             <div wicket:id="feedbackPanel"></div>
             <form wicket:id="registerUserForm" method="post" class="form-horizontal">
-                <div class="control-group">
+            	<div class="control-group">
                     <label class="control-label">
-                        <wicket:message key="name">Email</wicket:message>
+                        <wicket:message key="fullName">Full name</wicket:message>
                     </label>
                     <div class="controls">
-                        <input type="text" wicket:id="name" />
+                        <input type="text" wicket:id="fullName" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">
+                        <wicket:message key="username">Username</wicket:message>
+                    </label>
+                    <div class="controls">
+                        <input type="text" wicket:id="username" />
                     </div>
                 </div>
                 <div class="control-group">

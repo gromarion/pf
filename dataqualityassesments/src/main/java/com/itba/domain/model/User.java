@@ -11,7 +11,8 @@ import java.util.Set;
 @Table(name = "users")
 public class User extends PersistentEntity {
 
-    private String name;
+	private String fullName;
+    private String username;
     private String password;
 
     @OneToMany(mappedBy = "user")
@@ -19,8 +20,9 @@ public class User extends PersistentEntity {
 
     User(){}
 
-    public User(String name, String password) {
-        this.name = name;
+    public User(String fullName, String name, String password) {
+        this.fullName = fullName;
+    	this.username = name;
         this.password = password;
     }
 
@@ -28,8 +30,12 @@ public class User extends PersistentEntity {
         return this.password.equals(password);
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
+    }
+    
+    public String getFullName() {
+        return fullName;
     }
 
     public String getPassword() {

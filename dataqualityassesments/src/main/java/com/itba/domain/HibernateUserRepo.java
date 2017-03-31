@@ -21,8 +21,8 @@ public class HibernateUserRepo extends AbstractHibernateRepo implements UserRepo
     }
 
     @Override
-    public User getByName(String name) {
-        List<User> result = find("from User where name = ?", name);
+    public User getByUsername(String username) {
+        List<User> result = find("from User where username = ?", username);
         return result.size() > 0 ? result.get(0) : null;
     }
 }

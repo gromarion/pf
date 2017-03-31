@@ -1,8 +1,8 @@
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
   id serial NOT NULL,
---  googleid character varying(255),
-  name character varying(255),
+  fullname character varying(255),
+  username character varying(255),
   password character varying(255),
 --  picture character varying(255),
 --  profile character varying(255),

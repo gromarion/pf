@@ -4,6 +4,7 @@ import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.feedback.IFeedbackMessageFilter;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 
+@SuppressWarnings("serial")
 public class CustomFeedbackPanel extends FeedbackPanel {
 
     public CustomFeedbackPanel(String id) {
@@ -30,7 +31,6 @@ public class CustomFeedbackPanel extends FeedbackPanel {
             default:
                 css = "alert";
         }
-
         return css;
     }
 }

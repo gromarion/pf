@@ -13,13 +13,14 @@ import com.itba.domain.UserRepo;
 import com.itba.domain.model.User;
 import com.itba.web.feedback.CustomFeedbackPanel;
 
+@SuppressWarnings("serial")
 public class RegisterUserPage extends WebPage {
-	private static final long serialVersionUID = 1L;
 
 	@SpringBean
     private UserRepo users;
 
-    private String name;
+    private String fullName;
+    private String username;
     private String password;
     private String confirmedPassword;
 
@@ -30,24 +31,25 @@ public class RegisterUserPage extends WebPage {
 
         Form<RegisterUserPage> form = new Form<RegisterUserPage>("registerUserForm",
                 new CompoundPropertyModel<RegisterUserPage>(this)) {
-			private static final long serialVersionUID = 1L;
 
 			@Override
             protected void onSubmit() {
-                User user = users.getByName(name);
+                User user = users.getByUsername(username);
+
                 if (user != null) {
                 	error(getString("userAlreadyExist"));
                 } else if (!password.equals(confirmedPassword)) {
                 	error(getString("passwordMismatch"));
                 } else {
-                	user = new User(name, password);
+                	user = new User(fullName, username, password);
                 	users.save(user);
                 	setResponsePage(LoginPage.class);
                 }
             }
         };
 
-        form.add(new TextField<String>("name").setRequired(true));
+        form.add(new TextField<String>("fullName").setRequired(true));
+        form.add(new TextField<String>("username").setRequired(true));
         form.add(new PasswordTextField("password").setRequired(true));
         form.add(new PasswordTextField("confirmedPassword").setRequired(true));
         form.add(new Button("register"));

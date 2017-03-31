@@ -20,13 +20,8 @@ ALTER TABLE campaign
 CREATE TABLE users
 (
   id serial NOT NULL,
-  googleid character varying(255),
-  name character varying(255),
-  picture character varying(255),
-  profile character varying(255),
-  statd integer,
-  statr integer,
-  statt integer,
+  fullname character varying(255),
+  username character varying(255),
   CONSTRAINT users_pkey PRIMARY KEY (id)
 )
 WITH (

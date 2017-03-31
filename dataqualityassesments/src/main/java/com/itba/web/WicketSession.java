@@ -32,7 +32,7 @@ public class WicketSession extends WebSession {
     }
 
     public boolean signIn(String username, String password, Campaign campaign, UserRepo users, EvaluationSessionRepo evaluationSessions) {
-		User user = users.getByName(username);
+		User user = users.getByUsername(username);
 
 		if (user != null && user.checkPassword(password)) {
 			this.username = username;
