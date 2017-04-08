@@ -33,6 +33,7 @@ public class SearchResultPage extends BasePage {
 			choicesList.add((String) ((JSONObject)(((JSONObject) choices.get(i)).get("s"))).get("value"));
 		}
 		
+		add(new ResourceSearchPanel("search"));
 		add(new ListView<String>("searchResultList", choicesList) {
 			@Override
             protected void populateItem(ListItem<String> listItem) {

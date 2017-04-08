@@ -1,13 +1,11 @@
 <wicket:extend xmlns:wicket="http://www.w3.org/1999/xhtml">
 	<h2><wicket:message key="title">Title</wicket:message></h2>
 
-	<div wicket:id="feedbackPanel"></div>
+	<div wicket:id="feedbackPanel"/>
 
 	<form wicket:id="form">
 		<div class="input-append">
-			<input type="text" class="span2 search-query" wicket:id="textField"
-				style="width:500px">
-			<button wicket:id="submit" type="submit" class="btn"><wicket:message key="searchButton">Search</wicket:message></button>
+			<div wicket:id="search"/>
 		</div>
 
 		<div class="control-group">
