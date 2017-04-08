@@ -5,8 +5,11 @@ import java.util.List;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.ExternalLink;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -31,7 +34,9 @@ public class ResultItemPage extends BasePage {
             @Override
             protected void populateItem(ListItem<List<ResultItem>> listItem) {
                 final List<ResultItem> resultItem = listItem.getModelObject();
-                listItem.add(new Label("predicate", resultItem.get(0)));
+                String predicateURL = resultItem.get(0).value;
+
+        		listItem.add(new ExternalLink("predicate", predicateURL, predicateURL));
                 listItem.add(new Label("object", resultItem.get(1)));
                 listItem.add(new AjaxLink<Void>("errorPageLink") {
                     @Override
