@@ -11,6 +11,7 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -50,7 +51,7 @@ public class ResultItemPage extends BasePage {
                 final List<ResultItem> resultItem = listItem.getModelObject();
                 String predicateURL = resultItem.get(0).value;
 
-            listItem.add(new ExternalLink("predicate", predicateURL, predicateURL));
+                listItem.add(new ExternalLink("predicate", predicateURL, predicateURL));
                 listItem.add(new Label("object", resultItem.get(1)));
                 listItem.add(new AjaxLink<Void>("errorPageLink") {
                     @Override
