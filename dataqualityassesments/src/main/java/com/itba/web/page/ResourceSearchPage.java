@@ -1,8 +1,6 @@
 package com.itba.web.page;
 
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import com.itba.domain.CampaignRepo;
 import com.itba.domain.EvaluatedResourceRepo;
@@ -21,10 +19,7 @@ public class ResourceSearchPage extends BasePage {
 		super.onInitialize();
 		add(new CustomFeedbackPanel("feedbackPanel"));
 		Form<Void> form = new Form<>("form");
-		final TextArea<String> comments = new TextArea<String>("comments", Model.of(""));
-		comments.setOutputMarkupId(true);
 		form.add(new ResourceSearchPanel("search"));
-		form.add(comments);
 		add(form);
 	}
 }
