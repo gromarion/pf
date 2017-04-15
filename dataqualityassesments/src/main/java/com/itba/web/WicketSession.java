@@ -7,11 +7,11 @@ import org.apache.wicket.request.Request;
 
 import com.google.common.base.Optional;
 import com.itba.domain.EntityModel;
-import com.itba.domain.EvaluationSessionRepo;
-import com.itba.domain.UserRepo;
 import com.itba.domain.model.Campaign;
 import com.itba.domain.model.EvaluationSession;
 import com.itba.domain.model.User;
+import com.itba.domain.repository.EvaluationSessionRepo;
+import com.itba.domain.repository.UserRepo;
 
 @SuppressWarnings("serial")
 public class WicketSession extends WebSession {

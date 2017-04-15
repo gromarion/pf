@@ -1,4 +1,4 @@
-package com.itba.domain;
+package com.itba.domain.repository.hibernate;
 
 import org.hibernate.Query;
 import org.hibernate.Session;

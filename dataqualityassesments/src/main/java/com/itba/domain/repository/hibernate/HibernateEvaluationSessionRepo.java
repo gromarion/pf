@@ -1,4 +1,4 @@
-package com.itba.domain;
+package com.itba.domain.repository.hibernate;
 
 import java.util.List;
 
@@ -12,6 +12,7 @@ import com.google.common.base.Preconditions;
 import com.itba.domain.model.Campaign;
 import com.itba.domain.model.EvaluationSession;
 import com.itba.domain.model.User;
+import com.itba.domain.repository.EvaluationSessionRepo;
 
 @Repository
 public class HibernateEvaluationSessionRepo extends AbstractHibernateRepo implements EvaluationSessionRepo {

@@ -16,11 +16,11 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.google.common.collect.Lists;
-import com.itba.domain.CampaignRepo;
 import com.itba.domain.EntityModel;
-import com.itba.domain.EvaluationSessionRepo;
-import com.itba.domain.UserRepo;
 import com.itba.domain.model.Campaign;
+import com.itba.domain.repository.CampaignRepo;
+import com.itba.domain.repository.EvaluationSessionRepo;
+import com.itba.domain.repository.UserRepo;
 import com.itba.web.WicketSession;
 import com.itba.web.feedback.CustomFeedbackPanel;
 

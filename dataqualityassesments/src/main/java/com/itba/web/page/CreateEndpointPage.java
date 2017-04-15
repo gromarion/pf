@@ -8,9 +8,9 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.itba.domain.CampaignRepo;
 import com.itba.domain.EntityModel;
 import com.itba.domain.model.Campaign;
+import com.itba.domain.repository.CampaignRepo;
 
 @SuppressWarnings("serial")
 public class CreateEndpointPage extends BasePage {

@@ -1,8 +1,9 @@
 package com.itba.web.page;
 
 import com.itba.domain.EntityModel;
-import com.itba.domain.ErrorRepo;
 import com.itba.domain.model.Error;
+import com.itba.domain.repository.ErrorRepo;
+
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;

@@ -1,8 +1,10 @@
-package com.itba.domain;
+package com.itba.domain.repository.hibernate;
 
 import com.google.common.base.Optional;
 import com.itba.domain.model.EvaluatedResource;
 import com.itba.domain.model.EvaluationSession;
+import com.itba.domain.repository.EvaluatedResourceRepo;
+
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;

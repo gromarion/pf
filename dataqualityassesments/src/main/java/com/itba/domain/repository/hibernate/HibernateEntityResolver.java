@@ -1,4 +1,4 @@
-package com.itba.domain;
+package com.itba.domain.repository.hibernate;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -7,6 +7,9 @@ import org.hibernate.TransientObjectException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
+
+import com.itba.domain.EntityResolver;
+import com.itba.domain.PersistentEntity;
 
 @Component
 @SuppressWarnings("unchecked")

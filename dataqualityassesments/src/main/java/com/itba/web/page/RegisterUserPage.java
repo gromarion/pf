@@ -9,8 +9,8 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.itba.domain.UserRepo;
 import com.itba.domain.model.User;
+import com.itba.domain.repository.UserRepo;
 import com.itba.web.feedback.CustomFeedbackPanel;
 
 @SuppressWarnings("serial")

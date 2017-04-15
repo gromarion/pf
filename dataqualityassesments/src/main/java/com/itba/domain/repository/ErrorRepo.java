@@ -1,6 +1,7 @@
-package com.itba.domain;
+package com.itba.domain.repository;
 
 import com.itba.domain.model.Error;
+import com.itba.domain.repository.hibernate.HibernateRepo;
 
 import java.util.List;
 

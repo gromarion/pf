@@ -1,4 +1,4 @@
-package com.itba.domain;
+package com.itba.domain.repository.hibernate;
 
 import java.io.Serializable;
 import java.util.List;

@@ -15,9 +15,9 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.itba.domain.CampaignRepo;
 import com.itba.domain.SparqlRequestHandler;
 import com.itba.domain.model.Campaign;
+import com.itba.domain.repository.CampaignRepo;
 import com.itba.sparql.JsonSparqlResult;
 import com.itba.sparql.ResultItem;
 import com.itba.web.WicketSession;
