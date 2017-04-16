@@ -41,11 +41,13 @@ public class ResultItemPage extends BasePage {
           }
         };
 		
-        add(new ResourceSearchPanel("search"));
+//        add(new ResourceSearchPanel("search"));
         form.add(comments);
         form.add(submit);
         add(form);
 
+        // TODO: agregar acá la lista de errores ya ingresados
+        
         add(new ListView<List<ResultItem>>("resultItemList", results) {
             @Override
             protected void populateItem(ListItem<List<ResultItem>> listItem) {
@@ -58,7 +60,8 @@ public class ResultItemPage extends BasePage {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
                         PageParameters parameters = new PageParameters();
-                        parameters.add("resultItem", resultItem);
+                        parameters.add("predicate", resultItem.get(0));
+                        parameters.add("object", resultItem.get(1));
                         parameters.add("resource", resource);
                         setResponsePage(ErrorSelectionPage.class, parameters);
                     }

@@ -10,7 +10,6 @@ import java.util.Set;
 public class EvaluatedResource extends PersistentEntity {
 
     @ManyToOne
-//    @Column(name = "sid")
     private EvaluationSession session;
 
     @Column(name = "resource")
@@ -42,4 +41,24 @@ public class EvaluatedResource extends PersistentEntity {
     public void setComments(String comments) {
         this.comments = comments;
     }
+
+	public EvaluationSession getSession() {
+		return session;
+	}
+
+	public String getResource() {
+		return resource;
+	}
+
+	public String getClazz() {
+		return clazz;
+	}
+
+	public Boolean getCorrect() {
+		return correct;
+	}
+
+	public Set<EvaluatedResourceDetail> getDetails() {
+		return details;
+	}
 }

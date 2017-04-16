@@ -15,7 +15,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.google.common.collect.Lists;
 import com.itba.domain.EntityModel;
 import com.itba.domain.model.Campaign;
 import com.itba.domain.repository.CampaignRepo;
@@ -35,8 +34,6 @@ public class LoginPage extends WebPage {
     @SpringBean
     private EvaluationSessionRepo evaluationSessions;
 
-    private List<IModel<Campaign>> availableCampaigns = Lists.newLinkedList();
-
     private String username;
     private String password;
     private IModel<Campaign> selectedCampaignModel = new EntityModel<Campaign>(Campaign.class);
@@ -48,11 +45,8 @@ public class LoginPage extends WebPage {
         	setResponsePage(AutomaticOrManualPage.class);
 		}
         add(new CustomFeedbackPanel("feedbackPanel"));
-        for (Campaign c : campaigns.getAll()) {
-        	availableCampaigns.add(new EntityModel<Campaign>(Campaign.class, c));
-        }
         
-        if (!availableCampaigns.isEmpty()) selectedCampaignModel.setObject(availableCampaigns.get(0).getObject());
+        selectedCampaignModel.setObject(campaigns.getAll().get(0));
 		Form<LoginPage> form = new Form<LoginPage>("loginForm",
                 new CompoundPropertyModel<LoginPage>(this)) {
 

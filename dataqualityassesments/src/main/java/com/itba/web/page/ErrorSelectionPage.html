@@ -1,18 +1,71 @@
 <wicket:extend xmlns:wicket="http://www.w3.org/1999/xhtml">
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Título</th>
-            <th>Descripción</th>
-            <th>Ejemplo</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr wicket:id="errorList">
-            <td><span wicket:id="title"></span></td>
-            <td><span wicket:id="description"></span></td>
-            <td><span wicket:id="example"></span></td>
-        </tr>
-        </tbody>
-    </table>
+<div class="row">
+        <div class="container">
+        	<div wicket:id="feedbackPanel"></div>
+        	<div class="row">
+        		<h2><wicket:message key="title">New error</wicket:message></h2>
+        	</div>
+            <form wicket:id="errorForm" method="post" class="form-horizontal">
+            	<div class="control-group">
+                    <label class="control-label">
+                        <wicket:message key="resource">Recurso</wicket:message>
+                    </label>
+                    <div class="controls">
+                        <span wicket:id="resourceLabel">resource</span>
+                    </div>
+                </div>
+            	<div class="control-group">
+                    <label class="control-label">
+                        <wicket:message key="predicate">Predicado</wicket:message>
+                    </label>
+                    <div class="controls">
+                        <span wicket:id="predicateLabel">predicate</span>
+                    </div>
+                </div>
+           	 	<div class="control-group">
+                    <label class="control-label">
+                        <wicket:message key="object">Objeto</wicket:message>
+                    </label>
+                    <div class="controls">
+                        <span wicket:id="objectLabel">object</span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">
+                        <wicket:message key="errors">Errores disponibles</wicket:message>
+                    </label>
+                    <div class="controls">
+                        <select wicket:id="errorList" style="width:400px"></select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">
+                        <wicket:message key="comments">Comentarios</wicket:message>
+                    </label>
+                    <div class="controls">
+                        <textarea wicket:id="comments" rows="2" cols="40"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                	<h3><wicket:message key="descriptionLabel">Description title</wicket:message></h3>
+                </div>
+                <div class="well">
+                	<span wicket:id="errorDescription">errorDescription</span>
+                </div>
+                <div class="row">
+                	<h3><wicket:message key="exampleLabel">Example title</wicket:message></h3>
+                </div>
+                <div class="well">
+                	<span wicket:id="errorExample">errorExample</span>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button wicket:id="submit" type="submit" class="btn btn-primary">
+                            <wicket:message key="submit">Submit</wicket:message>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </wicket:extend>
