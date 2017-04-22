@@ -26,7 +26,7 @@ CREATE TABLE error (
   title character varying(255),
   example character varying(255),
   description character varying(10000),
-  CONSTRAINT errors_pkey PRIMARY KEY (id)
+  CONSTRAINT error_pkey PRIMARY KEY (id)
 );
 
 INSERT INTO error (id, title, example, description) VALUES
@@ -70,10 +70,17 @@ CREATE TABLE evaluated_resource_detail (
   resource_id integer,
   predicate character varying(255),
   object character varying(10000),
-  error_id numeric(19,2),
+  error_id integer,
   comment character varying(10000),
     CONSTRAINT evaluated_resource_detail_pkey PRIMARY KEY (id),
     CONSTRAINT fkfffa3de524231a0d FOREIGN KEY (resource_id)
         REFERENCES evaluated_resource (id) MATCH SIMPLE
         ON UPDATE NO ACTION ON DELETE NO ACTION
 );
+
+ALTER TABLE users OWNER TO finalproject;
+ALTER TABLE campaign OWNER TO finalproject;
+ALTER TABLE error OWNER TO finalproject;
+ALTER TABLE evaluation_session OWNER TO finalproject;
+ALTER TABLE evaluated_resource OWNER TO finalproject;
+ALTER TABLE evaluated_resource_detail OWNER TO finalproject;
