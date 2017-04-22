@@ -27,7 +27,7 @@ public class ErrorPanel extends Panel {
 			@Override
 			protected void populateItem(ListItem<Error> listItem) {
 				Error error = listItem.getModelObject();
-				listItem.add(new Label("title", error.getTitle()));
+				listItem.add(new Label("title", error.getName()));
 			}
 		});
 

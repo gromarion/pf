@@ -16,17 +16,14 @@ import com.itba.domain.PersistentEntity;
 @Table(name = "campaign")
 public class Campaign extends PersistentEntity {
 
-    @Column(name = "cname")
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "cendpoint")
+    @Column(name = "endpoint")
     private String endpoint;
 
-    @Column(name = "cgraphs")
+    @Column(name = "graphs")
     private String graphs;
-
-    @Column(name = "copened")
-    private Integer opened;
 
     @OneToMany(mappedBy = "campaign")
     private Set<EvaluationSession> sessions;

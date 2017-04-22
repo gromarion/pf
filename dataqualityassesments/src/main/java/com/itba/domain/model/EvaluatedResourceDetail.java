@@ -1,15 +1,16 @@
 package com.itba.domain.model;
 
-import com.itba.domain.PersistentEntity;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.math.BigInteger;
+
+import com.itba.domain.PersistentEntity;
 
 @Entity
-@Table(name = "evaluated_resource_details")
+@Table(name = "evaluated_resource_detail")
 public class EvaluatedResourceDetail extends PersistentEntity {
 
     @ManyToOne
@@ -20,19 +21,19 @@ public class EvaluatedResourceDetail extends PersistentEntity {
 
     @Column(name = "object")
     private String object;
-
-    // FIXME: cambiar esto para que instancie un objeto Error en lugar de apuntar al ID del error
-    @Column(name = "error_id")
-    private BigInteger errorId;
+    
+    @ManyToOne(cascade = {}, fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "error_id", nullable = false)
+    private Error error;
 
     @Column(name = "comment")
     private String comment;
     
     EvaluatedResourceDetail() {}
 
-    public EvaluatedResourceDetail(EvaluatedResource resource, BigInteger errorId, String predicate, String object) {
+    public EvaluatedResourceDetail(EvaluatedResource resource, Error error, String predicate, String object) {
         this.resource = resource;
-        this.errorId = errorId;
+        this.error = error;
         this.predicate = predicate;
         this.object = object;
     }
@@ -57,8 +58,8 @@ public class EvaluatedResourceDetail extends PersistentEntity {
 		return object;
 	}
 
-	public BigInteger getErrorId() {
-		return errorId;
+	public Error getErrorId() {
+		return error;
 	}
 
 	public String getComment() {

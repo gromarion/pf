@@ -18,12 +18,6 @@ public class EvaluatedResource extends PersistentEntity {
     @Column(name = "comments")
     private String comments;
 
-    @Column(name = "class")
-    private String clazz;
-
-    @Column(name = "correct")
-    private Boolean correct;
-
     @OneToMany(mappedBy = "resource")
     private Set<EvaluatedResourceDetail> details;
 
@@ -48,14 +42,6 @@ public class EvaluatedResource extends PersistentEntity {
 
 	public String getResource() {
 		return resource;
-	}
-
-	public String getClazz() {
-		return clazz;
-	}
-
-	public Boolean getCorrect() {
-		return correct;
 	}
 
 	public Set<EvaluatedResourceDetail> getDetails() {

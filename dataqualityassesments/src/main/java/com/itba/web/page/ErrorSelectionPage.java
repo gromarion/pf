@@ -1,6 +1,5 @@
 package com.itba.web.page;
 
-import java.math.BigInteger;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -70,7 +69,7 @@ public class ErrorSelectionPage extends BasePage {
         
     	errorModel.setObject(errorRepo.getAll().get(0));
     	errorDescriptionLabel.setDefaultModelObject(errorModel.getObject().getDescription());
-    	errorExampleLabel.setDefaultModelObject(errorModel.getObject().getExampleN3());
+    	errorExampleLabel.setDefaultModelObject(errorModel.getObject().getExample());
         
         ListChoice<Error> errorListChoice = 
                 new ListChoice<Error>("errorList", errorModel,
@@ -87,7 +86,7 @@ public class ErrorSelectionPage extends BasePage {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
             	errorDescriptionLabel.setDefaultModelObject(errorModel.getObject().getDescription());
-            	errorExampleLabel.setDefaultModelObject(errorModel.getObject().getExampleN3());
+            	errorExampleLabel.setDefaultModelObject(errorModel.getObject().getExample());
             	target.add(errorDescriptionLabel);
             	target.add(errorExampleLabel);
             }
@@ -105,9 +104,8 @@ public class ErrorSelectionPage extends BasePage {
 					evaluatedResourceRepo.save(evaluatedResource.get());
 				}
 				
-				EvaluatedResourceDetail detail = new EvaluatedResourceDetail(evaluatedResource.get(), BigInteger.valueOf(errorModel.getObject().getId()), predicate, object);
+				EvaluatedResourceDetail detail = new EvaluatedResourceDetail(evaluatedResource.get(), errorModel.getObject(), predicate, object);
 				evaluatedResourceDetailRepo.save(detail);
-				
 				
 				PageParameters parameters = new PageParameters();
                 String resourceURL = resource;

@@ -19,20 +19,14 @@ public class EvaluationSession extends PersistentEntity {
     @ManyToOne
     private User user;
 
-//    @Column(name = "timestamp")
-//    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-//    @DateTimeFormat(style="yyyy-MM-dd'T'HH:mm:ss")
-//    private DateTime timestamp;
-
     @OneToMany(mappedBy = "session")
     private Set<EvaluatedResource> evaluatedResources;
 
     EvaluationSession() {}
 
-    public EvaluationSession(Campaign campaign, User user/*, DateTime dateTime*/) {
+    public EvaluationSession(Campaign campaign, User user) {
         this.campaign = campaign;
         this.user = user;
-//        this.timestamp = dateTime;
     }
     
     public Campaign getCampaign() {
