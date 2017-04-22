@@ -30,9 +30,6 @@ public class HibernateEvaluationSessionRepo extends AbstractHibernateRepo implem
                 "SELECT e FROM EvaluationSession e " +
                         " WHERE e.user = " + user.getId()
                         + " AND e.campaign = " + campaign.getId()
-//                        + " AND e.timestamp BETWEEN \'" + fromDate.toString(FMT)
-//                        + "\' AND \'" + toDate.toString(FMT) + "\'"
-                        
         		);
 
         List<EvaluationSession> result = query.list();
