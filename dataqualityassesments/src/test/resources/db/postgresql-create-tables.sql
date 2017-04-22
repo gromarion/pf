@@ -20,8 +20,8 @@ CREATE TABLE campaign (
 
 INSERT INTO campaign (id, name, endpoint, graphs) VALUES (1, 'DBpedia Evaluation Campaign', 'http://live.dbpedia.org/sparql', 'http://live.dbpedia.org');
 
-DROP TABLE IF EXISTS errors CASCADE;
-CREATE TABLE errors (
+DROP TABLE IF EXISTS error CASCADE;
+CREATE TABLE error (
   id serial NOT NULL,
   title character varying(255),
   example character varying(255),
@@ -29,7 +29,7 @@ CREATE TABLE errors (
   CONSTRAINT errors_pkey PRIMARY KEY (id)
 );
 
-INSERT INTO errors (id, title, example, description) VALUES
+INSERT INTO error (id, title, example, description) VALUES
 	(1, 'Tipo de dato incorrectamente extraído', '"foaf:description, Questa è una descrizione di una risorsa in Italiano@es" es incorrecto ya que el tipo de dato no se encuentra en español', 'Tipo de dato de un literal que está incorrectamente mapeado.'),
 	(2, 'Valor del objeto extraído de forma incompleta', 'dbpprop:dateOfBirth “3”', 'Parte de los datos no han podido ser extraídos de forma completa, debido a algún tipo de error durante el proceso.'),
 	(3, 'Objeto semánticamente incorrecto', 'Un dato no confiable podría ser "El atentado al World Trade Center ocurrió el 12 de Septiembre de 2001.", pues si se verifica en otras fuentes se concluirá que efectivamente el atentado fue el 11 de Septiembre del 2001, y no el 12.', 'Un valor es semánticamente correcto cuando representa el estado correcto de un objeto.'),
@@ -64,15 +64,15 @@ CREATE TABLE evaluated_resource (
         ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
-DROP TABLE IF EXISTS evaluated_resource_details CASCADE;
-CREATE TABLE evaluated_resource_details (
+DROP TABLE IF EXISTS evaluated_resource_detail CASCADE;
+CREATE TABLE evaluated_resource_detail (
   id SERIAL,
   resource_id integer,
   predicate character varying(255),
   object character varying(10000),
   error_id numeric(19,2),
   comment character varying(10000),
-    CONSTRAINT evaluated_resource_details_pkey PRIMARY KEY (id),
+    CONSTRAINT evaluated_resource_detail_pkey PRIMARY KEY (id),
     CONSTRAINT fkfffa3de524231a0d FOREIGN KEY (resource_id)
         REFERENCES evaluated_resource (id) MATCH SIMPLE
         ON UPDATE NO ACTION ON DELETE NO ACTION
