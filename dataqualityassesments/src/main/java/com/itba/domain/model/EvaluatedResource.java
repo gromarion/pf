@@ -1,25 +1,33 @@
 package com.itba.domain.model;
 
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import com.itba.domain.PersistentEntity;
 
-import javax.persistence.*;
-import java.util.Set;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "evaluated_resource")
 public class EvaluatedResource extends PersistentEntity {
 
     @ManyToOne
-    private EvaluationSession session;
+    private @Getter EvaluationSession session;
 
     @Column(name = "resource")
-    private String resource;
+    private @Getter String resource;
 
     @Column(name = "comments")
-    private String comments;
+    private @Getter @Setter String comments;
 
     @OneToMany(mappedBy = "resource")
-    private Set<EvaluatedResourceDetail> details;
+    private @Getter Set<EvaluatedResourceDetail> details;
 
     EvaluatedResource() {}
 
@@ -27,24 +35,4 @@ public class EvaluatedResource extends PersistentEntity {
         this.session = session;
         this.resource = resource;
     }
-
-    public String getComments() {
-        return comments;
-    }
-
-    public void setComments(String comments) {
-        this.comments = comments;
-    }
-
-	public EvaluationSession getSession() {
-		return session;
-	}
-
-	public String getResource() {
-		return resource;
-	}
-
-	public Set<EvaluatedResourceDetail> getDetails() {
-		return details;
-	}
 }

@@ -6,30 +6,20 @@ import javax.persistence.Table;
 
 import com.itba.domain.PersistentEntity;
 
+import lombok.Getter;
+
 @Entity
 @Table(name = "error")
 public class Error extends PersistentEntity {
 
-    @Column(name = "title")
-    private String name;
+    @Column(name = "name")
+    private @Getter String name;
 
     @Column(name = "example")
-    private String example;
+    private @Getter String example;
 
     @Column(name = "description")
-    private String description;
+    private @Getter String description;
 
     Error() {}
-
-    public String getName() {
-        return name;
-    }
-
-    public String getExample() {
-        return example;
-    }
-
-    public String getDescription() {
-        return description;
-    }
 }

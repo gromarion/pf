@@ -9,25 +9,29 @@ import javax.persistence.Table;
 
 import com.itba.domain.PersistentEntity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
 @Table(name = "evaluated_resource_detail")
 public class EvaluatedResourceDetail extends PersistentEntity {
 
+	
     @ManyToOne
-    private EvaluatedResource resource;
+    private @Getter EvaluatedResource resource;
 
     @Column(name = "predicate")
-    private String predicate;
+    private @Getter String predicate;
 
     @Column(name = "object")
-    private String object;
-    
+    private @Getter String object;
+
     @ManyToOne(cascade = {}, fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "error_id", nullable = false)
-    private Error error;
-
+    private @Getter Error error;
+    
     @Column(name = "comment")
-    private String comment;
+    private @Getter @Setter String comment;
     
     EvaluatedResourceDetail() {}
 
@@ -37,32 +41,4 @@ public class EvaluatedResourceDetail extends PersistentEntity {
         this.predicate = predicate;
         this.object = object;
     }
-    
-    public String getComments() {
-        return comment;
-    }
-
-    public void setComments(String comment) {
-        this.comment = comment;
-    }
-
-	public EvaluatedResource getResource() {
-		return resource;
-	}
-
-	public String getPredicate() {
-		return predicate;
-	}
-
-	public String getObject() {
-		return object;
-	}
-
-	public Error getErrorId() {
-		return error;
-	}
-
-	public String getComment() {
-		return comment;
-	}
 }
