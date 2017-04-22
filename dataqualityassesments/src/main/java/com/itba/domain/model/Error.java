@@ -7,7 +7,7 @@ import javax.persistence.Table;
 import com.itba.domain.PersistentEntity;
 
 @Entity
-@Table(name = "errors")
+@Table(name = "error")
 public class Error extends PersistentEntity {
 
     @Column(name = "title")
