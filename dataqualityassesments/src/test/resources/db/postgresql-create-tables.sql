@@ -23,13 +23,13 @@ INSERT INTO campaign (id, name, endpoint, graphs) VALUES (1, 'DBpedia Evaluation
 DROP TABLE IF EXISTS error CASCADE;
 CREATE TABLE error (
   id serial NOT NULL,
-  title character varying(255),
+  name character varying(255),
   example character varying(255),
   description character varying(10000),
   CONSTRAINT error_pkey PRIMARY KEY (id)
 );
 
-INSERT INTO error (id, title, example, description) VALUES
+INSERT INTO error (id, name, example, description) VALUES
 	(1, 'Tipo de dato incorrectamente extraído', '"foaf:description, Questa è una descrizione di una risorsa in Italiano@es" es incorrecto ya que el tipo de dato no se encuentra en español', 'Tipo de dato de un literal que está incorrectamente mapeado.'),
 	(2, 'Valor del objeto extraído de forma incompleta', 'dbpprop:dateOfBirth “3”', 'Parte de los datos no han podido ser extraídos de forma completa, debido a algún tipo de error durante el proceso.'),
 	(3, 'Objeto semánticamente incorrecto', 'Un dato no confiable podría ser "El atentado al World Trade Center ocurrió el 12 de Septiembre de 2001.", pues si se verifica en otras fuentes se concluirá que efectivamente el atentado fue el 11 de Septiembre del 2001, y no el 12.', 'Un valor es semánticamente correcto cuando representa el estado correcto de un objeto.'),
