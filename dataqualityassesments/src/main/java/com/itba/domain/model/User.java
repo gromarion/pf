@@ -8,20 +8,16 @@ import javax.persistence.Table;
 
 import com.itba.domain.PersistentEntity;
 
-import lombok.Getter;
-import lombok.Setter;
-
 @Entity
 @Table(name = "users")
 public class User extends PersistentEntity {
 
-	private @Getter @Setter String fullName;
+	private String fullName;
 	
-    private @Getter @Setter String username;
+    private String username;
 	
-    private @Getter @Setter String password;
+    private String password;
 
-	@Getter
     @OneToMany(mappedBy = "user")
     private Set<EvaluationSession> sessions;
 
@@ -39,5 +35,21 @@ public class User extends PersistentEntity {
     
     public String getConfirmedPassword() {
 		return password;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public Set<EvaluationSession> getSessions() {
+		return sessions;
 	}
 }

@@ -12,14 +12,12 @@ import javax.persistence.Table;
 
 import com.itba.domain.PersistentEntity;
 
-import lombok.Getter;
-
 @Entity
 @Table(name = "campaign")
 public class Campaign extends PersistentEntity {
 
     @Column(name = "name")
-    private @Getter String name;
+    private String name;
 
     @Column(name = "endpoint")
     private String endpoint;
@@ -28,7 +26,7 @@ public class Campaign extends PersistentEntity {
     private String graphs;
 
     @OneToMany(mappedBy = "campaign")
-    private @Getter Set<EvaluationSession> sessions;
+    private Set<EvaluationSession> sessions;
 
     Campaign() {}
     
@@ -37,7 +35,15 @@ public class Campaign extends PersistentEntity {
     	this.endpoint = endpoint;
     }
     
-    public String generateQueryURL(String sparqlQuery) {
+    public String getName() {
+		return name;
+	}
+
+	public Set<EvaluationSession> getSessions() {
+		return sessions;
+	}
+
+	public String generateQueryURL(String sparqlQuery) {
         String retVal = "";
         retVal += endpoint;
         retVal += "?format=json&query=";

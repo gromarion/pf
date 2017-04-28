@@ -9,14 +9,12 @@ import javax.persistence.Table;
 
 import com.itba.domain.PersistentEntity;
 
-import lombok.Getter;
-
 @Entity
 @Table(name = "evaluation_session")
 public class EvaluationSession extends PersistentEntity {
 
     @ManyToOne
-    private @Getter Campaign campaign;
+    private Campaign campaign;
 
     @ManyToOne
     private User user;
@@ -30,4 +28,8 @@ public class EvaluationSession extends PersistentEntity {
         this.campaign = campaign;
         this.user = user;
     }
+
+	public Campaign getCampaign() {
+		return campaign;
+	}
 }

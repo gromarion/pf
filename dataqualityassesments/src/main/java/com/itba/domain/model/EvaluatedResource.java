@@ -10,24 +10,21 @@ import javax.persistence.Table;
 
 import com.itba.domain.PersistentEntity;
 
-import lombok.Getter;
-import lombok.Setter;
-
 @Entity
 @Table(name = "evaluated_resource")
 public class EvaluatedResource extends PersistentEntity {
 
     @ManyToOne
-    private @Getter EvaluationSession session;
+    private EvaluationSession session;
 
     @Column(name = "resource")
-    private @Getter String resource;
+    private String resource;
 
     @Column(name = "comments")
-    private @Getter @Setter String comments;
+    private String comments;
 
     @OneToMany(mappedBy = "resource")
-    private @Getter Set<EvaluatedResourceDetail> details;
+    private Set<EvaluatedResourceDetail> details;
 
     EvaluatedResource() {}
 
@@ -35,4 +32,24 @@ public class EvaluatedResource extends PersistentEntity {
         this.session = session;
         this.resource = resource;
     }
+
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+
+	public EvaluationSession getSession() {
+		return session;
+	}
+
+	public String getResource() {
+		return resource;
+	}
+
+	public Set<EvaluatedResourceDetail> getDetails() {
+		return details;
+	}
 }
