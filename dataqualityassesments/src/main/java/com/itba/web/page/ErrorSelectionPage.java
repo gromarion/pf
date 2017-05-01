@@ -79,7 +79,7 @@ public class ErrorSelectionPage extends BasePage {
                                 return errorRepo.getAll();
                             }
                         }
-                    , new ChoiceRenderer<Error>("title")) {
+                    , new ChoiceRenderer<Error>("name")) {
         };
         
         OnChangeAjaxBehavior onChangeAjaxBehavior = new OnChangeAjaxBehavior() {
