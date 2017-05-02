@@ -37,4 +37,11 @@ Developers
   - Open a web browser and head to `htp://localhost:8080/dataqualityassessmens-1.0-SNAPSHOT/`
 
 ## Usage
-Coming soon...
+### User registration and login
+If it's your first time using the application, then you must register first before getting started. In order to do so, click the "¿Aún no eres un usuario? ¡Regístrate ahora!" link. This will redirect you to a page that will require you to fill up some basic information: full name, username, password and password confirmation, as shown below in the animated .GIF:
+
+![alt text](https://raw.githubusercontent.com/gromarion/pf/master/readme_images/register_user.gif)
+
+Once you've been fully registered, you can get started by logging in :D.
+
+### 
