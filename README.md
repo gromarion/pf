@@ -1,6 +1,7 @@
 # Data Quality Assesment
 
 Developers
+
 - [Alderete, Facundo](https://github.com/facualderete)
 - [De La Puerta Echeverría, María](https://github.com/mariadelapuerta)
 - [Romarión, Germán](https://github.com/gromarion)
@@ -9,14 +10,17 @@ Developers
 
 ## Installation
 **General Requirements**:
+
 - Download and install the latest version of [PostgreSQL](https://www.postgresql.org/download/)
 
 ### Run the application from Eclipse
 **Requirements**:
+
 - Download and install the latest version of [Eclipse](https://eclipse.org/downloads/)
 - Dowload the Maven plugin for Eclipse: Help -> Install New Software... -> Paste the following URL in the "Work within" input field: http://download.eclipse.org/technology/m2e/releases -> Select all packages to install
 
 **Setup**:
+
 - Clone this repository to your computer
 - Import the project in Eclipse: File -> Import... -> Maven -> Existing Maven Projects
 - Open the PGAdmin application and execute the SQL code in the src/test/resources/postgresql-create-tables.sql file.
@@ -25,9 +29,11 @@ Developers
 
 ### Run the application from an Apache Tomcat server
 ***Requirements***:
+
 - Download the latest version of [Apache Tomcat](http://tomcat.apache.org/whichversion.html)
 
 ***Setup***:
+
 - Clone this repository to your computer
 - Step inside the cloned repository
 - run `mvn package`. This will generate the `dataqualityassesments-1.0-SNAPSHOT.war` file inside the `target` folder
