@@ -107,8 +107,4 @@ public class Campaign extends PersistentEntity {
                 " LIMIT " + limit +
                 " OFFSET " + offset;
     }
-    
-    public String getRandom(int limit) {
-    	return " SELECT * WHERE { ?s ?p ?o } ORDER BY RAND() LIMIT " + limit;
-    }
 }

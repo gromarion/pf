@@ -43,6 +43,7 @@ public class ResultItemPage extends BasePage {
 		
         form.add(comments);
         form.add(submit);
+        add(new ResourceSearchPanel("search"));
         add(form);
 
         // TODO: agregar acá la lista de errores ya ingresados

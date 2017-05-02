@@ -24,7 +24,7 @@ public class SparqlRequestHandler {
     }
     
     public static JSONObject requestRandomResource(Campaign campaign) {
-    	String sparqlQuery = campaign.getRandom(1);
+    	String sparqlQuery = campaign.getQueryforRandomResource();
         String queryURL = campaign.generateQueryURL(sparqlQuery);
         JSONObject response = RequestHandler.jsonSendGet(queryURL);
 
