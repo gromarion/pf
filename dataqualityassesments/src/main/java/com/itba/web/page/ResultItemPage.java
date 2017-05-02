@@ -45,6 +45,8 @@ public class ResultItemPage extends BasePage {
         form.add(submit);
         add(new ResourceSearchPanel("search"));
         add(form);
+        String resourceName = resource.substring(resource.lastIndexOf('/') + 1);
+        add(new Label("resourceName", resourceName.replace('_', ' ')));
 
         // TODO: agregar acá la lista de errores ya ingresados
         
