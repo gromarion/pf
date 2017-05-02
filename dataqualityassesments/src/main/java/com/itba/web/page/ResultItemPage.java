@@ -41,7 +41,6 @@ public class ResultItemPage extends BasePage {
           }
         };
 		
-//        add(new ResourceSearchPanel("search"));
         form.add(comments);
         form.add(submit);
         add(form);
