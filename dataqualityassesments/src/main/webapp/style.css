@@ -141,3 +141,11 @@ a, a :visited, a :hover {
 	border-radius: 0px !important;
 }
 
+.resource-search-panel {
+	margin-top: 25px;
+}
+
+.search-button {
+	margin-left: 5px !important;
+}
+
