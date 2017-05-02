@@ -38,10 +38,27 @@ Developers
 
 ## Usage
 ### User registration and login
-If it's your first time using the application, then you must register first before getting started. In order to do so, click the "¿Aún no eres un usuario? ¡Regístrate ahora!" link. This will redirect you to a page that will require you to fill up some basic information: full name, username, password and password confirmation, as shown below in the animated .GIF:
+If it's your first time using the application, then you must register first before getting started. In order to do so, click the **¿Aún no eres un usuario? ¡Regístrate ahora!** link. This will redirect you to a page that will require you to fill up some basic information: full name, username, password and password confirmation, as shown below in the animated .GIF:
 
 ![alt text](https://raw.githubusercontent.com/gromarion/pf/master/readme_images/register_user.gif)
 
-Once you've been fully registered, you can get started by logging in :D.
+Once you've been fully registered, you can get started by logging in.
 
-### 
+### Manual checks
+Once the user is logged in the application, he can start doing some manual checks on any SPARQL endpoint loaded in the application, by making a search of any resource:
+
+![alt text](https://raw.githubusercontent.com/gromarion/pf/master/readme_images/manual_checks.gif)
+
+If he doesn't know exactly what to look for, he can always click the **Obtener recurso aleatorio** button, to fetch any random resource in the chosen endpoint:
+
+**ANIMATED GIF SHOULD BE INCLUDED HERE...**
+
+### Resource detail
+When the user finds the resource that he was looking for, they can click it to see in detail all of its properties:
+
+![alt text](https://raw.githubusercontent.com/gromarion/pf/master/readme_images/resource_detail.gif)
+
+### Error selection page
+If the user detects some errors in the selected resource, he can select the most accurate error, as shown in the following image:
+
+![alt text](https://raw.githubusercontent.com/gromarion/pf/master/readme_images/error_selection_page.gif)
