@@ -51,7 +51,7 @@ Once the user is logged in the application, he can start doing some manual check
 
 If he doesn't know exactly what to look for, he can always click the **Obtener recurso aleatorio** button, to fetch any random resource in the chosen endpoint:
 
-**ANIMATED GIF SHOULD BE INCLUDED HERE...**
+![alt text](https://raw.githubusercontent.com/gromarion/pf/master/readme_images/fetch_next_random.gif)
 
 ### Resource detail
 When the user finds the resource that he was looking for, they can click it to see in detail all of its properties:
