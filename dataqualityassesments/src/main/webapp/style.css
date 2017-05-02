@@ -149,3 +149,7 @@ a, a :visited, a :hover {
 	margin-left: 5px !important;
 }
 
+.bold {
+	font-weight: bold;
+}
+
