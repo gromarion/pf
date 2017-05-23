@@ -84,7 +84,7 @@ public class ErrorSelectionPage extends BasePage {
                         new LoadableDetachableModel<List<Error>>() {
                             @Override
                             protected List<Error> load() { 
-                                return errorRepo.getAll();
+                                return availableErrors.getObject();
                             }
                         }
                     , new ChoiceRenderer<Error>("name")) {
