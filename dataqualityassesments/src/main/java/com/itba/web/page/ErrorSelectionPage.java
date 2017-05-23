@@ -79,7 +79,16 @@ public class ErrorSelectionPage extends BasePage {
     	errorDescriptionLabel.setDefaultModelObject(errorModel.getObject().getDescription());
     	errorExampleLabel.setDefaultModelObject(errorModel.getObject().getExample());
         
-        ListChoice<Error> errorListChoice = new ListChoice<Error>("errorList", errorModel, availableErrors, new ChoiceRenderer<Error>("name"));
+        ListChoice<Error> errorListChoice = 
+                new ListChoice<Error>("errorList", errorModel,
+                        new LoadableDetachableModel<List<Error>>() {
+                            @Override
+                            protected List<Error> load() { 
+                                return errorRepo.getAll();
+                            }
+                        }
+                    , new ChoiceRenderer<Error>("name")) {
+        };
         
         OnChangeAjaxBehavior onChangeAjaxBehavior = new OnChangeAjaxBehavior() {
             @Override

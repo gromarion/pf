@@ -22,4 +22,12 @@ public class SparqlRequestHandler {
 
         return RequestHandler.jsonSendGet(queryURL);
     }
+    
+    public static JSONObject requestRandomResource(Campaign campaign) {
+    	String sparqlQuery = campaign.getQueryforRandomResource();
+        String queryURL = campaign.generateQueryURL(sparqlQuery);
+        JSONObject response = RequestHandler.jsonSendGet(queryURL);
+
+        return (JSONObject) ((JSONArray) ((JSONObject) response.get("results")).get("bindings")).get(0);
+    }
 }

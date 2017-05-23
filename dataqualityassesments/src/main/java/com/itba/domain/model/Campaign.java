@@ -15,7 +15,6 @@ import com.itba.domain.PersistentEntity;
 @Entity
 @Table(name = "campaign")
 public class Campaign extends PersistentEntity {
-
     @Column(name = "name")
     private String name;
 
@@ -52,6 +51,7 @@ public class Campaign extends PersistentEntity {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+
         return retVal;
     }
 
@@ -59,6 +59,7 @@ public class Campaign extends PersistentEntity {
         String from = "";
         for (String g : graphs.split(";"))
             from += " FROM <" + g + "> ";
+
         return "select ?p ?o " +
                 from +
                 "where {<" +
@@ -67,30 +68,30 @@ public class Campaign extends PersistentEntity {
     }
 
     public String getQueryforRandomResource() {
-
         int offset = new Random().nextInt(760129);
         String from = "";
         for (String g : graphs.split(";"))
             from += " FROM <" + g + "> ";
+
         return " SELECT ?s " + from +
                 " WHERE { ?s foaf:isPrimaryTopicOf ?o } LIMIT 1 OFFSET " + offset;
     }
 
     public String getQueryforRandomClassResource(String classURI, long maxRand) {
-
         int offset = new Random().nextInt((int) maxRand);
         String from = "";
         for (String g : graphs.split(";"))
             from += " FROM <" + g + "> ";
+
         return " SELECT ?s " + from +
                 " WHERE { ?s rdf:type <" + classURI + "> } LIMIT 1 OFFSET " + offset;
     }
 
     public String getQueryforClassCount(String classURI) {
-
         String from = "";
         for (String g : graphs.split(";"))
             from += " FROM <" + g + "> ";
+
         return " SELECT count(?s) " + from +
                 " WHERE { ?s rdf:type <" + classURI + "> }";
     }
@@ -99,6 +100,7 @@ public class Campaign extends PersistentEntity {
         String from = "";
         for (String g : graphs.split(";"))
             from += " FROM <" + g + "> ";
+
         return " SELECT ?s " + from +
                 " WHERE { ?s foaf:isPrimaryTopicOf ?o . " +
                 " FILTER regex(str(?s), '" + namepart + "', 'i'). }" +
