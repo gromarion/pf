@@ -45,6 +45,12 @@ public class ErrorSelectionPage extends BasePage {
     private final IModel<EvaluationSession> currentSession = new EntityModel<EvaluationSession>(EvaluationSession.class);
     private final IModel<String> errorDescription = Model.of();
     private final IModel<String> errorExample = Model.of();
+    private final IModel<List<Error>> availableErrors = new LoadableDetachableModel<List<Error>>() {
+	    @Override
+	    protected List<Error> load() { 
+	        return errorRepo.getAll();
+	    }
+	};
 
     public ErrorSelectionPage(PageParameters parameters) {
     	if (!((WicketSession) getSession()).isSignedIn()) {
@@ -55,6 +61,8 @@ public class ErrorSelectionPage extends BasePage {
         final String predicate = parameters.get("predicate").toString();
         final String object = parameters.get("object").toString();
         final String resource = parameters.get("resource").toString();
+        
+        availableErrors.getObject().removeAll(evaluatedResourceDetailRepo.getPreviousErrors(resource, predicate, object));
         
         currentSession.setObject(WicketSession.get().getEvaluationSession().get());
             	
@@ -67,20 +75,11 @@ public class ErrorSelectionPage extends BasePage {
         errorDescriptionLabel.setOutputMarkupId(true);
         errorExampleLabel.setOutputMarkupId(true);
         
-    	errorModel.setObject(errorRepo.getAll().get(0));
+    	errorModel.setObject(availableErrors.getObject().get(0));
     	errorDescriptionLabel.setDefaultModelObject(errorModel.getObject().getDescription());
     	errorExampleLabel.setDefaultModelObject(errorModel.getObject().getExample());
         
-        ListChoice<Error> errorListChoice = 
-                new ListChoice<Error>("errorList", errorModel,
-                        new LoadableDetachableModel<List<Error>>() {
-                            @Override
-                            protected List<Error> load() { 
-                                return errorRepo.getAll();
-                            }
-                        }
-                    , new ChoiceRenderer<Error>("title")) {
-        };
+        ListChoice<Error> errorListChoice = new ListChoice<Error>("errorList", errorModel, availableErrors, new ChoiceRenderer<Error>("name"));
         
         OnChangeAjaxBehavior onChangeAjaxBehavior = new OnChangeAjaxBehavior() {
             @Override
