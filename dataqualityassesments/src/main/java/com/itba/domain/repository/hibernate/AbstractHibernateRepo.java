@@ -1,11 +1,12 @@
 package com.itba.domain.repository.hibernate;
 
+import java.io.Serializable;
+import java.util.List;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-
-import java.io.Serializable;
-import java.util.List;
+import org.hibernate.criterion.Projections;
 
 public class AbstractHibernateRepo implements HibernateRepo {
 
@@ -20,10 +21,13 @@ public class AbstractHibernateRepo implements HibernateRepo {
 		return (T) getSession().get(type, id);
 	}
 	
+	public <T> Long count(Class<T> type) {
+		return (Long) getSession().createCriteria(type.getName()).setProjection(Projections.rowCount()).uniqueResult();
+	}
+	
 	@SuppressWarnings("unchecked")
 	public <T> List<T> find(String hql, Object... params) {
 		Session session = getSession();
-
 		Query query = session.createQuery(hql);
 		for (int i = 0; i < params.length; i++) {
 			query.setParameter(i, params[i]);

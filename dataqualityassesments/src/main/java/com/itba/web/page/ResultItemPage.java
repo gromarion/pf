@@ -2,6 +2,8 @@ package com.itba.web.page;
 
 import java.util.List;
 
+import javax.annotation.processing.ProcessingEnvironment;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
@@ -16,21 +18,34 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.itba.domain.SparqlRequestHandler;
+import com.itba.domain.model.Error;
 import com.itba.domain.model.Campaign;
 import com.itba.domain.repository.CampaignRepo;
+import com.itba.domain.repository.ErrorRepo;
+import com.itba.domain.repository.EvaluatedResourceDetailRepo;
 import com.itba.sparql.JsonSparqlResult;
 import com.itba.sparql.ResultItem;
 import com.itba.web.WicketSession;
+import com.itba.web.feedback.CustomFeedbackPanel;
 
 @SuppressWarnings("serial")
 public class ResultItemPage extends BasePage {
+	
 	@SpringBean
 	CampaignRepo campaignRepo;
+	
+    @SpringBean
+    private ErrorRepo errorRepo;
+    
+    @SpringBean
+    private EvaluatedResourceDetailRepo evaluatedResourceDetailRepo;
 
     public ResultItemPage(PageParameters parameters) {
         final String resource = parameters.get("selection").toString();
         final Campaign campaign = campaignRepo.get(Campaign.class, WicketSession.get().getEvaluationSession().get().getCampaign().getId());
         List<List<ResultItem>> results = new JsonSparqlResult(SparqlRequestHandler.requestResource(resource, campaign).toString()).data;
+        final CustomFeedbackPanel customFeedbackPanel = new CustomFeedbackPanel("feedbackPanel");
+        customFeedbackPanel.setOutputMarkupId(true);
         Form<Void> form = new Form<>("form");
         final TextArea<String> comments = new TextArea<String>("comments", Model.of(""));
         comments.setOutputMarkupId(true);
@@ -47,6 +62,8 @@ public class ResultItemPage extends BasePage {
         add(form);
         String resourceName = resource.substring(resource.lastIndexOf('/') + 1);
         add(new Label("resourceName", resourceName.replace('_', ' ')));
+        
+        add(customFeedbackPanel);
 
         // TODO: agregar acá la lista de errores ya ingresados
         
@@ -61,11 +78,18 @@ public class ResultItemPage extends BasePage {
                 listItem.add(new AjaxLink<Void>("errorPageLink") {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
-                        PageParameters parameters = new PageParameters();
-                        parameters.add("predicate", resultItem.get(0));
-                        parameters.add("object", resultItem.get(1));
-                        parameters.add("resource", resource);
-                        setResponsePage(ErrorSelectionPage.class, parameters);
+                    	Long totalErrors = errorRepo.count(Error.class);
+                    	List<Error> prevErrors = evaluatedResourceDetailRepo.getPreviousErrors(resource, resultItem.get(0).toString(), resultItem.get(1).toString());
+                    	if (totalErrors == prevErrors.size()) {
+                    		error(getString("allErrorsRegisteredMessage"));
+                    		target.add(customFeedbackPanel);
+                    	} else {
+                    		PageParameters parameters = new PageParameters();
+                            parameters.add("predicate", resultItem.get(0));
+                            parameters.add("object", resultItem.get(1));
+                            parameters.add("resource", resource);
+                            setResponsePage(ErrorSelectionPage.class, parameters);
+                    	}
                     }
                 });
             }

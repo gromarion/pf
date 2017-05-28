@@ -8,4 +8,5 @@ public interface HibernateRepo {
     public <T> List<T> find(String hql, Object... params);
     public Serializable save(Object o);
     public void delete(Object o);
+    public <T> Long count(Class<T> type);
 }
