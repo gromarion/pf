@@ -10,6 +10,7 @@ import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.ListChoice;
 import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -131,6 +132,15 @@ public class ErrorSelectionPage extends BasePage {
         form.add(predicateLabel);
         form.add(errorExampleLabel);
         form.add(new Button("submit"));
+        form.add(new Link<Void>("back") {
+			@Override
+			public void onClick() {
+				PageParameters parameters = new PageParameters();
+				String resourceURL = resource;
+                parameters.add("selection", resourceURL);
+                setResponsePage(ResultItemPage.class, parameters);
+			}
+		});
         
         add(form);
     }
