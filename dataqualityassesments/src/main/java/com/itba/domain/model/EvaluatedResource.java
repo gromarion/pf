@@ -22,6 +22,9 @@ public class EvaluatedResource extends PersistentEntity {
 
     @Column(name = "comments")
     private String comments;
+    
+    @Column(name = "correct")
+    private boolean correct;
 
     @OneToMany(mappedBy = "resource")
     private Set<EvaluatedResourceDetail> details;
@@ -47,6 +50,10 @@ public class EvaluatedResource extends PersistentEntity {
 
 	public String getResource() {
 		return resource;
+	}
+	
+	public boolean isCorrect() {
+		return correct;
 	}
 
 	public Set<EvaluatedResourceDetail> getDetails() {
