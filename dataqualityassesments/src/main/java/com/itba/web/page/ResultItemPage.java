@@ -3,7 +3,6 @@ package com.itba.web.page;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
@@ -20,31 +19,42 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import com.google.common.base.Optional;
 import com.itba.domain.EntityModel;
 import com.itba.domain.SparqlRequestHandler;
+import com.itba.domain.model.Error;
 import com.itba.domain.model.Campaign;
 import com.itba.domain.model.EvaluatedResource;
 import com.itba.domain.model.EvaluatedResourceDetail;
 import com.itba.domain.model.EvaluationSession;
 import com.itba.domain.repository.CampaignRepo;
 import com.itba.domain.repository.EvaluatedResourceRepo;
+import com.itba.domain.repository.ErrorRepo;
+import com.itba.domain.repository.EvaluatedResourceDetailRepo;
 import com.itba.sparql.JsonSparqlResult;
 import com.itba.sparql.ResultItem;
 import com.itba.web.WicketSession;
+import com.itba.web.feedback.CustomFeedbackPanel;
 
 import lib.ManualErrorsFormulae;
 
 @SuppressWarnings("serial")
 public class ResultItemPage extends BasePage {
+	
 	@SpringBean
-	CampaignRepo campaignRepo;
+	private CampaignRepo campaignRepo;
 	@SpringBean
 	private EvaluatedResourceRepo evaluatedResourceRepo;
-	
+	@SpringBean
+	private ErrorRepo errorRepo;
+	@SpringBean
+	private EvaluatedResourceDetailRepo evaluatedResourceDetailRepo;
+
 	private static final int FACTOR = 1000000;
 
     public ResultItemPage(PageParameters parameters) {
         final String resource = parameters.get("selection").toString();
         final Campaign campaign = campaignRepo.get(Campaign.class, WicketSession.get().getEvaluationSession().get().getCampaign().getId());
         List<List<ResultItem>> results = new JsonSparqlResult(SparqlRequestHandler.requestResource(resource, campaign).toString()).data;
+        final CustomFeedbackPanel customFeedbackPanel = new CustomFeedbackPanel("feedbackPanel");
+        customFeedbackPanel.setOutputMarkupId(true);
         Form<Void> form = new Form<>("form");
         final TextArea<String> comments = new TextArea<String>("comments", Model.of(""));
         comments.setOutputMarkupId(true);
@@ -64,6 +74,8 @@ public class ResultItemPage extends BasePage {
         
         // Add resource score label
         add(new Label("resourceScore", resourceScore(resource, results)));
+        add(customFeedbackPanel);
+
         // TODO: agregar acá la lista de errores ya ingresados
         
         add(new ListView<List<ResultItem>>("resultItemList", results) {
@@ -77,11 +89,18 @@ public class ResultItemPage extends BasePage {
                 listItem.add(new AjaxLink<Void>("errorPageLink") {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
-                        PageParameters parameters = new PageParameters();
-                        parameters.add("predicate", resultItem.get(0));
-                        parameters.add("object", resultItem.get(1));
-                        parameters.add("resource", resource);
-                        setResponsePage(ErrorSelectionPage.class, parameters);
+                    	Long totalErrors = errorRepo.count(Error.class);
+                    	List<Error> prevErrors = evaluatedResourceDetailRepo.getPreviousErrors(resource, resultItem.get(0).toString(), resultItem.get(1).toString());
+                    	if (totalErrors == prevErrors.size()) {
+                    		error(getString("allErrorsRegisteredMessage"));
+                    		target.add(customFeedbackPanel);
+                    	} else {
+                    		PageParameters parameters = new PageParameters();
+                            parameters.add("predicate", resultItem.get(0));
+                            parameters.add("object", resultItem.get(1));
+                            parameters.add("resource", resource);
+                            setResponsePage(ErrorSelectionPage.class, parameters);
+                    	}
                     }
                 });
             }
