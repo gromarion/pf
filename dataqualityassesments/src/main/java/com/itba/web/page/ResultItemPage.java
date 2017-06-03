@@ -64,7 +64,7 @@ public class ResultItemPage extends BasePage {
         add(new Label("resourceName", resourceName.replace('_', ' ')));
         
         // Add resource score label
-        add(new Label("resourceScore", resourceScore(resource, results)));
+        add(new Label("resourceScore", new ManualErrorsFormulae(campaignRepo, evaluatedResourceRepo).stringCompute(resource)));
         add(customFeedbackPanel);
 
         // TODO: agregar acá la lista de errores ya ingresados
@@ -97,10 +97,4 @@ public class ResultItemPage extends BasePage {
             }
         });
   }
-    
-    private String resourceScore(String resource, List<List<ResultItem>> properties) {
-    	long resourceScore = new ManualErrorsFormulae(campaignRepo, evaluatedResourceRepo).compute(resource);
-    	
-    	return resourceScore == -1 ? "-" : resourceScore + "";
-    }
 }

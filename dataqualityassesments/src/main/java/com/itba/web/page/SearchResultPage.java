@@ -12,14 +12,24 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.itba.domain.SparqlRequestHandler;
 import com.itba.domain.model.Campaign;
+import com.itba.domain.repository.CampaignRepo;
+import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.web.WicketSession;
+
+import lib.ManualErrorsFormulae;
 
 @SuppressWarnings("serial")
 public class SearchResultPage extends BasePage {
-	public static int PAGE_LIMIT = 25;
+	public static int PAGE_LIMIT = 20;
+	
+	@SpringBean
+	private CampaignRepo campaignRepo;
+	@SpringBean
+	private EvaluatedResourceRepo evaluatedResourceRepo;
 
 	public SearchResultPage(PageParameters parameters) {
 		final String search      = formatSearch(parameters.get("search").toString());
@@ -47,8 +57,11 @@ public class SearchResultPage extends BasePage {
                         setResponsePage(ResultItemPage.class, parameters);
                     }
                 };
-                resultLink.add(new Label("linkText", stringModel.getObject()));
+                String resource = stringModel.getObject();
+
+                resultLink.add(new Label("linkText", resource));
 				listItem.add(resultLink);
+				listItem.add(new Label("resourceScore", new ManualErrorsFormulae(campaignRepo, evaluatedResourceRepo).stringCompute(resource)));
             }
         });
 		AjaxLink<Void> nextPageLink = new AjaxLink<Void>("nextPageLink") {

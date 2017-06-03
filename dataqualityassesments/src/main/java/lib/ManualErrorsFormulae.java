@@ -20,7 +20,6 @@ import com.itba.sparql.ResultItem;
 import com.itba.web.WicketSession;
 
 public class ManualErrorsFormulae {
-	private CampaignRepo campaignRepo;
 	private EvaluatedResourceRepo evaluatedResourceRepo;
 	private Campaign campaign;
 
@@ -31,12 +30,17 @@ public class ManualErrorsFormulae {
 	
 	private static final int FACTOR = 1000000;
 	
-	public ManualErrorsFormulae(CampaignRepo campaginRepo, EvaluatedResourceRepo evaluatedResourceRepo) {
-		this.campaignRepo = campaginRepo;
+	public ManualErrorsFormulae(CampaignRepo campaignRepo, EvaluatedResourceRepo evaluatedResourceRepo) {
 		this.evaluatedResourceRepo = evaluatedResourceRepo;
 		this.campaign = campaignRepo.get(Campaign.class, WicketSession.get().getEvaluationSession().get().getCampaign().getId());
 	}
 
+	public String stringCompute(String resource) {
+		long resourceScore = compute(resource);
+    	
+    	return resourceScore == -1 ? "-" : resourceScore + "";
+	}
+	
 	// Esto por ahora es un switch case porque no en todos los casos es un tipo
 	// de fórmula erroredOverTotal.
 	public long compute(String resource) {
@@ -94,7 +98,9 @@ public class ManualErrorsFormulae {
 	private Optional<EvaluatedResource> evaluatedResource(String resource) {
 		IModel<EvaluationSession> currentSession = new EntityModel<EvaluationSession>(EvaluationSession.class);
 		currentSession.setObject(WicketSession.get().getEvaluationSession().get());
-		return evaluatedResourceRepo.getResourceForSession(currentSession.getObject(), resource);
+		String escapedResource = resource.replaceAll("'", "''");
+
+		return evaluatedResourceRepo.getResourceForSession(currentSession.getObject(), escapedResource);
 	}
 	
 	private double getWeightForError(int errorId) {

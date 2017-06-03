@@ -5,8 +5,13 @@
 	<h3><wicket:message key="searchTitle">Results for</wicket:message> "<span wicket:id="searchWord"></span>"</h3>
     <table class="table table-striped">
         <tbody>
+        <tr>
+        	<th><wicket:message key="resourceURL">Resource URL</wicket:message></th>
+        	<th><wicket:message key="resourceScore">Score</wicket:message></th>
+        </tr>
         <tr wicket:id="searchResultList">
             <td><a wicket:id="resultLink" href="#"><span wicket:id="linkText"></span></a></td>
+            <td><span wicket:id="resourceScore"></span></td>
         </tr>
         </tbody>
     </table>
