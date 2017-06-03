@@ -55,6 +55,7 @@ public class SearchResultPage extends BasePage {
                         PageParameters parameters = new PageParameters();
                         String resourceURL = stringModel.getObject();
                         parameters.add("selection", resourceURL);
+                        parameters.add("search", search);
                         setResponsePage(ResultItemPage.class, parameters);
                     }
                 };
