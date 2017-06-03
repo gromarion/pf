@@ -64,7 +64,7 @@ public class ResultItemPage extends BasePage {
         add(new Label("resourceName", resourceName.replace('_', ' ')));
         
         // Add resource score label
-        add(new Label("resourceScore", new ManualErrorsFormulae(campaignRepo, evaluatedResourceRepo).stringCompute(resource)));
+        add(new Label("resourceScore", new ManualErrorsFormulae(campaignRepo, evaluatedResourceRepo).compute(resource).scoreString()));
         add(customFeedbackPanel);
 
         // TODO: agregar acá la lista de errores ya ingresados

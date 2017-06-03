@@ -3,9 +3,7 @@ package lib;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.wicket.model.IModel;
-
 import com.google.common.base.Optional;
 import com.itba.domain.EntityModel;
 import com.itba.domain.SparqlRequestHandler;
@@ -34,16 +32,10 @@ public class ManualErrorsFormulae {
 		this.evaluatedResourceRepo = evaluatedResourceRepo;
 		this.campaign = campaignRepo.get(Campaign.class, WicketSession.get().getEvaluationSession().get().getCampaign().getId());
 	}
-
-	public String stringCompute(String resource) {
-		long resourceScore = compute(resource);
-    	
-    	return resourceScore == -1 ? "-" : resourceScore + "";
-	}
 	
 	// Esto por ahora es un switch case porque no en todos los casos es un tipo
 	// de fórmula erroredOverTotal.
-	public long compute(String resource) {
+	public Score compute(String resource) {
 		IModel<EvaluationSession> currentSession = new EntityModel<EvaluationSession>(EvaluationSession.class);
     	currentSession.setObject(WicketSession.get().getEvaluationSession().get());
     	Optional<EvaluatedResource> evaluatedResource = evaluatedResource(resource);
@@ -52,11 +44,11 @@ public class ManualErrorsFormulae {
         Map<Integer, Double> errors = new HashMap<Integer, Double>();
         double ans = 0;
 		if (!evaluatedResource.isPresent()) {
-        	return -1;
+        	return new Score(-1, -1);
         }
         
         if (evaluatedResource.get().isCorrect()) {
-        	return FACTOR * properties.size();
+        	return new Score(FACTOR * properties.size(), 0);
         }
         
         for (EvaluatedResourceDetail detail : evaluatedResource.get().getDetails()) {
@@ -68,7 +60,7 @@ public class ManualErrorsFormulae {
         	ans += getWeightForError(errorId) * errors.get(errorId);
         }
         
-        return Math.round((1 - ans) * FACTOR / properties.size());
+        return new Score(Math.round((1 - ans) * FACTOR / properties.size()), evaluatedResource.get().getDetails().size());
 	}
 	
 	private double computeError(EvaluatedResource evaluatedResource, int errorId, int propertiesAmount) {
@@ -107,4 +99,34 @@ public class ManualErrorsFormulae {
     	// TODO: Implementar entidad que almacena los pesos asociados a cada error.
     	return 0.25;
     }
+	
+	public static class Score {
+		private long score;
+		private int errors;
+		
+		public Score(long score, int errors) {
+			this.score = score;
+			this.errors = errors;
+		}
+		
+		public long getScore() {
+			return score;
+		}
+		
+		public int getErrors() {
+			return errors;
+		}
+		
+		public String scoreString() {
+			return stringValue(score + "");
+		}
+		
+		public String errorsString() {
+			return stringValue(errors + "");
+		}
+		
+		private String stringValue(String value) {
+			return value.equals("-1") ? "-" : value;
+		}
+	}
 }

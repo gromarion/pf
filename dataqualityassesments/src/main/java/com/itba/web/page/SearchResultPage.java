@@ -21,6 +21,7 @@ import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.web.WicketSession;
 
 import lib.ManualErrorsFormulae;
+import lib.ManualErrorsFormulae.Score;
 
 @SuppressWarnings("serial")
 public class SearchResultPage extends BasePage {
@@ -61,7 +62,9 @@ public class SearchResultPage extends BasePage {
 
                 resultLink.add(new Label("linkText", resource));
 				listItem.add(resultLink);
-				listItem.add(new Label("resourceScore", new ManualErrorsFormulae(campaignRepo, evaluatedResourceRepo).stringCompute(resource)));
+				Score resourceScore = new ManualErrorsFormulae(campaignRepo, evaluatedResourceRepo).compute(resource);
+				listItem.add(new Label("resourceScore", resourceScore.scoreString()));
+				listItem.add(new Label("resourceErrors", resourceScore.errorsString()));
             }
         });
 		AjaxLink<Void> nextPageLink = new AjaxLink<Void>("nextPageLink") {
