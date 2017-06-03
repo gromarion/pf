@@ -60,14 +60,17 @@ public class ResultItemPage extends BasePage {
 			}
 		};
 
-		form.add(new Link<Void>("back") {
+		Link<Void> backButton = new Link<Void>("back") {
 			@Override
 			public void onClick() {
 				PageParameters parameters = new PageParameters();
-                parameters.add("search", search);
+				String searchString = search == null ? "" : search;
+                parameters.add("search", searchString);
                 setResponsePage(SearchResultPage.class, parameters);
 			}
-		});
+		};
+		
+		form.add(backButton);
 
 		form.add(comments);
 		form.add(submit);

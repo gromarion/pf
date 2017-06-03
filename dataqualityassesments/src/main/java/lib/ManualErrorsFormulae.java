@@ -60,7 +60,7 @@ public class ManualErrorsFormulae {
         	ans += getWeightForError(errorId) * errors.get(errorId);
         }
         
-        return new Score(Math.round((1 - ans) * FACTOR / properties.size()), evaluatedResource.get().getDetails().size());
+        return new Score(Math.round((1 - ans / properties.size()) * FACTOR), evaluatedResource.get().getDetails().size());
 	}
 	
 	private double computeError(EvaluatedResource evaluatedResource, int errorId, int propertiesAmount) {
@@ -118,7 +118,8 @@ public class ManualErrorsFormulae {
 		}
 		
 		public String scoreString() {
-			return stringValue(score + "");
+			String scoreString = String.format("%,d", score);
+			return stringValue(scoreString);
 		}
 		
 		public String errorsString() {
