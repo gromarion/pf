@@ -15,9 +15,9 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
 import com.itba.domain.SparqlRequestHandler;
 import com.itba.domain.model.Campaign;
-import com.itba.domain.model.Error;
 import com.itba.domain.repository.CampaignRepo;
 import com.itba.domain.repository.ErrorRepo;
 import com.itba.domain.repository.EvaluatedResourceDetailRepo;
@@ -84,32 +84,21 @@ public class ResultItemPage extends BasePage {
 				new ManualErrorsFormulae(campaignRepo, evaluatedResourceRepo).compute(resource).scoreString()));
 		add(customFeedbackPanel);
 
-		// TODO: agregar acá la lista de errores ya ingresados
-
 		add(new ListView<List<ResultItem>>("resultItemList", results) {
 			@Override
 			protected void populateItem(ListItem<List<ResultItem>> listItem) {
 				final List<ResultItem> resultItem = listItem.getModelObject();
 				String predicateURL = resultItem.get(0).value;
-
 				listItem.add(new ExternalLink("predicate", predicateURL, predicateURL));
 				listItem.add(new Label("object", resultItem.get(1)));
 				listItem.add(new AjaxLink<Void>("errorPageLink") {
 					@Override
 					public void onClick(AjaxRequestTarget target) {
-						Long totalErrors = errorRepo.count(Error.class);
-						List<Error> prevErrors = evaluatedResourceDetailRepo.getPreviousErrors(resource,
-								resultItem.get(0).toString(), resultItem.get(1).toString());
-						if (totalErrors == prevErrors.size()) {
-							error(getString("allErrorsRegisteredMessage"));
-							target.add(customFeedbackPanel);
-						} else {
-							PageParameters parameters = new PageParameters();
-							parameters.add("predicate", resultItem.get(0));
-							parameters.add("object", resultItem.get(1));
-							parameters.add("resource", resource);
-							setResponsePage(ErrorSelectionPage.class, parameters);
-						}
+						PageParameters parameters = new PageParameters();
+						parameters.add("predicate", resultItem.get(0));
+						parameters.add("object", resultItem.get(1));
+						parameters.add("resource", resource);
+						setResponsePage(ErrorSelectionPage.class, parameters);
 					}
 				});
 			}

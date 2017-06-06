@@ -6,7 +6,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.itba.domain.model.Error;
+import com.itba.domain.model.EvaluatedResourceDetail;
 import com.itba.domain.repository.EvaluatedResourceDetailRepo;
 
 @Repository
@@ -18,12 +18,9 @@ public class HibernateEvaluatedResourceDetailRepo extends AbstractHibernateRepo 
     }
     
     @Override
-    public List<Error> getPreviousErrors(String resource, String predicate, String object) {
-    	
-    	
-    	
-        List<Error> result = find(
-        		"Select detail.error from EvaluatedResourceDetail detail "
+    public List<EvaluatedResourceDetail> getPreviousErrors(String resource, String predicate, String object) {
+        List<EvaluatedResourceDetail> result = find(
+        		"Select detail from EvaluatedResourceDetail detail "
         		+ " where detail.resource.resource = ? "
         		+ " and detail.predicate = ? "
         		+ " and detail.object = ? "

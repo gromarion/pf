@@ -11,6 +11,8 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.ListChoice;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -41,7 +43,7 @@ public class ErrorSelectionPage extends BasePage {
     
     @SpringBean
     private EvaluatedResourceDetailRepo evaluatedResourceDetailRepo;
-
+    
     private final IModel<Error> errorModel = new EntityModel<Error>(Error.class);
     private final IModel<EvaluationSession> currentSession = new EntityModel<EvaluationSession>(EvaluationSession.class);
     private final IModel<String> errorDescription = Model.of();
@@ -63,7 +65,16 @@ public class ErrorSelectionPage extends BasePage {
         final String object = parameters.get("object").toString();
         final String resource = parameters.get("resource").toString();
         
-        availableErrors.getObject().removeAll(evaluatedResourceDetailRepo.getPreviousErrors(resource, predicate, object));
+        final IModel<List<EvaluatedResourceDetail>> usedErrorDetails = new LoadableDetachableModel<List<EvaluatedResourceDetail>>() {
+    	    @Override
+    	    protected List<EvaluatedResourceDetail> load() { 
+    	        return evaluatedResourceDetailRepo.getPreviousErrors(resource, predicate, object);
+    	    }
+    	};
+        
+    	for (int i = 0 ; i < usedErrorDetails.getObject().size() ; i++) {
+    		availableErrors.getObject().remove(usedErrorDetails.getObject().get(i).getError());
+    	}
         
         currentSession.setObject(WicketSession.get().getEvaluationSession().get());
             	
@@ -76,9 +87,21 @@ public class ErrorSelectionPage extends BasePage {
         errorDescriptionLabel.setOutputMarkupId(true);
         errorExampleLabel.setOutputMarkupId(true);
         
-    	errorModel.setObject(availableErrors.getObject().get(0));
-    	errorDescriptionLabel.setDefaultModelObject(errorModel.getObject().getDescription());
-    	errorExampleLabel.setDefaultModelObject(errorModel.getObject().getExample());
+        if (availableErrors.getObject().size() > 0) {
+        	errorModel.setObject(availableErrors.getObject().get(0));
+        	errorDescriptionLabel.setDefaultModelObject(errorModel.getObject().getDescription());
+        	errorExampleLabel.setDefaultModelObject(errorModel.getObject().getExample());
+        }
+    	
+    	add(new ListView<EvaluatedResourceDetail>("usedErrorDetails", usedErrorDetails) {
+			@Override
+			protected void populateItem(ListItem<EvaluatedResourceDetail> errorDetail) {
+
+				errorDetail.add(new Label("errorName", errorDetail.getModelObject().getError().getName()));
+				
+
+			}
+		}.setVisible(usedErrorDetails.getObject().size() > 0));
         
         ListChoice<Error> errorListChoice = 
                 new ListChoice<Error>("errorList", errorModel,
@@ -117,10 +140,10 @@ public class ErrorSelectionPage extends BasePage {
 				evaluatedResourceDetailRepo.save(detail);
 				
 				PageParameters parameters = new PageParameters();
-                String resourceURL = resource;
-                parameters.add("selection", resourceURL);
-                setResponsePage(ResultItemPage.class, parameters);
-				// TODO: verificar errores y guardar
+                parameters.add("predicate", predicate);
+                parameters.add("object", object);
+                parameters.add("resource", resource);
+                setResponsePage(ErrorSelectionPage.class, parameters);
             }
         };
         
@@ -131,7 +154,11 @@ public class ErrorSelectionPage extends BasePage {
         form.add(objectLabel);
         form.add(predicateLabel);
         form.add(errorExampleLabel);
-        form.add(new Button("submit"));
+        
+        Button submit = new Button("submit");
+        if (availableErrors.getObject().size() == 0) submit.setVisible(false);
+        form.add(submit);
+        
         form.add(new Link<Void>("back") {
 			@Override
 			public void onClick() {
