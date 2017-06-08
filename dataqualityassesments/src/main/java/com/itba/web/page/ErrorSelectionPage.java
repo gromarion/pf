@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
@@ -84,6 +85,11 @@ public class ErrorSelectionPage extends BasePage {
         final Label resourceLabel = new Label("resourceLabel", resource);
         final Label errorDescriptionLabel = new Label("errorDescription", errorDescription);
         final Label errorExampleLabel = new Label("errorExample", errorExample);
+        
+        final Label foundErrorsLabel = new Label("foundErrorsLabel", getString("foundErrorsLabel"));
+        final Label errorNameLabel = new Label("errorNameLabel", getString("errorNameLabel"));
+        final Label newErrorLabel = new Label("newErrorLabel", getString("newErrorLabel"));
+        
         errorDescriptionLabel.setOutputMarkupId(true);
         errorExampleLabel.setOutputMarkupId(true);
         
@@ -95,10 +101,19 @@ public class ErrorSelectionPage extends BasePage {
     	
     	add(new ListView<EvaluatedResourceDetail>("usedErrorDetails", usedErrorDetails) {
 			@Override
-			protected void populateItem(ListItem<EvaluatedResourceDetail> errorDetail) {
-
+			protected void populateItem(final ListItem<EvaluatedResourceDetail> errorDetail) {
 				errorDetail.add(new Label("errorName", errorDetail.getModelObject().getError().getName()));
-				
+				errorDetail.add(new AjaxLink<Void>("removeErrorLink") {
+					@Override
+					public void onClick(AjaxRequestTarget target) {
+						evaluatedResourceDetailRepo.delete(errorDetail.getModelObject());
+						PageParameters parameters = new PageParameters();
+						parameters.add("predicate", predicate);
+						parameters.add("object", object);
+						parameters.add("resource", resource);
+						setResponsePage(ErrorSelectionPage.class, parameters);
+					}
+				});
 
 			}
 		}.setVisible(usedErrorDetails.getObject().size() > 0));
@@ -169,7 +184,10 @@ public class ErrorSelectionPage extends BasePage {
 			}
 		});
         
-        add(form);
+        add(form.setVisible(availableErrors.getObject().size() > 0));
+        add(newErrorLabel.setVisible(availableErrors.getObject().size() > 0));
+        add(foundErrorsLabel.setVisible(usedErrorDetails.getObject().size() > 0));
+        add(errorNameLabel.setVisible(usedErrorDetails.getObject().size() > 0));
     }
 
     @Override
