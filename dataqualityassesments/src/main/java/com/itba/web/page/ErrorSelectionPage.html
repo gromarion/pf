@@ -1,22 +1,29 @@
 <wicket:extend xmlns:wicket="http://www.w3.org/1999/xhtml">
 	<div class="row">
 		<div class="container">
+			<div class="row">
+				<h2>
+					<span wicket:id="foundErrorsLabel">Found errors</span>
+				</h2>
+			</div>
 			<div wicket:id="feedbackPanel"></div>
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<th><wicket:message key="name">Name</wicket:message></th>
+						<th><span wicket:id="errorNameLabel">Some error name</span></th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr wicket:id="usedErrorDetails">
 						<td><span wicket:id="errorName">Some error name</span></td>
+						<td><a wicket:id="removeErrorLink" class="btn btn-link"
+							href="#"><i class="icon-remove"></i></a></td>
 					</tr>
 				</tbody>
 			</table>
 			<div class="row">
 				<h2>
-					<wicket:message key="title">New error</wicket:message>
+					<span wicket:id="newErrorLabel">New error</span>
 				</h2>
 			</div>
 			<form wicket:id="errorForm" method="post" class="form-horizontal">
