@@ -11,5 +11,6 @@ public class AutomaticOrManualPage extends BasePage {
 		add(new BookmarkablePageLink<RegisterUserPage>("automaticCheckLink", AutomaticCheckPage.class));
 		add(new BookmarkablePageLink<RegisterUserPage>("manualCheckLink", ResourceSearchPage.class));
 		add(new BookmarkablePageLink<CreateEndpointPage>("createEndpointLink", CreateEndpointPage.class));
+		add(new BookmarkablePageLink<ErrorsByUserPage>("errorsByUserPage", ErrorsByUserPage.class));
 	}
 }
