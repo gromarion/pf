@@ -53,8 +53,8 @@ public class ResultItemPage extends BasePage {
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 
-//		response.render(JavaScriptHeaderItem
-//				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/d3.js")));
+		response.render(JavaScriptHeaderItem
+				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/d3.min.js")));
 		
 		response.render(OnDomReadyHeaderItem.forScript(PIE_CHART_SCRIPT.asString()));
 	}
