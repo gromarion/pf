@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
@@ -14,7 +17,10 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.template.PackageTextTemplate;
+import org.apache.wicket.util.template.TextTemplate;
 
 import com.itba.domain.SparqlRequestHandler;
 import com.itba.domain.model.Campaign;
@@ -32,6 +38,8 @@ import lib.ManualErrorsFormulae;
 @SuppressWarnings("serial")
 public class ResultItemPage extends BasePage {
 
+	private final static TextTemplate PIE_CHART_SCRIPT = new PackageTextTemplate(ResultItemPage.class, "js/pie-chart.js");
+	
 	@SpringBean
 	private CampaignRepo campaignRepo;
 	@SpringBean
@@ -40,6 +48,16 @@ public class ResultItemPage extends BasePage {
 	private ErrorRepo errorRepo;
 	@SpringBean
 	private EvaluatedResourceDetailRepo evaluatedResourceDetailRepo;
+
+	@Override
+	public void renderHead(IHeaderResponse response) {
+		super.renderHead(response);
+
+		response.render(JavaScriptHeaderItem
+				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/d3.min.js")));
+		
+		response.render(OnDomReadyHeaderItem.forScript(PIE_CHART_SCRIPT.asString()));
+	}
 
 	public ResultItemPage(PageParameters parameters) {
 		final String resource = parameters.get("selection").toString();
@@ -65,11 +83,11 @@ public class ResultItemPage extends BasePage {
 			public void onClick() {
 				PageParameters parameters = new PageParameters();
 				String searchString = search == null ? "" : search;
-                parameters.add("search", searchString);
-                setResponsePage(SearchResultPage.class, parameters);
+				parameters.add("search", searchString);
+				setResponsePage(SearchResultPage.class, parameters);
 			}
 		};
-		
+
 		form.add(backButton);
 
 		form.add(comments);
