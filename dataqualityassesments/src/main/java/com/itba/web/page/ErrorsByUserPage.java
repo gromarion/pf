@@ -57,16 +57,17 @@ public class ErrorsByUserPage extends BasePage {
     	add(new ListView<EvaluatedResource>("evaluatedResources", evaluatedResources) {
 			@Override
 			protected void populateItem(final ListItem<EvaluatedResource> evaluatedResource) {
-				evaluatedResource.add(new Label("resourceName", evaluatedResource.getModelObject().getResource()));
 				evaluatedResource.add(new Label("resourceTimestamp", evaluatedResource.getModelObject().getFormattedDate()));
-				evaluatedResource.add(new AjaxLink<Void>("resultLink") {
+				AjaxLink<Void> resultLink = new AjaxLink<Void>("resultLink") {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
                         PageParameters parameters = new PageParameters();
                         parameters.add("selection", evaluatedResource.getModelObject().getResource());
                         setResponsePage(ResultItemPage.class, parameters);
                     }
-                });
+                }; 
+				resultLink.add(new Label("resourceName", evaluatedResource.getModelObject().getResource()));
+				evaluatedResource.add(resultLink);
 			}
 		});
 	}
