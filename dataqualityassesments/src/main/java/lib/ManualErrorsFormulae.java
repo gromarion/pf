@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.wicket.model.IModel;
 import com.google.common.base.Optional;
 import com.itba.domain.EntityModel;
+import com.itba.domain.model.Error; 
 import com.itba.domain.SparqlRequestHandler;
 import com.itba.domain.model.Campaign;
 import com.itba.domain.model.EvaluatedResource;
@@ -41,18 +42,20 @@ public class ManualErrorsFormulae {
     	Optional<EvaluatedResource> evaluatedResource = evaluatedResource(resource);
     	List<List<ResultItem>> properties = new JsonSparqlResult(SparqlRequestHandler.requestResource(resource, campaign).toString()).data;
 
-        Map<Integer, Double> errors = new HashMap<Integer, Double>();
+        Map<Integer, Double> errors = new HashMap<>();
+        Map<String, Integer> errorsAmount = new HashMap<>();
         double ans = 0;
 		if (!evaluatedResource.isPresent()) {
-        	return new Score(-1, -1);
+        	return new Score(-1, -1, errorsAmount);
         }
         
         if (evaluatedResource.get().isCorrect()) {
-        	return new Score(FACTOR * properties.size(), 0);
+        	return new Score(FACTOR * properties.size(), 0, errorsAmount);
         }
         
         for (EvaluatedResourceDetail detail : evaluatedResource.get().getDetails()) {
         	int errorId = detail.getError().getId();
+        	addError(errorsAmount, detail.getError());
 
         	errors.put(errorId, computeError(evaluatedResource.get(), errorId, properties.size()));
         }
@@ -60,7 +63,15 @@ public class ManualErrorsFormulae {
         	ans += getWeightForError(errorId) * errors.get(errorId);
         }
         
-        return new Score(Math.round((1 - ans / properties.size()) * FACTOR), evaluatedResource.get().getDetails().size());
+        return new Score(Math.round((1 - ans / properties.size()) * FACTOR), evaluatedResource.get().getDetails().size(), errorsAmount);
+	}
+	
+	private void addError(Map<String, Integer> errorsAmount, Error error) {
+		if (errorsAmount.containsKey(error.getName())) {
+			errorsAmount.put(error.getName(), errorsAmount.get(error.getName()) + 1);
+		} else {
+			errorsAmount.put(error.getName(), 1);
+		}
 	}
 	
 	private double computeError(EvaluatedResource evaluatedResource, int errorId, int propertiesAmount) {
@@ -103,10 +114,12 @@ public class ManualErrorsFormulae {
 	public static class Score {
 		private long score;
 		private int errors;
+		private Map<String, Integer> errorsAmount;
 		
-		public Score(long score, int errors) {
+		public Score(long score, int errors, Map<String, Integer> errorsAmount) {
 			this.score = score;
 			this.errors = errors;
+			this.errorsAmount = errorsAmount;
 		}
 		
 		public long getScore() {
@@ -115,6 +128,10 @@ public class ManualErrorsFormulae {
 		
 		public int getErrors() {
 			return errors;
+		}
+		
+		public Map<String, Integer> getErrorsAmount() {
+			return errorsAmount;
 		}
 		
 		public String scoreString() {

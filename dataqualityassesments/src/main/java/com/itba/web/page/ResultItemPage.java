@@ -1,6 +1,7 @@
 package com.itba.web.page;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -19,9 +20,6 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.template.PackageTextTemplate;
-import org.apache.wicket.util.template.TextTemplate;
-
 import com.itba.domain.SparqlRequestHandler;
 import com.itba.domain.model.Campaign;
 import com.itba.domain.repository.CampaignRepo;
@@ -32,14 +30,10 @@ import com.itba.sparql.JsonSparqlResult;
 import com.itba.sparql.ResultItem;
 import com.itba.web.WicketSession;
 import com.itba.web.feedback.CustomFeedbackPanel;
-
 import lib.ManualErrorsFormulae;
 
 @SuppressWarnings("serial")
 public class ResultItemPage extends BasePage {
-
-	private final static TextTemplate PIE_CHART_SCRIPT = new PackageTextTemplate(ResultItemPage.class, "js/pie-chart.js");
-	
 	@SpringBean
 	private CampaignRepo campaignRepo;
 	@SpringBean
@@ -48,19 +42,36 @@ public class ResultItemPage extends BasePage {
 	private ErrorRepo errorRepo;
 	@SpringBean
 	private EvaluatedResourceDetailRepo evaluatedResourceDetailRepo;
+	
+	private String resource;
 
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
+		
+		ManualErrorsFormulae.Score score = new ManualErrorsFormulae(campaignRepo, evaluatedResourceRepo).compute(resource);
+		String errorsData = "[";
+		Map<String, Integer> errorsAmount = score.getErrorsAmount();
+		Object[] errorNames = errorsAmount.keySet().toArray();
 
+		for (int i = 0; i < errorNames.length; i++) {
+			errorsData += "{'label': '" + errorNames[i] + "', 'value': " + errorsAmount.get(errorNames[i]) + "}";
+			if (i < errorNames.length - 1) {
+				errorsData += ", ";
+			}
+		}
+		errorsData += "]";
+		
+		System.out.println(errorsData);
+		
 		response.render(JavaScriptHeaderItem
 				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/d3.min.js")));
-		
-		response.render(OnDomReadyHeaderItem.forScript(PIE_CHART_SCRIPT.asString()));
+		response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/pie-chart.js")));
+		response.render(OnDomReadyHeaderItem.forScript("drawChart(" + errorsData + ");"));
 	}
 
 	public ResultItemPage(PageParameters parameters) {
-		final String resource = parameters.get("selection").toString();
+		resource = parameters.get("selection").toString();
 		final String search = parameters.get("search").toString();
 		final Campaign campaign = campaignRepo.get(Campaign.class,
 				WicketSession.get().getEvaluationSession().get().getCampaign().getId());
