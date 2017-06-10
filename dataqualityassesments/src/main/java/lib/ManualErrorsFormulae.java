@@ -1,5 +1,6 @@
 package lib;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -111,7 +112,8 @@ public class ManualErrorsFormulae {
     	return 0.25;
     }
 	
-	public static class Score {
+	@SuppressWarnings("serial")
+	public static class Score implements Serializable {
 		private long score;
 		private int errors;
 		private Map<String, Integer> errorsAmount;
