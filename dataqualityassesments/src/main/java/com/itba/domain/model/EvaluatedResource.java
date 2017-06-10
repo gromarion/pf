@@ -39,6 +39,7 @@ public class EvaluatedResource extends PersistentEntity {
     public EvaluatedResource(EvaluationSession session, String resource) {
         this.session = session;
         this.resource = resource;
+        this.timestamp = System.currentTimeMillis();
     }
 
 	public String getComments() {

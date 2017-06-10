@@ -157,6 +157,10 @@ public class ErrorSelectionPage extends BasePage {
 				if (!evaluatedResource.isPresent()) {
 					evaluatedResource = Optional.of(new EvaluatedResource(currentSession.getObject(), resource));
 					evaluatedResourceRepo.save(evaluatedResource.get());
+				} else {
+					EvaluatedResource r = evaluatedResource.get();
+					r.setTimestamp(System.currentTimeMillis());
+					evaluatedResourceRepo.save(r);
 				}
 				
 				EvaluatedResourceDetail detail = new EvaluatedResourceDetail(evaluatedResource.get(), errorModel.getObject(), predicate, object);
