@@ -81,7 +81,7 @@ public class ErrorSelectionPage extends BasePage {
     	String[] schemes = {"http","https"};
     	UrlValidator urlValidator = new UrlValidator(schemes);
     	
-    	if(urlValidator.isValid(object)) {
+    	if(!urlValidator.isValid(object)) {
     		availableErrors.getObject().remove(errorRepo.get(4));
     	}
     	

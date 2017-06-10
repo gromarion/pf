@@ -56,12 +56,8 @@ public class Campaign extends PersistentEntity {
     }
 
     public String getQueryforResourceTriples(String resource) {
-        String from = "";
-        for (String g : graphs.split(";"))
-            from += " FROM <" + g + "> ";
 
         return "select ?p ?o " +
-                from +
                 "where {<" +
                 resource +
                 "> ?p ?o} ORDER BY ?p";
@@ -69,39 +65,27 @@ public class Campaign extends PersistentEntity {
 
     public String getQueryforRandomResource() {
         int offset = new Random().nextInt(760129);
-        String from = "";
-        for (String g : graphs.split(";"))
-            from += " FROM <" + g + "> ";
-
-        return " SELECT ?s " + from +
+       
+        return " SELECT ?s " + 
                 " WHERE { ?s foaf:isPrimaryTopicOf ?o } LIMIT 1 OFFSET " + offset;
     }
 
     public String getQueryforRandomClassResource(String classURI, long maxRand) {
         int offset = new Random().nextInt((int) maxRand);
-        String from = "";
-        for (String g : graphs.split(";"))
-            from += " FROM <" + g + "> ";
-
-        return " SELECT ?s " + from +
+      
+        return " SELECT ?s " +
                 " WHERE { ?s rdf:type <" + classURI + "> } LIMIT 1 OFFSET " + offset;
     }
 
     public String getQueryforClassCount(String classURI) {
-        String from = "";
-        for (String g : graphs.split(";"))
-            from += " FROM <" + g + "> ";
 
-        return " SELECT count(?s) " + from +
+        return " SELECT count(?s) " +
                 " WHERE { ?s rdf:type <" + classURI + "> }";
     }
 
     public String getQueryforSearchResultPage(String namepart, int offset, int limit) {
-        String from = "";
-        for (String g : graphs.split(";"))
-            from += " FROM <" + g + "> ";
-
-        return " SELECT ?s " + from +
+  
+        return " SELECT ?s " +
                 " WHERE { ?s foaf:isPrimaryTopicOf ?o . " +
                 " FILTER regex(str(?s), '" + namepart + "', 'i'). }" +
                 " LIMIT " + limit +
