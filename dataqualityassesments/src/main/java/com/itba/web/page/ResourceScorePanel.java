@@ -15,7 +15,7 @@ public class ResourceScorePanel extends Panel {
 
 	public ResourceScorePanel(String id, ManualErrorsFormulae.Score score) {
 		super(id);
-		this.score= score;
+		this.score = score;
 	}
 
 	@Override
@@ -39,7 +39,7 @@ public class ResourceScorePanel extends Panel {
 		response.render(JavaScriptHeaderItem
 				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/donut-chart.js")));
 		response.render(JavaScriptHeaderItem
-				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/display-chart.js")));
+				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/display-donut-chart.js")));
 		response.render(OnDomReadyHeaderItem.forScript("drawChart(" + errorsData + ");"));
 	}
 }

@@ -1,3 +1,6 @@
+var slice = null;
+var arc = null;
+
 function drawChart(data) {
 	if (data.length == 0) {
 		return;
@@ -24,7 +27,7 @@ function drawChart(data) {
 	    return d.value;
 	  });
 
-	var arc = d3.svg.arc()
+	arc = d3.svg.arc()
 	  .outerRadius(radius * 0.8)
 	  .innerRadius(radius * 0.4);
 
@@ -41,7 +44,7 @@ function drawChart(data) {
 	.range(["#a05d56", "#8a89a6", "#7b6888", "#d0743c"]);
 
   /* ------- PIE SLICES -------*/
-  var slice = svg.select(".slices").selectAll("path.slice")
+  slice = svg.select(".slices").selectAll("path.slice")
     .data(pie(data), key);
 
   slice.enter()
@@ -124,4 +127,16 @@ function drawChart(data) {
   
   polyline.exit()
     .remove();
-};
+}
+
+function animate() {
+	slice   
+    .transition().duration(1000)
+    .attrTween('d', function(d) {
+		   var i = d3.interpolate(d.startAngle+0.1, d.endAngle);
+		   return function(t) {
+		       d.endAngle = i(t);
+		     return arc(d);
+		   }
+		});
+}

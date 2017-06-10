@@ -2,6 +2,7 @@ function displayChart() {
 	console.log("display chart");
 
 	$("#chart").show();
+	animate();
 	$("#hideChart").show();
 	$("#displayChart").hide();
 }
