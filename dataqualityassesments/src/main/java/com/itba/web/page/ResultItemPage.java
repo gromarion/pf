@@ -66,7 +66,7 @@ public class ResultItemPage extends BasePage {
 		
 		response.render(JavaScriptHeaderItem
 				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/d3.min.js")));
-		response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/pie-chart.js")));
+		response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/donut-chart.js")));
 		response.render(OnDomReadyHeaderItem.forScript("drawChart(" + errorsData + ");"));
 	}
 

@@ -49,14 +49,13 @@ function drawChart(data) {
 
   slice   
     .transition().duration(1000)
-    .attrTween("d", function(d) {
-      this._current = this._current || d;
-      var interpolate = d3.interpolate(this._current, d);
-      this._current = interpolate(0);
-      return function(t) {
-        return arc(interpolate(t));
-      };
-    })
+    .attrTween('d', function(d) {
+		   var i = d3.interpolate(d.startAngle+0.1, d.endAngle);
+		   return function(t) {
+		       d.endAngle = i(t);
+		     return arc(d);
+		   }
+		});
 
   slice.exit()
     .remove();
