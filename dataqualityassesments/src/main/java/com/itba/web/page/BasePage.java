@@ -2,6 +2,7 @@ package com.itba.web.page;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 
 import com.itba.web.WicketSession;
@@ -22,6 +23,8 @@ public class BasePage extends WebPage {
 				setResponsePage(getApplication().getHomePage());
 			}
 		});
+        
+        add(new BookmarkablePageLink<ErrorsByUserPage>("errorsByUserPage", ErrorsByUserPage.class));
         
         Link<Void> editUserProfile = new Link<Void>("editUserProfile") {
 			private static final long serialVersionUID = 1L;
