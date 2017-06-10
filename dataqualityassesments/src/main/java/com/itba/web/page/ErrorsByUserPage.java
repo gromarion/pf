@@ -47,9 +47,6 @@ public class ErrorsByUserPage extends BasePage {
         
         currentSession.setObject(WicketSession.get().getEvaluationSession().get());
         
-        final Label titleLabel = new Label("titleLabel", getString("titleLabel"));
-        final Label resourceNameLabel = new Label("resourceNameLabel", getString("resourceNameLabel"));
-        
         final IModel<List<EvaluatedResource>> evaluatedResources = new LoadableDetachableModel<List<EvaluatedResource>>() {
     	    @Override
     	    protected List<EvaluatedResource> load() { 
@@ -61,6 +58,7 @@ public class ErrorsByUserPage extends BasePage {
 			@Override
 			protected void populateItem(final ListItem<EvaluatedResource> evaluatedResource) {
 				evaluatedResource.add(new Label("resourceName", evaluatedResource.getModelObject().getResource()));
+				evaluatedResource.add(new Label("resourceTimestamp", evaluatedResource.getModelObject().getFormattedDate()));
 				evaluatedResource.add(new AjaxLink<Void>("resultLink") {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
@@ -71,9 +69,6 @@ public class ErrorsByUserPage extends BasePage {
                 });
 			}
 		});
-    	
-    	add(resourceNameLabel);
-    	add(titleLabel);
 	}
 	
 	@Override

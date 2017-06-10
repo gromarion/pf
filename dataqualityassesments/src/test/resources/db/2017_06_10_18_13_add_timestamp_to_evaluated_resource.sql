@@ -1,0 +1,1 @@
+ALTER TABLE evaluated_resource ADD timestamp bigint DEFAULT 1497130870464;

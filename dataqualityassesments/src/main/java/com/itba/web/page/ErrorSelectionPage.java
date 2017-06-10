@@ -1,8 +1,6 @@
 package com.itba.web.page;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.validator.routines.UrlValidator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -23,7 +21,6 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.google.common.base.Optional;
 import com.itba.domain.EntityModel;
 import com.itba.domain.model.Error;

@@ -1,5 +1,7 @@
 package com.itba.domain.model;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -25,6 +27,9 @@ public class EvaluatedResource extends PersistentEntity {
     
     @Column(name = "correct")
     private boolean correct;
+    
+    @Column(name = "timestamp")
+    private long timestamp;
 
     @OneToMany(mappedBy = "resource")
     private Set<EvaluatedResourceDetail> details;
@@ -43,6 +48,10 @@ public class EvaluatedResource extends PersistentEntity {
 	public void setComments(String comments) {
 		this.comments = comments;
 	}
+	
+	public void setTimestamp(long timestamp) {
+		this.timestamp = timestamp;
+	}
 
 	public EvaluationSession getSession() {
 		return session;
@@ -50,6 +59,16 @@ public class EvaluatedResource extends PersistentEntity {
 
 	public String getResource() {
 		return resource;
+	}
+	
+	public long getTimestamp() {
+		return timestamp;
+	}
+	
+	public String getFormattedDate() {
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		
+		return format.format(new Date(timestamp));
 	}
 	
 	public boolean isCorrect() {
