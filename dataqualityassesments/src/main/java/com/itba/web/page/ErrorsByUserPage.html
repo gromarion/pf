@@ -1,0 +1,26 @@
+<wicket:extend xmlns:wicket="http://www.w3.org/1999/xhtml">
+	<div class="row">
+		<div class="container">
+			<div class="row">
+				<h2>
+					<span wicket:id="titleLabel">Title</span>
+				</h2>
+			</div>
+			<div wicket:id="feedbackPanel"></div>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th><span wicket:id="resourceNameLabel">Resource</span></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr wicket:id="evaluatedResources">
+						<td><span wicket:id="resourceName">Some resource name</span></td>
+						<td><a wicket:id="resultLink" class="btn btn-link"
+							href="#"><i class="icon-pencil"></i></a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</wicket:extend>
