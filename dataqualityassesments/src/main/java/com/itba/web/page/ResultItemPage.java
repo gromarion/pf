@@ -62,8 +62,6 @@ public class ResultItemPage extends BasePage {
 		}
 		errorsData += "]";
 		
-		System.out.println(errorsData);
-		
 		response.render(JavaScriptHeaderItem
 				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/d3.min.js")));
 		response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/donut-chart.js")));

@@ -36,7 +36,9 @@ function drawChart(data) {
 
 	var key = function(d){ return d.data.label; };
 
-	var color = d3.scale.category10();
+	var color = color = d3.scale.ordinal()
+	.domain(["Tipo de dato incorrectamente extraído", "Valor del objeto extraído de forma incompleta", "Objeto semánticamente incorrecto", "Enlace externo incorrecto"])
+	.range(["#a05d56", "#8a89a6", "#7b6888", "#d0743c"]);
 
   /* ------- PIE SLICES -------*/
   var slice = svg.select(".slices").selectAll("path.slice")
