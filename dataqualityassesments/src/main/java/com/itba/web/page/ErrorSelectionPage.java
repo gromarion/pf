@@ -186,7 +186,7 @@ public class ErrorSelectionPage extends BasePage {
         if (availableErrors.getObject().size() == 0) submit.setVisible(false);
         form.add(submit);
         
-        form.add(new Link<Void>("back") {
+        add(new Link<Void>("back") {
 			@Override
 			public void onClick() {
 				PageParameters parameters = new PageParameters();
