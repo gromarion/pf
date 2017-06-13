@@ -41,6 +41,10 @@ public class Campaign extends PersistentEntity {
 	public Set<EvaluationSession> getSessions() {
 		return sessions;
 	}
+	
+	public String getEndpoint() {
+		return endpoint;
+	}
 
 	public String generateQueryURL(String sparqlQuery) {
         String retVal = "";
@@ -56,7 +60,6 @@ public class Campaign extends PersistentEntity {
     }
 
     public String getQueryforResourceTriples(String resource) {
-
         return "select ?p ?o " +
                 "where {<" +
                 resource +

@@ -1,10 +1,12 @@
 package com.itba.web.page;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.json.JSONArray;
+import org.apache.wicket.ajax.json.JSONException;
 import org.apache.wicket.ajax.json.JSONObject;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
@@ -17,6 +19,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import com.itba.domain.SparqlRequestHandler;
 import com.itba.domain.model.Campaign;
 import com.itba.domain.repository.CampaignRepo;
+import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.web.WicketSession;
 
@@ -31,17 +34,24 @@ public class SearchResultPage extends BasePage {
 	private CampaignRepo campaignRepo;
 	@SpringBean
 	private EvaluatedResourceRepo evaluatedResourceRepo;
+	@SpringBean
+	private EndpointStatsRepo endpointStatsRepo;
 
 	public SearchResultPage(PageParameters parameters) {
 		final String search      = formatSearch(parameters.get("search").toString());
 		final int offset         = fetchOffset(parameters);
 		Campaign campaign        = WicketSession.get().getEvaluationSession().get().getCampaign();
-		JSONArray choices        = SparqlRequestHandler.requestSuggestions(search, campaign, offset * PAGE_LIMIT, PAGE_LIMIT);
+		JSONArray choices;
 		List<String> choicesList = new ArrayList<>();
-		parameters.set("offset", offset);
-
-		for (int i = 0; i < choices.length(); i++) {
-			choicesList.add((String) ((JSONObject)(((JSONObject) choices.get(i)).get("s"))).get("value"));
+		try {
+			choices = SparqlRequestHandler.requestSuggestions(search, campaign, endpointStatsRepo, offset * PAGE_LIMIT, PAGE_LIMIT);
+			parameters.set("offset", offset);
+			
+			for (int i = 0; i < choices.length(); i++) {
+				choicesList.add((String) ((JSONObject)(((JSONObject) choices.get(i)).get("s"))).get("value"));
+			}
+		} catch (JSONException | IOException e) {
+			setResponsePage(ErrorPage.class);
 		}
 		
 		add(new ResourceSearchPanel("search"));
@@ -63,9 +73,14 @@ public class SearchResultPage extends BasePage {
 
                 resultLink.add(new Label("linkText", resource));
 				listItem.add(resultLink);
-				Score resourceScore = new ManualErrorsFormulae(campaignRepo, evaluatedResourceRepo).compute(resource);
-				listItem.add(new Label("resourceScore", resourceScore.scoreString()));
-				listItem.add(new Label("resourceErrors", resourceScore.errorsString()));
+				Score resourceScore;
+				try {
+					resourceScore = new ManualErrorsFormulae(campaignRepo, evaluatedResourceRepo, endpointStatsRepo).compute(resource);
+					listItem.add(new Label("resourceScore", resourceScore.scoreString()));
+					listItem.add(new Label("resourceErrors", resourceScore.errorsString()));
+				} catch (JSONException | IOException e) {
+					setResponsePage(ErrorPage.class);
+				}
             }
         });
 		AjaxLink<Void> nextPageLink = new AjaxLink<Void>("nextPageLink") {

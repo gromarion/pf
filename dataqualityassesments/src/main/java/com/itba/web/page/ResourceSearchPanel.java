@@ -1,5 +1,7 @@
 package com.itba.web.page;
 
+import java.io.IOException;
+import org.apache.wicket.ajax.json.JSONException;
 import org.apache.wicket.ajax.json.JSONObject;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
@@ -9,16 +11,19 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.itba.domain.SparqlRequestHandler;
 import com.itba.domain.model.Campaign;
 import com.itba.domain.repository.CampaignRepo;
+import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.web.WicketSession;
 
 @SuppressWarnings("serial")
 public class ResourceSearchPanel extends Panel {
 	@SpringBean
 	CampaignRepo campaignRepo;
+	
+	@SpringBean
+	EndpointStatsRepo endpointStatsRepo;
 
 	public ResourceSearchPanel(String id) {
 		super(id);
@@ -44,11 +49,16 @@ public class ResourceSearchPanel extends Panel {
 			public void onClick() {
 				final Campaign campaign = campaignRepo.get(Campaign.class, WicketSession.get().getEvaluationSession().get().getCampaign().getId());
 				PageParameters parameters = new PageParameters();
-				JSONObject ans = SparqlRequestHandler.requestRandomResource(campaign);
-				String resourceURL = (String) ((JSONObject) ans.get("s")).get("value");
-				parameters.add("selection", resourceURL);
-
-				setResponsePage(ResultItemPage.class, parameters);
+				JSONObject ans;
+				try {
+					ans = SparqlRequestHandler.requestRandomResource(campaign, endpointStatsRepo);
+					String resourceURL = (String) ((JSONObject) ans.get("s")).get("value");
+					parameters.add("selection", resourceURL);
+					
+					setResponsePage(ResultItemPage.class, parameters);
+				} catch (JSONException | IOException e) {
+					setResponsePage(ErrorPage.class);
+				}
 			}
 		});
 	}
