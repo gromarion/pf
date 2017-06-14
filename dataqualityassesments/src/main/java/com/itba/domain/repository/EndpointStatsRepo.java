@@ -7,4 +7,6 @@ import com.itba.domain.repository.hibernate.HibernateRepo;
 public interface EndpointStatsRepo extends HibernateRepo {
 
 	public List<EndpointStats> getAll();
+	
+	public List<EndpointStats> getAllForEndpoint(String endpointURL);
 }

@@ -19,6 +19,11 @@ public class HIbernateEndpointStatsRepo  extends AbstractHibernateRepo implement
 
     @Override
     public List<EndpointStats> getAll() {
-        return find("from Campaign");
+        return find("from EndpointStats");
+    }
+    
+    @Override
+    public List<EndpointStats> getAllForEndpoint(String endpointURL) {
+    	return find("from EndpointStats where endpoint_url = ?", endpointURL);
     }
 }

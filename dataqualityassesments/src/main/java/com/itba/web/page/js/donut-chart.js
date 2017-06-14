@@ -6,20 +6,15 @@ function drawChart(data) {
 		return;
 	}
 
-	var svg = d3.select("#chart")
-	  .append("svg")
-	  .append("g")
+	var svg = d3.select("#chart").append("svg").append("g")
 
-	svg.append("g")
-	  .attr("class", "slices");
-	svg.append("g")
-	  .attr("class", "labels");
-	svg.append("g")
-	  .attr("class", "lines");
+	svg.append("g").attr("class", "slices");
+	svg.append("g").attr("class", "labels");
+	svg.append("g").attr("class", "lines");
 
 	var width = 960,
-	    height = 450,
-	  radius = Math.min(width, height) / 2;
+    height = 450,
+  	radius = Math.min(width, height) / 2;
 
 	var pie = d3.layout.pie()
 	  .sort(null)
@@ -39,12 +34,12 @@ function drawChart(data) {
 
 	var key = function(d){ return d.data.label; };
 
-	var color = color = d3.scale.ordinal()
-	.domain(["Tipo de dato incorrectamente extraído", "Valor del objeto extraído de forma incompleta", "Objeto semánticamente incorrecto", "Enlace externo incorrecto"])
-	.range(["#a05d56", "#8a89a6", "#7b6888", "#d0743c"]);
+	var color = d3.scale.category20c();
 
   /* ------- PIE SLICES -------*/
-  slice = svg.select(".slices").selectAll("path.slice")
+  slice = svg
+		.select(".slices")
+		.selectAll("path.slice")
     .data(pie(data), key);
 
   slice.enter()
@@ -53,7 +48,8 @@ function drawChart(data) {
     .attr("class", "slice");
 
   slice   
-    .transition().duration(1000)
+    .transition()
+    .duration(1000)
     .attrTween('d', function(d) {
 		   var i = d3.interpolate(d.startAngle+0.1, d.endAngle);
 		   return function(t) {
@@ -66,7 +62,9 @@ function drawChart(data) {
     .remove();
 
   /* ------- TEXT LABELS -------*/
-  var text = svg.select(".labels").selectAll("text")
+  var text = svg
+  	.select(".labels")
+  	.selectAll("text")
     .data(pie(data), key);
 
   text.enter()
@@ -112,7 +110,9 @@ function drawChart(data) {
   polyline.enter()
     .append("polyline");
 
-  polyline.transition().duration(1000)
+  polyline
+  	.transition()
+  	.duration(1000)
     .attrTween("points", function(d){
       this._current = this._current || d;
       var interpolate = d3.interpolate(this._current, d);
@@ -125,17 +125,19 @@ function drawChart(data) {
       };      
     });
   
-  polyline.exit()
-    .remove();
+  polyline.exit().remove();
 }
 
 function animate() {
 	slice   
-    .transition().duration(1000)
+    .transition()
+    .duration(1000)
     .attrTween('d', function(d) {
-		   var i = d3.interpolate(d.startAngle+0.1, d.endAngle);
+		   var i = d3.interpolate(d.startAngle + 0.1, d.endAngle);
+
 		   return function(t) {
-		       d.endAngle = i(t);
+	       d.endAngle = i(t);
+
 		     return arc(d);
 		   }
 		});
