@@ -11,26 +11,21 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
 import com.itba.domain.model.EndpointStats;
-import com.itba.domain.repository.EndpointStatsRepo;
 
 public class EndpointScorePanel extends Panel {
 	private static final long serialVersionUID = 1L;
 	private static final String CHART_CONTAINER_ID = "#endpoint-availability-chart";
 
-	private EndpointStatsRepo endpointStatsRepo;
-	private String endpointUrl;
+	private List<EndpointStats> endpointStats;
 
-	public EndpointScorePanel(String id, EndpointStatsRepo endpointStatsRepo, String endpointUrl) {
+	public EndpointScorePanel(String id, List<EndpointStats> endpointStats) {
 		super(id);
-		this.endpointStatsRepo = endpointStatsRepo;
-		this.endpointUrl = endpointUrl;
+		this.endpointStats = endpointStats;
 	}
 
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
-
-		List<EndpointStats> endpointStats = endpointStatsRepo.getAllForEndpoint(endpointUrl);
 
 		if (endpointStats.isEmpty()) {
 			return;
