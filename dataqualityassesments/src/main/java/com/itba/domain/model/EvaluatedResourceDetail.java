@@ -57,4 +57,8 @@ public class EvaluatedResourceDetail extends PersistentEntity {
 	public Error getError() {
 		return error;
 	}
+	
+	public String getPredicate() {
+		return predicate;
+	}
 }

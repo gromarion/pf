@@ -2,6 +2,7 @@ package com.itba.web.page;
 
 import java.io.IOException;
 import java.util.List;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.json.JSONException;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -13,11 +14,16 @@ import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import com.google.common.collect.Lists;
+import com.itba.domain.EntityModel;
 import com.itba.domain.SparqlRequestHandler;
 import com.itba.domain.model.Campaign;
+import com.itba.domain.model.EvaluatedResource;
 import com.itba.domain.repository.CampaignRepo;
 import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.domain.repository.ErrorRepo;
@@ -27,6 +33,7 @@ import com.itba.sparql.JsonSparqlResult;
 import com.itba.sparql.ResultItem;
 import com.itba.web.WicketSession;
 import com.itba.web.feedback.CustomFeedbackPanel;
+
 import lib.ManualErrorsFormulae;
 
 @SuppressWarnings("serial")
@@ -47,6 +54,11 @@ public class ResultItemPage extends BasePage {
 		final String search = parameters.get("search").toString();
 		final Campaign campaign = campaignRepo.get(Campaign.class,
 				WicketSession.get().getEvaluationSession().get().getCampaign().getId());
+		
+		final IModel<EvaluatedResource> resourceModel = new EntityModel<>(EvaluatedResource.class, evaluatedResourceRepo.getResourceForSession(WicketSession.get().getEvaluationSession().get(), resource).orNull());
+
+		final List<String> previouslyEvaluatedDetails = resourceModel.getObject() == null ? Lists.<String>newLinkedList() : evaluatedResourceDetailRepo.getAlreadyEvaluatedForResource(resourceModel.getObject());
+		
 		List<List<ResultItem>> results;
 		try {
 			results = new JsonSparqlResult(
@@ -58,6 +70,7 @@ public class ResultItemPage extends BasePage {
 					String predicateURL = resultItem.get(0).value;
 					listItem.add(new ExternalLink("predicate", predicateURL, predicateURL));
 					listItem.add(new Label("object", resultItem.get(1)));
+					listItem.add(new Label("errorsBadge", "!").setVisible(previouslyEvaluatedDetails.contains(predicateURL+resultItem.get(1))));
 					listItem.add(new AjaxLink<Void>("errorPageLink") {
 						@Override
 						public void onClick(AjaxRequestTarget target) {

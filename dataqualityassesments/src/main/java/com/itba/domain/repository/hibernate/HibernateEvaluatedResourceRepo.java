@@ -44,4 +44,5 @@ public class HibernateEvaluatedResourceRepo extends AbstractHibernateRepo implem
 
         return query.list();
     }
+    
 }

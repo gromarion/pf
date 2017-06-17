@@ -2,10 +2,12 @@ package com.itba.domain.repository.hibernate;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.itba.domain.model.EvaluatedResource;
 import com.itba.domain.model.EvaluatedResourceDetail;
 import com.itba.domain.repository.EvaluatedResourceDetailRepo;
 
@@ -26,5 +28,16 @@ public class HibernateEvaluatedResourceDetailRepo extends AbstractHibernateRepo 
         		+ " and detail.object = ? "
         		, resource, predicate, object);
         return result;
+    }
+    
+    @SuppressWarnings("unchecked")
+	@Override
+    public List<String> getAlreadyEvaluatedForResource(final EvaluatedResource resource) {
+        Query query = getSession().createQuery(
+                "SELECT distinct concat(d.predicate, d.object) FROM EvaluatedResourceDetail d " +
+                        " WHERE d.resource = " + resource.getId()
+        );
+
+        return query.list();
     }
 }

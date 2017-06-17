@@ -79,9 +79,8 @@ public class ErrorSelectionPage extends BasePage {
     	}
         
     	String[] schemes = {"http","https"};
-    	UrlValidator urlValidator = new UrlValidator(schemes);
     	
-    	if(!urlValidator.isValid(object)) {
+    	if(!stringContains(object, schemes)) {
     		availableErrors.getObject().remove(errorRepo.get(4));
     	}
     	
@@ -206,5 +205,15 @@ public class ErrorSelectionPage extends BasePage {
 	protected void onDetach() {
 		super.onDetach();
 		errorModel.detach();
+	}
+
+	public static boolean stringContains(String inputStr,
+			String[] items) {
+		for (int i = 0; i < items.length; i++) {
+			if (inputStr.contains(items[i])) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
