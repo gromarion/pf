@@ -1,16 +1,12 @@
-function displayChart() {
-	console.log("display chart");
-
-	$("#chart").show();
+function displayChart(chartID) {
+	$(chartID).show();
 	animate();
 	$("#hideChart").show();
 	$("#displayChart").hide();
 }
 
-function hideChart() {
-	console.log("hide chart");
-
+function hideChart(chartID) {
 	$("#displayChart").show();
-	$("#chart").hide();
+	$(chartID).hide();
 	$("#hideChart").hide();
 }

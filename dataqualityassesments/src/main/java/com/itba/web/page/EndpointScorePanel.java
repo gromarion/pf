@@ -15,7 +15,8 @@ import com.itba.domain.repository.EndpointStatsRepo;
 
 public class EndpointScorePanel extends Panel {
 	private static final long serialVersionUID = 1L;
-	
+	private static final String CHART_CONTAINER_ID = "#endpoint-availability-chart";
+
 	private EndpointStatsRepo endpointStatsRepo;
 	private String endpointUrl;
 
@@ -24,13 +25,13 @@ public class EndpointScorePanel extends Panel {
 		this.endpointStatsRepo = endpointStatsRepo;
 		this.endpointUrl = endpointUrl;
 	}
-	
+
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
-		
+
 		List<EndpointStats> endpointStats = endpointStatsRepo.getAllForEndpoint(endpointUrl);
-		
+
 		if (endpointStats.isEmpty()) {
 			return;
 		}
@@ -49,13 +50,14 @@ public class EndpointScorePanel extends Panel {
 			errorsData += "{'label': '" + statusCode + "', 'value': " + statusCodesAmount.get(statusCode) + "},";
 		}
 
-		errorsData = errorsData.substring(0, errorsData.length() - 2);
+		errorsData = errorsData.substring(0, errorsData.length() - 1);
 		errorsData += "]";
-		
+
 		response.render(JavaScriptHeaderItem
 				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/d3.min.js")));
 		response.render(JavaScriptHeaderItem
 				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/donut-chart.js")));
-		response.render(OnDomReadyHeaderItem.forScript("drawChart(" + errorsData + ");"));
+		response.render(OnDomReadyHeaderItem
+				.forScript("drawChart(" + errorsData + ", '" + CHART_CONTAINER_ID + "');"));
 	}
 }

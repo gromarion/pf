@@ -1,20 +1,23 @@
 var slice = null;
 var arc = null;
 
-function drawChart(data) {
+function drawChart(data, containerID) {
 	if (data.length == 0) {
 		return;
 	}
 
-	var svg = d3.select("#chart").append("svg").append("g")
+  const width = parseInt(d3.select(containerID).style("width"), 10);
+  const height = parseInt(d3.select(containerID).style("height"), 10);
+
+	var svg = d3.select(containerID).append("svg").append("g");
 
 	svg.append("g").attr("class", "slices");
 	svg.append("g").attr("class", "labels");
 	svg.append("g").attr("class", "lines");
 
-	var width = 960,
-    height = 450,
-  	radius = Math.min(width, height) / 2;
+	var radius = Math.min(width, height) / 2;
+
+  console.log("RADIUS = " + radius);
 
 	var pie = d3.layout.pie()
 	  .sort(null)
@@ -22,17 +25,21 @@ function drawChart(data) {
 	    return d.value;
 	  });
 
+  console.log("OUTER RADIUS 1 = " + radius * 0.8);
+  console.log("INNER RADIUS 1 = " + radius * 0.4);
 	arc = d3.svg.arc()
 	  .outerRadius(radius * 0.8)
 	  .innerRadius(radius * 0.4);
 
+  console.log("INNER RADIUS 2 = " + radius * 0.9);
+  console.log("OUTER RADIUS 2 = " + radius * 0.9);
 	var outerArc = d3.svg.arc()
 	  .innerRadius(radius * 0.9)
 	  .outerRadius(radius * 0.9);
 
 	svg.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-	var key = function(d){ return d.data.label; };
+	var key = function(d) { return d.data.label; };
 
 	var color = d3.scale.category20c();
 
@@ -51,15 +58,16 @@ function drawChart(data) {
     .transition()
     .duration(1000)
     .attrTween('d', function(d) {
-		   var i = d3.interpolate(d.startAngle+0.1, d.endAngle);
+		   var i = d3.interpolate(d.startAngle + 0.1, d.endAngle);
+
 		   return function(t) {
 		       d.endAngle = i(t);
+
 		     return arc(d);
 		   }
 		});
 
-  slice.exit()
-    .remove();
+  slice.exit().remove();
 
   /* ------- TEXT LABELS -------*/
   var text = svg
@@ -94,9 +102,11 @@ function drawChart(data) {
       this._current = this._current || d;
       var interpolate = d3.interpolate(this._current, d);
       this._current = interpolate(0);
+
       return function(t) {
         var d2 = interpolate(t);
-        return midAngle(d2) < Math.PI ? "start":"end";
+
+        return midAngle(d2) < Math.PI ? "start" : "end";
       };
     });
 

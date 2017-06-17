@@ -1,9 +1,10 @@
 <html>
 	<body>
 		<wicket:panel>
-			<button id="displayChart" class="btn" onclick="displayChart()"><wicket:message key="displayChart">Display chart</wicket:message></button>
-			<button id="hideChart" class="btn" style="display: none;" onclick="hideChart()"><wicket:message key="hideChart">Hide chart</wicket:message></button>
-			<div id="chart" style="display: none;"></div>
+			<button id="displayChart" class="btn" onclick="displayChart('#resource-score-chart')"><wicket:message key="displayChart">Display chart</wicket:message></button>
+			<button id="hideChart" class="btn" style="display: none;" onclick="hideChart('#resource-score-chart')"><wicket:message key="hideChart">Hide chart</wicket:message></button>
+
+			<div id="resource-score-chart" style="display: none;width: 940px;height: 320px;"/>
 		</wicket:panel>
 	</body>
 </html>

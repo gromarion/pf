@@ -13,6 +13,8 @@ import lib.ManualErrorsFormulae;
 public class ResourceScorePanel extends Panel {
 	private ManualErrorsFormulae.Score score;
 
+	private static final String CHART_CONTAINER_ID = "#resource-score-chart";
+
 	public ResourceScorePanel(String id, ManualErrorsFormulae.Score score) {
 		super(id);
 		this.score = score;
@@ -40,6 +42,7 @@ public class ResourceScorePanel extends Panel {
 				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/donut-chart.js")));
 		response.render(JavaScriptHeaderItem
 				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/display-donut-chart.js")));
-		response.render(OnDomReadyHeaderItem.forScript("drawChart(" + errorsData + ");"));
+		response.render(OnDomReadyHeaderItem
+				.forScript("drawChart(" + errorsData + ", '" + CHART_CONTAINER_ID + "');"));
 	}
 }
