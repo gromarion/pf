@@ -1,5 +1,7 @@
 package com.itba.domain.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -8,7 +10,9 @@ import com.itba.domain.PersistentEntity;
 
 @Entity
 @Table(name = "endpoint_stats")
-public class EndpointStats extends PersistentEntity {
+public class EndpointStats extends PersistentEntity implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	@Column(name = "endpoint_url")
 	private String endpointUrl;
 	

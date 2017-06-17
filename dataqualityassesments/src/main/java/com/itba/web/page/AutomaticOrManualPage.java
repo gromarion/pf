@@ -31,6 +31,7 @@ public class AutomaticOrManualPage extends BasePage {
 
 		List<EndpointStats> endpointStats = endpointStatsRepo.getAllForEndpoint(campaign.getEndpoint());
 		EndpointScorePanel endpointScorePanel = new EndpointScorePanel("endpointScorePanel", endpointStats);
+
 		endpointScorePanel.setVisible(!endpointStats.isEmpty());
 		add(endpointScorePanel);
 	}
