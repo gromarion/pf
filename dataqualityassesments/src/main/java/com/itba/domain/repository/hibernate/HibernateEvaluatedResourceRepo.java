@@ -36,32 +36,12 @@ public class HibernateEvaluatedResourceRepo extends AbstractHibernateRepo implem
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public PaginatedResult getAllForSession(final EvaluationSession session, int page) {
+	public PaginatedResult<EvaluatedResource> getAllForSession(final EvaluationSession session, int page) {
 		Query query = getSession().createQuery("SELECT e FROM EvaluatedResource e " + " WHERE e.session = "
 				+ session.getId()).setMaxResults(LIMIT).setFirstResult(page);
 		
 		Query countQuery = getSession().createQuery("SELECT COUNT(*) FROM EvaluatedResource");
 
-		return new PaginatedResult(query.list(), page, (long) countQuery.uniqueResult());
-	}
-	
-	public static class PaginatedResult {
-		private List<EvaluatedResource> result;
-		private int page;
-		private long totalResultsAmount;
-		
-		public PaginatedResult(List<EvaluatedResource> result, int page, long totalresultsAmount) {
-			this.result = result;
-			this.page = page;
-			this.totalResultsAmount = totalresultsAmount;
-		}
-		
-		public boolean hasNextPage() {
-			return page * LIMIT + result.size() < totalResultsAmount;
-		}
-		
-		public List<EvaluatedResource> getResult() {
-			return result;
-		}
+		return new PaginatedResult<EvaluatedResource>(query.list(), page, (long) countQuery.uniqueResult(), LIMIT);
 	}
 }

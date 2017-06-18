@@ -22,7 +22,7 @@ import com.itba.domain.repository.CampaignRepo;
 import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.domain.repository.UserRepo;
-import com.itba.domain.repository.hibernate.HibernateEvaluatedResourceRepo.PaginatedResult;
+import com.itba.domain.repository.hibernate.PaginatedResult;
 import com.itba.web.WicketSession;
 import com.itba.web.feedback.CustomFeedbackPanel;
 
@@ -63,7 +63,8 @@ public class ErrorsByUserPage extends BasePage {
 		final IModel<List<EvaluatedResource>> evaluatedResources = new LoadableDetachableModel<List<EvaluatedResource>>() {
 			@Override
 			protected List<EvaluatedResource> load() {
-				PaginatedResult result = evaluatedResourceRepo.getAllForSession(currentSession.getObject(), fetchPage(parameters));
+				PaginatedResult<EvaluatedResource> result = evaluatedResourceRepo
+						.getAllForSession(currentSession.getObject(), fetchPage(parameters));
 				hasNextPage = result.hasNextPage();
 				return result.getResult();
 			}
@@ -94,29 +95,29 @@ public class ErrorsByUserPage extends BasePage {
 				evaluatedResource.add(resultLink);
 			}
 		});
-		
+
 		AjaxLink<Void> nextPageLink = new AjaxLink<Void>("nextPageLink") {
-            @Override
-            public void onClick(AjaxRequestTarget target) {
-                PageParameters parameters = new PageParameters();
-                parameters.set("page", page + 1);
-                setResponsePage(SearchResultPage.class, parameters);
-            }
-        };
-        AjaxLink<Void> previousPageLink = new AjaxLink<Void>("previousPageLink") {
-            @Override
-            public void onClick(AjaxRequestTarget target) {
-                PageParameters parameters = new PageParameters();
-                int newOffset = page > 0 ? page - 1 : 0;
-                parameters.set("page", newOffset);
-                setResponsePage(SearchResultPage.class, parameters);
-            }
-        };
-        add(new Label("currentPage", page + 1));
-        previousPageLink.setVisible(page > 0);
-        add(previousPageLink);
-        nextPageLink.setVisible(hasNextPage);
-        add(nextPageLink);
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				PageParameters parameters = new PageParameters();
+				parameters.set("page", page + 1);
+				setResponsePage(SearchResultPage.class, parameters);
+			}
+		};
+		AjaxLink<Void> previousPageLink = new AjaxLink<Void>("previousPageLink") {
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				PageParameters parameters = new PageParameters();
+				int newOffset = page > 0 ? page - 1 : 0;
+				parameters.set("page", newOffset);
+				setResponsePage(SearchResultPage.class, parameters);
+			}
+		};
+		add(new Label("currentPage", page + 1));
+		previousPageLink.setVisible(page > 0);
+		add(previousPageLink);
+		nextPageLink.setVisible(hasNextPage);
+		add(nextPageLink);
 	}
 
 	@Override
@@ -124,7 +125,7 @@ public class ErrorsByUserPage extends BasePage {
 		super.onDetach();
 		userModel.detach();
 	}
-	
+
 	private int fetchPage(PageParameters parameters) {
 		String page = parameters.get("page").toString();
 
