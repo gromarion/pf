@@ -22,6 +22,7 @@ import com.itba.domain.repository.CampaignRepo;
 import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.domain.repository.UserRepo;
+import com.itba.domain.repository.hibernate.HibernateEvaluatedResourceRepo.PaginatedResult;
 import com.itba.web.WicketSession;
 import com.itba.web.feedback.CustomFeedbackPanel;
 
@@ -45,6 +46,7 @@ public class ErrorsByUserPage extends BasePage {
 	private final IModel<User> userModel = new EntityModel<User>(User.class);
 	private final IModel<EvaluationSession> currentSession = new EntityModel<EvaluationSession>(
 			EvaluationSession.class);
+	private boolean hasNextPage;
 
 	public ErrorsByUserPage(final PageParameters parameters) {
 		add(new CustomFeedbackPanel("feedbackPanel"));
@@ -56,11 +58,14 @@ public class ErrorsByUserPage extends BasePage {
 		// userModel.setObject(userRepo.getByUsername(userName));
 
 		currentSession.setObject(WicketSession.get().getEvaluationSession().get());
+		final int page = fetchPage(parameters);
 
 		final IModel<List<EvaluatedResource>> evaluatedResources = new LoadableDetachableModel<List<EvaluatedResource>>() {
 			@Override
 			protected List<EvaluatedResource> load() {
-				return evaluatedResourceRepo.getAllForSession(currentSession.getObject(), fetchPage(parameters));
+				PaginatedResult result = evaluatedResourceRepo.getAllForSession(currentSession.getObject(), fetchPage(parameters));
+				hasNextPage = result.hasNextPage();
+				return result.getResult();
 			}
 		};
 
@@ -94,7 +99,7 @@ public class ErrorsByUserPage extends BasePage {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 PageParameters parameters = new PageParameters();
-                parameters.set("page", fetchPage(parameters) + 1);
+                parameters.set("page", page + 1);
                 setResponsePage(SearchResultPage.class, parameters);
             }
         };
@@ -102,14 +107,15 @@ public class ErrorsByUserPage extends BasePage {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 PageParameters parameters = new PageParameters();
-                int page = fetchPage(parameters);
                 int newOffset = page > 0 ? page - 1 : 0;
-                parameters.set("offset", newOffset);
+                parameters.set("page", newOffset);
                 setResponsePage(SearchResultPage.class, parameters);
             }
         };
-        add(new Label("currentPage", fetchPage(parameters) + 1));
+        add(new Label("currentPage", page + 1));
+        previousPageLink.setVisible(page > 0);
         add(previousPageLink);
+        nextPageLink.setVisible(hasNextPage);
         add(nextPageLink);
 	}
 
