@@ -2,6 +2,8 @@ package com.itba.web.page;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.json.JSONException;
@@ -69,7 +71,9 @@ public class ResultItemPage extends BasePage {
 					final List<ResultItem> resultItem = listItem.getModelObject();
 					String predicateURL = resultItem.get(0).value;
 					listItem.add(new ExternalLink("predicate", predicateURL, predicateURL));
-					listItem.add(new Label("object", resultItem.get(1)));
+					Label objectLabel = new Label("object", transformURLs(resultItem.get(1).value)); 
+					objectLabel.setEscapeModelStrings(false);
+					listItem.add(objectLabel);
 					listItem.add(new Label("errorsBadge", "!").setVisible(previouslyEvaluatedDetails.contains(predicateURL+resultItem.get(1))));
 					listItem.add(new AjaxLink<Void>("errorPageLink") {
 						@Override
@@ -132,6 +136,12 @@ public class ResultItemPage extends BasePage {
 		add(new ExternalLink("resourceName", resource, resourceName.replace('_', ' ')));
 
 		add(customFeedbackPanel);
-
+	}
+	
+	private String transformURLs(String object) {
+		Pattern patt = Pattern.compile("(?i)\\b((?:https?://|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:\'\".,<>???“”‘’]))");
+        Matcher matcher = patt.matcher(object);
+        
+        return matcher.replaceAll("<a href=\"$1\">$1</a>");
 	}
 }

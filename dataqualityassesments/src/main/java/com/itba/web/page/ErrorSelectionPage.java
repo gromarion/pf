@@ -2,7 +2,6 @@ package com.itba.web.page;
 
 import java.util.List;
 
-import org.apache.commons.validator.routines.UrlValidator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -21,6 +20,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
 import com.google.common.base.Optional;
 import com.itba.domain.EntityModel;
 import com.itba.domain.model.Error;
@@ -36,6 +36,8 @@ import com.itba.web.feedback.CustomFeedbackPanel;
 @SuppressWarnings("serial")
 public class ErrorSelectionPage extends BasePage {
 
+	private static final String[] HTTP_SCHEMES = {"http","https"};
+	
 	@SpringBean
 	private ErrorRepo errorRepo;
 
@@ -77,10 +79,8 @@ public class ErrorSelectionPage extends BasePage {
     	for (int i = 0 ; i < usedErrorDetails.getObject().size() ; i++) {
     		availableErrors.getObject().remove(usedErrorDetails.getObject().get(i).getError());
     	}
-        
-    	String[] schemes = {"http","https"};
     	
-    	if(!stringContains(object, schemes)) {
+    	if(!stringContains(object, HTTP_SCHEMES)) {
     		availableErrors.getObject().remove(errorRepo.get(4));
     	}
     	
