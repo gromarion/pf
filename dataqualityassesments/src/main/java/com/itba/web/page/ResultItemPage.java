@@ -40,6 +40,8 @@ import lib.ManualErrorsFormulae;
 
 @SuppressWarnings("serial")
 public class ResultItemPage extends BasePage {
+	private static final String URL_PATTERN = "(?i)\\b((?:https?://|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:\'\".,<>???“”‘’]))";
+
 	@SpringBean
 	private CampaignRepo campaignRepo;
 	@SpringBean
@@ -56,11 +58,14 @@ public class ResultItemPage extends BasePage {
 		final String search = parameters.get("search").toString();
 		final Campaign campaign = campaignRepo.get(Campaign.class,
 				WicketSession.get().getEvaluationSession().get().getCampaign().getId());
-		
-		final IModel<EvaluatedResource> resourceModel = new EntityModel<>(EvaluatedResource.class, evaluatedResourceRepo.getResourceForSession(WicketSession.get().getEvaluationSession().get(), resource).orNull());
 
-		final List<String> previouslyEvaluatedDetails = resourceModel.getObject() == null ? Lists.<String>newLinkedList() : evaluatedResourceDetailRepo.getAlreadyEvaluatedForResource(resourceModel.getObject());
-		
+		final IModel<EvaluatedResource> resourceModel = new EntityModel<>(EvaluatedResource.class, evaluatedResourceRepo
+				.getResourceForSession(WicketSession.get().getEvaluationSession().get(), resource).orNull());
+
+		final List<String> previouslyEvaluatedDetails = resourceModel.getObject() == null
+				? Lists.<String>newLinkedList()
+				: evaluatedResourceDetailRepo.getAlreadyEvaluatedForResource(resourceModel.getObject());
+
 		List<List<ResultItem>> results;
 		try {
 			results = new JsonSparqlResult(
@@ -71,10 +76,11 @@ public class ResultItemPage extends BasePage {
 					final List<ResultItem> resultItem = listItem.getModelObject();
 					String predicateURL = resultItem.get(0).value;
 					listItem.add(new ExternalLink("predicate", predicateURL, predicateURL));
-					Label objectLabel = new Label("object", transformURLs(resultItem.get(1).value)); 
+					Label objectLabel = new Label("object", transformURLs(resultItem.get(1).toString()));
 					objectLabel.setEscapeModelStrings(false);
 					listItem.add(objectLabel);
-					listItem.add(new Label("errorsBadge", "!").setVisible(previouslyEvaluatedDetails.contains(predicateURL+resultItem.get(1))));
+					listItem.add(new Label("errorsBadge", "!")
+							.setVisible(previouslyEvaluatedDetails.contains(predicateURL + resultItem.get(1))));
 					listItem.add(new AjaxLink<Void>("errorPageLink") {
 						@Override
 						public void onClick(AjaxRequestTarget target) {
@@ -106,7 +112,7 @@ public class ResultItemPage extends BasePage {
 		try {
 			score = new ManualErrorsFormulae(campaignRepo, evaluatedResourceRepo, endpointStatsRepo).compute(resource);
 			ResourceScorePanel resourceScorePanel = new ResourceScorePanel("scorePanel", score);
-			
+
 			add(new Label("resourceScore", score.scoreString()));
 			if (score.getScore() == -1) {
 				resourceScorePanel.setVisible(false);
@@ -115,7 +121,6 @@ public class ResultItemPage extends BasePage {
 		} catch (JSONException | IOException e) {
 			setResponsePage(ErrorPage.class);
 		}
-		
 
 		Link<Void> backButton = new Link<Void>("back") {
 			@Override
@@ -137,11 +142,11 @@ public class ResultItemPage extends BasePage {
 
 		add(customFeedbackPanel);
 	}
-	
+
 	private String transformURLs(String object) {
-		Pattern patt = Pattern.compile("(?i)\\b((?:https?://|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:\'\".,<>???“”‘’]))");
-        Matcher matcher = patt.matcher(object);
-        
-        return matcher.replaceAll("<a href=\"$1\">$1</a>");
+		Pattern patt = Pattern.compile(URL_PATTERN);
+		Matcher matcher = patt.matcher(object);
+
+		return matcher.replaceAll("<a href=\"$1\" target=\"_blank\">$1</a>");
 	}
 }
