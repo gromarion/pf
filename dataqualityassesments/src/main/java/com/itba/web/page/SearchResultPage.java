@@ -111,11 +111,7 @@ public class SearchResultPage extends BasePage {
 	private int fetchOffset(PageParameters parameters) {
 		String offsetParameter = parameters.get("offset").toString();
 
-		if (offsetParameter == null) {
-			return 0;			
-		} else {
-			return Integer.parseInt(offsetParameter);
-		}
+		return offsetParameter == null ? 0 : Integer.parseInt(offsetParameter);
 	}
 	
 	private String formatSearch(String search) {

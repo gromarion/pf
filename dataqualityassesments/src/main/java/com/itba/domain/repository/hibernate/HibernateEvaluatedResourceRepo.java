@@ -15,34 +15,32 @@ import com.itba.domain.repository.EvaluatedResourceRepo;
 @Repository
 public class HibernateEvaluatedResourceRepo extends AbstractHibernateRepo implements EvaluatedResourceRepo {
 
-    @Autowired
-    public HibernateEvaluatedResourceRepo(SessionFactory sessionFactory) {
-        super(sessionFactory);
-    }
+	private static final int LIMIT = 10;
 
-    @SuppressWarnings("unchecked")
+	@Autowired
+	public HibernateEvaluatedResourceRepo(SessionFactory sessionFactory) {
+		super(sessionFactory);
+	}
+
+	@SuppressWarnings("unchecked")
 	@Override
-    public Optional<EvaluatedResource> getResourceForSession(final EvaluationSession session, final String resource) {
-        Query query = getSession().createQuery(
-                "SELECT e FROM EvaluatedResource e " +
-                        " WHERE e.session = " + session.getId()
-                        + " AND e.resource = '" + resource + "'"
-        );
+	public Optional<EvaluatedResource> getResourceForSession(final EvaluationSession session, final String resource) {
+		Query query = getSession().createQuery("SELECT e FROM EvaluatedResource e " + " WHERE e.session = "
+				+ session.getId() + " AND e.resource = '" + resource + "'");
 
-        List<EvaluatedResource> result = query.list();
-        if(result.isEmpty()) return Optional.absent();
-        return Optional.of(result.get(0));
-    }
-    
-    @SuppressWarnings("unchecked")
+		List<EvaluatedResource> result = query.list();
+		if (result.isEmpty())
+			return Optional.absent();
+		return Optional.of(result.get(0));
+	}
+
+	@SuppressWarnings("unchecked")
 	@Override
-    public List<EvaluatedResource> getAllForSession(final EvaluationSession session) {
-        Query query = getSession().createQuery(
-                "SELECT e FROM EvaluatedResource e " +
-                        " WHERE e.session = " + session.getId()
-        );
+	public List<EvaluatedResource> getAllForSession(final EvaluationSession session, int page) {
+		Query query = getSession().createQuery("SELECT e FROM EvaluatedResource e " + " WHERE e.session = "
+				+ session.getId()).setMaxResults(LIMIT).setFirstResult(page);
 
-        return query.list();
-    }
-    
+		return query.list();
+	}
+
 }

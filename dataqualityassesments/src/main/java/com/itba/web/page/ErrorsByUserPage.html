@@ -23,6 +23,11 @@
 					</tr>
 				</tbody>
 			</table>
+			<div class="paginator">
+		    	<a wicket:id="previousPageLink" href="#" class="btn btn-primary"><wicket:message key="previousPage"></wicket:message></a>
+		    	<wicket:message key="page">Página</wicket:message> <span wicket:id="currentPage">1</span>
+		    	<a wicket:id="nextPageLink" href="#" class="btn btn-primary"><wicket:message key="nextPage"></wicket:message></a>
+		    </div>
 		</div>
 	</div>
 </wicket:extend>

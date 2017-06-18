@@ -11,6 +11,6 @@ public interface EvaluatedResourceRepo extends HibernateRepo {
 
     public Optional<EvaluatedResource> getResourceForSession(final EvaluationSession session, final String resource);
 
-	List<EvaluatedResource> getAllForSession(EvaluationSession session);
+	List<EvaluatedResource> getAllForSession(EvaluationSession session, int page);
 }
 

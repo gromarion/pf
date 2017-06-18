@@ -42,15 +42,11 @@ public class ErrorsByUserPage extends BasePage {
 	@SpringBean
 	private UserRepo userRepo;
 
-	final IModel<User> userModel = new EntityModel<User>(User.class);
+	private final IModel<User> userModel = new EntityModel<User>(User.class);
 	private final IModel<EvaluationSession> currentSession = new EntityModel<EvaluationSession>(
 			EvaluationSession.class);
 
-	public ErrorsByUserPage(PageParameters parameters) {
-		if (!((WicketSession) getSession()).isSignedIn()) {
-			setResponsePage(LoginPage.class);
-		}
-
+	public ErrorsByUserPage(final PageParameters parameters) {
 		add(new CustomFeedbackPanel("feedbackPanel"));
 
 		// TODO: que esta página sea parametrizable por usuario y campaña
@@ -64,7 +60,7 @@ public class ErrorsByUserPage extends BasePage {
 		final IModel<List<EvaluatedResource>> evaluatedResources = new LoadableDetachableModel<List<EvaluatedResource>>() {
 			@Override
 			protected List<EvaluatedResource> load() {
-				return evaluatedResourceRepo.getAllForSession(currentSession.getObject());
+				return evaluatedResourceRepo.getAllForSession(currentSession.getObject(), fetchPage(parameters));
 			}
 		};
 
@@ -93,11 +89,39 @@ public class ErrorsByUserPage extends BasePage {
 				evaluatedResource.add(resultLink);
 			}
 		});
+		
+		AjaxLink<Void> nextPageLink = new AjaxLink<Void>("nextPageLink") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                PageParameters parameters = new PageParameters();
+                parameters.set("page", fetchPage(parameters) + 1);
+                setResponsePage(SearchResultPage.class, parameters);
+            }
+        };
+        AjaxLink<Void> previousPageLink = new AjaxLink<Void>("previousPageLink") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                PageParameters parameters = new PageParameters();
+                int page = fetchPage(parameters);
+                int newOffset = page > 0 ? page - 1 : 0;
+                parameters.set("offset", newOffset);
+                setResponsePage(SearchResultPage.class, parameters);
+            }
+        };
+        add(new Label("currentPage", fetchPage(parameters) + 1));
+        add(previousPageLink);
+        add(nextPageLink);
 	}
 
 	@Override
 	protected void onDetach() {
 		super.onDetach();
 		userModel.detach();
+	}
+	
+	private int fetchPage(PageParameters parameters) {
+		String page = parameters.get("page").toString();
+
+		return page == null ? 0 : Integer.parseInt(page);
 	}
 }
