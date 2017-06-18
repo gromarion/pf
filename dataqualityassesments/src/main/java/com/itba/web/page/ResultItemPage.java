@@ -67,9 +67,6 @@ public class ResultItemPage extends BasePage {
 		
 		resourceModel.setObject(evaluatedResourceRepo.getResourceForSession(WicketSession.get().getEvaluationSession().get(), resource).orNull());
 
-		final IModel<EvaluatedResource> resourceModel = new EntityModel<>(EvaluatedResource.class, evaluatedResourceRepo
-				.getResourceForSession(WicketSession.get().getEvaluationSession().get(), resource).orNull());
-
 		final List<String> previouslyEvaluatedDetails = resourceModel.getObject() == null
 				? Lists.<String>newLinkedList()
 				: evaluatedResourceDetailRepo.getAlreadyEvaluatedForResource(resourceModel.getObject());
@@ -134,6 +131,7 @@ public class ResultItemPage extends BasePage {
 			@Override
 			public void onClick() {
 				resourceModel.getObject().setCorrect(true); // TODO: qué pasa si el recurso no existía?
+//				evaluatedResourceRepo.save(resourceModel.getObject()); // esto se usaría si el recurso no existe
 				PageParameters parameters = new PageParameters();
 				parameters.add("selection", resource);
 				setResponsePage(ResultItemPage.class, parameters);
