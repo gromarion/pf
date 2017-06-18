@@ -129,7 +129,7 @@ public class ResultItemPage extends BasePage {
 		add(new ResourceSearchPanel("search"));
 		add(form);
 		String resourceName = resource.substring(resource.lastIndexOf('/') + 1);
-		add(new Label("resourceName", resourceName.replace('_', ' ')));
+		add(new ExternalLink("resourceName", resource, resourceName.replace('_', ' ')));
 
 		add(customFeedbackPanel);
 
