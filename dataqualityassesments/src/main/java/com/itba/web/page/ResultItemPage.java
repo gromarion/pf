@@ -40,24 +40,32 @@ import lib.ManualErrorsFormulae;
 
 @SuppressWarnings("serial")
 public class ResultItemPage extends BasePage {
+	
 	private static final String URL_PATTERN = "(?i)\\b((?:https?://|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:\'\".,<>???“”‘’]))";
 
 	@SpringBean
 	private CampaignRepo campaignRepo;
+	
 	@SpringBean
 	private ErrorRepo errorRepo;
+	
 	@SpringBean
 	private EvaluatedResourceRepo evaluatedResourceRepo;
+	
 	@SpringBean
 	private EvaluatedResourceDetailRepo evaluatedResourceDetailRepo;
+	
 	@SpringBean
 	private EndpointStatsRepo endpointStatsRepo;
 
+	final IModel<EvaluatedResource> resourceModel = new EntityModel<EvaluatedResource>(EvaluatedResource.class);
+	
 	public ResultItemPage(PageParameters parameters) {
 		final String resource = parameters.get("selection").toString();
 		final String search = parameters.get("search").toString();
-		final Campaign campaign = campaignRepo.get(Campaign.class,
-				WicketSession.get().getEvaluationSession().get().getCampaign().getId());
+		final Campaign campaign = campaignRepo.get(Campaign.class, WicketSession.get().getEvaluationSession().get().getCampaign().getId());
+		
+		resourceModel.setObject(evaluatedResourceRepo.getResourceForSession(WicketSession.get().getEvaluationSession().get(), resource).orNull());
 
 		final IModel<EvaluatedResource> resourceModel = new EntityModel<>(EvaluatedResource.class, evaluatedResourceRepo
 				.getResourceForSession(WicketSession.get().getEvaluationSession().get(), resource).orNull());
@@ -121,6 +129,16 @@ public class ResultItemPage extends BasePage {
 		} catch (JSONException | IOException e) {
 			setResponsePage(ErrorPage.class);
 		}
+		
+		Link<Void> resourceOkButton = new Link<Void>("resourceOkButton") {
+			@Override
+			public void onClick() {
+				resourceModel.getObject().setCorrect(true); // TODO: qué pasa si el recurso no existía?
+				PageParameters parameters = new PageParameters();
+				parameters.add("selection", resource);
+				setResponsePage(ResultItemPage.class, parameters);
+			}
+		};
 
 		Link<Void> backButton = new Link<Void>("back") {
 			@Override
@@ -132,6 +150,7 @@ public class ResultItemPage extends BasePage {
 			}
 		};
 
+		form.add(resourceOkButton);
 		form.add(backButton);
 		form.add(comments);
 		form.add(submit);
@@ -148,5 +167,11 @@ public class ResultItemPage extends BasePage {
 		Matcher matcher = patt.matcher(object);
 
 		return matcher.replaceAll("<a href=\"$1\" target=\"_blank\">$1</a>");
+	}
+	
+	@Override
+	protected void onDetach() {
+		super.onDetach();
+		resourceModel.detach();
 	}
 }

@@ -75,6 +75,10 @@ public class EvaluatedResource extends PersistentEntity {
 	public boolean isCorrect() {
 		return correct;
 	}
+	
+	public void setCorrect(boolean correct) {
+		this.correct = correct;
+	}
 
 	public Set<EvaluatedResourceDetail> getDetails() {
 		return details;
