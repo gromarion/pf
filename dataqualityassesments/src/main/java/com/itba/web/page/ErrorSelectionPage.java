@@ -162,6 +162,8 @@ public class ErrorSelectionPage extends BasePage {
 					evaluatedResourceRepo.save(r);
 				}
 				
+				evaluatedResource.get().setCorrect(false);
+				
 				EvaluatedResourceDetail detail = new EvaluatedResourceDetail(evaluatedResource.get(), errorModel.getObject(), predicate, object);
 				evaluatedResourceDetailRepo.save(detail);
 				

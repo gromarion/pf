@@ -44,4 +44,13 @@ public class HibernateEvaluatedResourceRepo extends AbstractHibernateRepo implem
 
 		return new PaginatedResult<EvaluatedResource>(query.list(), page, (long) countQuery.uniqueResult(), LIMIT);
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<String> getCorrectForSession(final EvaluationSession session) {
+		Query query = getSession().createQuery("SELECT e.resource FROM EvaluatedResource e "
+											+ " WHERE e.session = " + session.getId()
+											+ " AND e.correct = true");
+		return query.list();
+	}
 }

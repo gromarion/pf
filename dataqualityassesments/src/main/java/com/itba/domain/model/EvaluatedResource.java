@@ -39,6 +39,7 @@ public class EvaluatedResource extends PersistentEntity {
     public EvaluatedResource(EvaluationSession session, String resource) {
         this.session = session;
         this.resource = resource;
+        this.correct = false;
         this.timestamp = System.currentTimeMillis();
     }
 
@@ -82,5 +83,9 @@ public class EvaluatedResource extends PersistentEntity {
 
 	public Set<EvaluatedResourceDetail> getDetails() {
 		return details;
+	}
+	
+	public boolean hasDetails() {
+		return details.size() > 0;
 	}
 }

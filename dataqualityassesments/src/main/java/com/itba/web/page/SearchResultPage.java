@@ -38,6 +38,9 @@ public class SearchResultPage extends BasePage {
 	private EndpointStatsRepo endpointStatsRepo;
 
 	public SearchResultPage(PageParameters parameters) {
+		
+		final List<String> correctResources = evaluatedResourceRepo.getCorrectForSession(WicketSession.get().getEvaluationSession().get());
+		
 		final String search      = formatSearch(parameters.get("search").toString());
 		final int offset         = fetchOffset(parameters);
 		Campaign campaign        = WicketSession.get().getEvaluationSession().get().getCampaign();
@@ -81,6 +84,8 @@ public class SearchResultPage extends BasePage {
 				} catch (JSONException | IOException e) {
 					setResponsePage(ErrorPage.class);
 				}
+				
+				listItem.add(new Label("correctBadge", "!").setVisible(correctResources.contains(stringModel.getObject())));
             }
         });
 		AjaxLink<Void> nextPageLink = new AjaxLink<Void>("nextPageLink") {

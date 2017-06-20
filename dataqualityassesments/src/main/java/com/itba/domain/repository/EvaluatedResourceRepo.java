@@ -1,5 +1,7 @@
 package com.itba.domain.repository;
 
+import java.util.List;
+
 import com.google.common.base.Optional;
 import com.itba.domain.model.EvaluatedResource;
 import com.itba.domain.model.EvaluationSession;
@@ -11,5 +13,7 @@ public interface EvaluatedResourceRepo extends HibernateRepo {
     Optional<EvaluatedResource> getResourceForSession(final EvaluationSession session, final String resource);
 
     PaginatedResult<EvaluatedResource> getAllForSession(EvaluationSession session, int page);
+
+	List<String> getCorrectForSession(EvaluationSession session);
 }
 

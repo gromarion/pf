@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.json.JSONException;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
@@ -64,9 +65,11 @@ public class ResultItemPage extends BasePage {
 		final String resource = parameters.get("selection").toString();
 		final String search = parameters.get("search").toString();
 		final Campaign campaign = campaignRepo.get(Campaign.class, WicketSession.get().getEvaluationSession().get().getCampaign().getId());
+		final IModel<String> resourceOkLabelMessage = Model.of();
+		final Label resourceOkLabel = new Label("resourceOkLabel", resourceOkLabelMessage);
 		
 		resourceModel.setObject(evaluatedResourceRepo.getResourceForSession(WicketSession.get().getEvaluationSession().get(), resource).orNull());
-
+		
 		final List<String> previouslyEvaluatedDetails = resourceModel.getObject() == null
 				? Lists.<String>newLinkedList()
 				: evaluatedResourceDetailRepo.getAlreadyEvaluatedForResource(resourceModel.getObject());
@@ -130,12 +133,34 @@ public class ResultItemPage extends BasePage {
 		Link<Void> resourceOkButton = new Link<Void>("resourceOkButton") {
 			@Override
 			public void onClick() {
-				resourceModel.getObject().setCorrect(true); // TODO: qué pasa si el recurso no existía?
-//				evaluatedResourceRepo.save(resourceModel.getObject()); // esto se usaría si el recurso no existe
+				if (resourceModel.getObject() == null) {
+					resourceModel.setObject(new EvaluatedResource(WicketSession.get().getEvaluationSession().get(), resource));
+					evaluatedResourceRepo.save(resourceModel.getObject());
+				}
+				
+				resourceModel.getObject().setCorrect(!resourceModel.getObject().isCorrect());
+				
 				PageParameters parameters = new PageParameters();
 				parameters.add("selection", resource);
 				setResponsePage(ResultItemPage.class, parameters);
 			}
+			
+			@Override
+		    protected void onComponentTag(final ComponentTag tag){
+		        super.onComponentTag(tag);
+		        if (resourceModel.getObject() != null) {
+		        	if (resourceModel.getObject().isCorrect()) {
+		        		tag.put("class", "btn btn-danger");
+		        		resourceOkLabelMessage.setObject("Quitar de recursos correctos");
+		        	} else {
+		        		tag.put("class", "btn btn-success");
+		        		resourceOkLabelMessage.setObject("Agregar a recursos correctos");
+		        	}
+		        } else {
+		        	tag.put("class", "btn btn-success");
+	        		resourceOkLabelMessage.setObject("Agregar a recursos correctos");
+		        }
+		    }
 		};
 
 		Link<Void> backButton = new Link<Void>("back") {
@@ -148,7 +173,8 @@ public class ResultItemPage extends BasePage {
 			}
 		};
 
-		form.add(resourceOkButton);
+		resourceOkButton.add(resourceOkLabel);
+		form.add(resourceOkButton.setVisible(resourceModel.getObject() == null || (resourceModel.getObject() != null && !resourceModel.getObject().hasDetails())));
 		form.add(backButton);
 		form.add(comments);
 		form.add(submit);
