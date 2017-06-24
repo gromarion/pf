@@ -1,12 +1,13 @@
 package lib;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.itba.domain.model.EndpointStats;
 import com.itba.domain.repository.EndpointStatsRepo;
 
-public class EndpointQualityFormulae {
-	
+public class EndpointQualityFormulae implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private static final int MULTIPLYER = 1000000;
 	
 	private EndpointStatsRepo endpointStatsRepo;
@@ -16,17 +17,24 @@ public class EndpointQualityFormulae {
 	}
 	
 	public EndpointScore getScore(String endpointURL) {
-		return new EndpointScore(endpointStatsRepo.getAllForEndpoint(endpointURL));
+		return new EndpointScore(endpointURL, endpointStatsRepo.getAllForEndpoint(endpointURL));
 	}
 	
-	public static class EndpointScore {
+	public static class EndpointScore implements Serializable {
+		private static final long serialVersionUID = 1L;
+
+		private String endpointURL;
 		private List<EndpointStats> endpointStats; 
 		private int score;
 		
-		public EndpointScore(List<EndpointStats> endpointStats) {
+		public EndpointScore(String endpointURL, List<EndpointStats> endpointStats) {
+			this.endpointURL = endpointURL;
 			this.endpointStats = endpointStats;
-	
 			this.score = computeScore();
+		}
+		
+		public String getEndpointURL() {
+			return endpointURL;
 		}
 		
 		public List<EndpointStats> getEndpointStats() {

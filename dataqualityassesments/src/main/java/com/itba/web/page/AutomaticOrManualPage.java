@@ -28,7 +28,7 @@ public class AutomaticOrManualPage extends BasePage {
 				WicketSession.get().getEvaluationSession().get().getCampaign().getId());
 
 		EndpointScore endpointScore = new EndpointQualityFormulae(endpointStatsRepo).getScore(campaign.getEndpoint());
-		EndpointScorePanel endpointScorePanel = new EndpointScorePanel("endpointScorePanel", endpointScore.getEndpointStats());
+		EndpointScorePanel endpointScorePanel = new EndpointScorePanel("endpointScorePanel", endpointScore);
 
 		endpointScorePanel.setVisible(!endpointScore.getEndpointStats().isEmpty());
 		add(endpointScorePanel);

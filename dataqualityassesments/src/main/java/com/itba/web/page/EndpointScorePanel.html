@@ -1,8 +1,11 @@
 <html>
 	<body>
 		<wicket:panel>
+			<h2>
+				<span><wicket:message key="endpointAvailability">Endpoint availability for </wicket:message> "<span wicket:id="endpointURL">http://some.endpoint.com/sparql</span>"</span>
+			</h2>
 			<h3>
-				<span><wicket:message key="endpointAvailability">Endpoint availability</wicket:message></span>
+				<wicket:message key="score"></wicket:message>: <span wicket:id="endpointScore">Score</span>
 			</h3>
 			<div id="endpoint-availability-chart" style="width: 480px;height: 320px;"/>
 		</wicket:panel>
