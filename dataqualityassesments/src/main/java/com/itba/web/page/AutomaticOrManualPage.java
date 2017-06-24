@@ -1,15 +1,13 @@
 package com.itba.web.page;
 
-import java.util.List;
-
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.itba.domain.model.Campaign;
-import com.itba.domain.model.EndpointStats;
 import com.itba.domain.repository.CampaignRepo;
 import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.web.WicketSession;
+import lib.EndpointQualityFormulae;
+import lib.EndpointQualityFormulae.EndpointScore;
 
 public class AutomaticOrManualPage extends BasePage {
 	private static final long serialVersionUID = 1L;
@@ -29,10 +27,10 @@ public class AutomaticOrManualPage extends BasePage {
 		final Campaign campaign = campaignRepo.get(Campaign.class,
 				WicketSession.get().getEvaluationSession().get().getCampaign().getId());
 
-		List<EndpointStats> endpointStats = endpointStatsRepo.getAllForEndpoint(campaign.getEndpoint());
-		EndpointScorePanel endpointScorePanel = new EndpointScorePanel("endpointScorePanel", endpointStats);
+		EndpointScore endpointScore = new EndpointQualityFormulae(endpointStatsRepo).getScore(campaign.getEndpoint());
+		EndpointScorePanel endpointScorePanel = new EndpointScorePanel("endpointScorePanel", endpointScore.getEndpointStats());
 
-		endpointScorePanel.setVisible(!endpointStats.isEmpty());
+		endpointScorePanel.setVisible(!endpointScore.getEndpointStats().isEmpty());
 		add(endpointScorePanel);
 	}
 }
