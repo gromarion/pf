@@ -23,9 +23,12 @@ Developers
 
 - Clone this repository to your computer
 - Import the project in Eclipse: File -> Import... -> Maven -> Existing Maven Projects
-- Open the PGAdmin application. Create a new user role with name 'finalproject' and password 'finalproject'. Then, in PGAdmin, copy and  execute the SQL code in the src/test/resources/postgresql-create-tables.sql file.
+- Open the PGAdmin application. Create a new user role with name 'finalproject' and password 'finalproject'. Then, in PGAdmin, copy and execute the SQL code of the following files, in the following order:
+  1. src/test/resources/postgresql-create-tables.sql
+  2. src/test/resources/2017\_06\_10\_18\_13\_add\_timestamp\_to\_evaluated\_resource.sql
+  3. src/test/resources/2017\_06\_12\_19\_26\_create\_endpoint\_stats\_table.sql
 - In Eclipse, right click on the src/test/java/com/itba/Start.java -> Run As -> Java Application
-- By default, the application will be listening for requests at the `127.0.0.1:8443`. Open a web browser and head to `http://localhost:8443` to get started.
+- By default, the application will be listening for requests at the `127.0.0.1:8080`. Open a web browser and head to `http://localhost:8080` to get started.
 
 ### Run the application from an Apache Tomcat server
 ***Requirements***:
@@ -38,7 +41,10 @@ Developers
 - Step inside the cloned repository
 - run `mvn package`. This will generate the `dataqualityassesments-1.0-SNAPSHOT.war` file inside the `target` folder
 - copy the `.war` file in the `PATH_TO_APACHE_TOMCAT_FOLDER/webapps/` folder
-- Open the PGAdmin application. Create a new user role with name 'finalproject' and password 'finalproject'. Then, in PGAdmin, copy and  execute the SQL code in the src/test/resources/postgresql-create-tables.sql file.
+- Open the PGAdmin application. Create a new user role with name 'finalproject' and password 'finalproject'. Then, in PGAdmin, copy and  execute the SQL code of the following files, in the following order:
+  1. src/test/resources/postgresql-create-tables.sql
+  2. src/test/resources/2017\_06\_10\_18\_13\_add\_timestamp\_to\_evaluated\_resource.sql
+  3. src/test/resources/2017\_06\_12\_19\_26\_create\_endpoint\_stats\_table.sql
 - Stepped in the `PATH_TO_APACHE_TOMCAT_FOLDER` folder, run `sh bin/startup.sh`
 - Open a web browser and head to `htp://localhost:8080/dataqualityassessmens-1.0-SNAPSHOT/`
 
