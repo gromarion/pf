@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.wicket.ajax.json.JSONException;
 import org.apache.wicket.model.IModel;
 import com.google.common.base.Optional;

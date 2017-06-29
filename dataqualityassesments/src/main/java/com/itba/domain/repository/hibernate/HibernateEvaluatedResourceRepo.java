@@ -37,20 +37,38 @@ public class HibernateEvaluatedResourceRepo extends AbstractHibernateRepo implem
 	@SuppressWarnings("unchecked")
 	@Override
 	public PaginatedResult<EvaluatedResource> getAllForSession(final EvaluationSession session, int page) {
-		Query query = getSession().createQuery("SELECT e FROM EvaluatedResource e " + " WHERE e.session = "
-				+ session.getId()).setMaxResults(LIMIT).setFirstResult(page);
-		
+		Query query = getSession()
+				.createQuery("SELECT e FROM EvaluatedResource e " + " WHERE e.session = " + session.getId())
+				.setMaxResults(LIMIT).setFirstResult(page);
+
 		Query countQuery = getSession().createQuery("SELECT COUNT(*) FROM EvaluatedResource");
 
 		return new PaginatedResult<EvaluatedResource>(query.list(), page, (long) countQuery.uniqueResult(), LIMIT);
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<EvaluatedResource> getAllForSession(final EvaluationSession session) {
+		Query query = getSession()
+				.createQuery("SELECT e FROM EvaluatedResource e " + " WHERE e.session = " + session.getId());
+
+		return query.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<String> getErroredForSession(final EvaluationSession session) {
+		Query query = getSession().createQuery("SELECT e.resource FROM EvaluatedResource e " + " WHERE e.session = "
+				+ session.getId() + " AND e.correct = false");
+
+		return query.list();
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> getCorrectForSession(final EvaluationSession session) {
-		Query query = getSession().createQuery("SELECT e.resource FROM EvaluatedResource e "
-											+ " WHERE e.session = " + session.getId()
-											+ " AND e.correct = true");
+		Query query = getSession().createQuery("SELECT e.resource FROM EvaluatedResource e " + " WHERE e.session = "
+				+ session.getId() + " AND e.correct = true");
 		return query.list();
 	}
 }

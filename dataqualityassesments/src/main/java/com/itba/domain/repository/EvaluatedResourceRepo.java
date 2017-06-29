@@ -13,6 +13,10 @@ public interface EvaluatedResourceRepo extends HibernateRepo {
     Optional<EvaluatedResource> getResourceForSession(final EvaluationSession session, final String resource);
 
     PaginatedResult<EvaluatedResource> getAllForSession(EvaluationSession session, int page);
+    
+    List<EvaluatedResource> getAllForSession(EvaluationSession session);
+    
+    List<String> getErroredForSession(EvaluationSession session);
 
 	List<String> getCorrectForSession(EvaluationSession session);
 }
