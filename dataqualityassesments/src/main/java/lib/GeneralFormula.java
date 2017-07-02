@@ -8,9 +8,6 @@ import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.web.WicketSession;
 
 public class GeneralFormula {
-
-	private static final int FACTOR = 1000000;
-
 	private CampaignRepo campaignRepo;
 	private EndpointStatsRepo endpointStatsRepo;
 	private EvaluatedResourceRepo evaluatedResourceRepo;
@@ -22,7 +19,7 @@ public class GeneralFormula {
 		this.evaluatedResourceRepo = evaluatedResourceRepo;
 	}
 
-	public long calculate() {
+	public String calculate() {
 		EvaluationSession session = WicketSession.get().getEvaluationSession().get();
 		Campaign campaign = campaignRepo.get(Campaign.class, session.getCampaign().getId());
 
@@ -32,7 +29,8 @@ public class GeneralFormula {
 		int successfulRequestsCount = endpointStatsRepo.getSuccessfulRequests(campaign.getEndpoint()).size();
 		int totalRequestsCount = endpointStatsRepo.getAllForEndpoint(campaign.getEndpoint()).size();
 
-		return Math.round(FACTOR * ((double) correctResourcesCount + successfulRequestsCount)
-				/ (totalResourcesCount + totalRequestsCount));
+		return StringUtils.formatDouble(
+				((double) correctResourcesCount + successfulRequestsCount) / (totalResourcesCount + totalRequestsCount),
+				2);
 	}
 }

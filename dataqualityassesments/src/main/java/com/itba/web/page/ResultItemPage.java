@@ -38,6 +38,7 @@ import com.itba.web.WicketSession;
 import com.itba.web.feedback.CustomFeedbackPanel;
 
 import lib.ManualErrorsFormulae;
+import lib.Score;
 
 @SuppressWarnings("serial")
 public class ResultItemPage extends BasePage {
@@ -116,7 +117,7 @@ public class ResultItemPage extends BasePage {
 			}
 		};
 
-		ManualErrorsFormulae.Score score;
+		Score score;
 		try {
 			score = new ManualErrorsFormulae(campaignRepo, evaluatedResourceRepo, endpointStatsRepo).compute(resource);
 			ResourceScorePanel resourceScorePanel = new ResourceScorePanel("scorePanel", score);

@@ -1,8 +1,6 @@
 package lib;
 
 import java.io.IOException;
-import java.io.Serializable;
-import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,14 +33,6 @@ public class ManualErrorsFormulae {
 	private static final int INCORRECT_EXTRACTION = 2;
 	private static final int SEMANTIC_ERROR = 3;
 	private static final int INCORRECT_EXTERNAL_LINK = 4;
-	
-	private static final double A_FLOOR = 0.9;
-	private static final double B_FLOOR = 0.8;
-	private static final double B_CEIL = 0.89;
-	private static final double C_FLOOR = 0.7;
-	private static final double C_CEIL = 0.79;
-	private static final double D_FLOOR = 0.6;
-	private static final double D_CEIL = 0.69;
 	
 	public ManualErrorsFormulae(CampaignRepo campaignRepo, EvaluatedResourceRepo evaluatedResourceRepo, EndpointStatsRepo endpointStatsRepo) {
 		this.evaluatedResourceRepo = evaluatedResourceRepo;
@@ -165,65 +155,4 @@ public class ManualErrorsFormulae {
 			return 0;
 		}
     }
-	
-	@SuppressWarnings("serial")
-	public static class Score implements Serializable {
-		private double score;
-		private int errors;
-		private Map<String, Integer> errorsAmount;
-		
-		public Score(double score, int errors, Map<String, Integer> errorsAmount) {
-			this.score = score;
-			this.errors = errors;
-			this.errorsAmount = errorsAmount;
-		}
-		
-		public double getScore() {
-			return score;
-		}
-		
-		public int getErrors() {
-			return errors;
-		}
-		
-		public Map<String, Integer> getErrorsAmount() {
-			return errorsAmount;
-		}
-		
-		public String scoreString() {
-			if (score < 0) {
-				return "";
-			}
-
-			DecimalFormat df = new DecimalFormat("0.00");
-
-	        return df.format(score);
-		}
-		
-		public String errorsString() {
-			if (errors < 0) {
-				return "";
-			}
-
-			return errors + "";
-		}
-		
-		public char letterQualification() {
-			if (score >= A_FLOOR) {
-				return 'A';
-			} else if (score <= B_CEIL && score >= B_FLOOR) {
-				return 'B';
-			} else if (score <= C_CEIL && score >= C_FLOOR) {
-				return 'C';
-			} else if (score <= D_CEIL && score >= D_FLOOR) {
-				return 'D';
-			} else {
-				return 'F';
-			}
-		}
-		
-		public String toString() {
-			return letterQualification() + " - " + scoreString();
-		}
-	}
 }

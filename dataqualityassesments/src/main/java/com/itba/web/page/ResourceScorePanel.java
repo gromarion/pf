@@ -7,15 +7,16 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
-import lib.ManualErrorsFormulae;
+
+import lib.Score;
 
 @SuppressWarnings("serial")
 public class ResourceScorePanel extends Panel {
-	private ManualErrorsFormulae.Score score;
+	private Score score;
 
 	private static final String CHART_CONTAINER_ID = "#resource-score-chart";
 
-	public ResourceScorePanel(String id, ManualErrorsFormulae.Score score) {
+	public ResourceScorePanel(String id, Score score) {
 		super(id);
 		this.score = score;
 	}
