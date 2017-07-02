@@ -6,6 +6,7 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.wicket.ajax.json.JSONException;
 import org.apache.wicket.model.IModel;
@@ -74,11 +75,18 @@ public class ManualErrorsFormulae {
 
         	errors.put(errorId, computeError(evaluatedResource.get(), errorId, properties.size()));
         }
-        for (Integer errorId : errors.keySet()) {
+        
+        Set<Integer> errorIds = errors.keySet();
+        
+        if (errorIds.isEmpty()) {
+        	return new Score(-1, -1, errorsAmount);
+        }
+        
+        for (int errorId : errorIds) {
         	ans += getWeightForError(errorId) * errors.get(errorId);
         }
         
-        return new Score(1 - ans / 4, evaluatedResource.get().getDetails().size(), errorsAmount);
+        return new Score(1 - ans, evaluatedResource.get().getDetails().size(), errorsAmount);
 	}
 	
 	private void addError(Map<String, Integer> errorsAmount, Error error) {
