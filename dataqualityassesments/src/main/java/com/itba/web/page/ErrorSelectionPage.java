@@ -1,7 +1,6 @@
 package com.itba.web.page;
 
 import java.util.List;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -20,7 +19,6 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.google.common.base.Optional;
 import com.itba.domain.EntityModel;
 import com.itba.domain.model.Error;
@@ -32,11 +30,10 @@ import com.itba.domain.repository.EvaluatedResourceDetailRepo;
 import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.web.WicketSession;
 import com.itba.web.feedback.CustomFeedbackPanel;
+import lib.StringUtils;
 
 @SuppressWarnings("serial")
 public class ErrorSelectionPage extends BasePage {
-
-	private static final String[] HTTP_SCHEMES = {"http","https"};
 	
 	@SpringBean
 	private ErrorRepo errorRepo;
@@ -80,7 +77,7 @@ public class ErrorSelectionPage extends BasePage {
     		availableErrors.getObject().remove(usedErrorDetails.getObject().get(i).getError());
     	}
     	
-    	if(!stringContains(object, HTTP_SCHEMES)) {
+    	if(!StringUtils.containsURL(object)) {
     		availableErrors.getObject().remove(errorRepo.get(4));
     	}
     	
@@ -92,7 +89,6 @@ public class ErrorSelectionPage extends BasePage {
         final Label resourceLabel = new Label("resourceLabel", resource);
         final Label errorDescriptionLabel = new Label("errorDescription", errorDescription);
         final Label errorExampleLabel = new Label("errorExample", errorExample);
-        
         final Label foundErrorsLabel = new Label("foundErrorsLabel", getString("foundErrorsLabel"));
         final Label errorNameLabel = new Label("errorNameLabel", getString("errorNameLabel"));
         final Label newErrorLabel = new Label("newErrorLabel", getString("newErrorLabel"));
@@ -207,15 +203,5 @@ public class ErrorSelectionPage extends BasePage {
 	protected void onDetach() {
 		super.onDetach();
 		errorModel.detach();
-	}
-
-	public static boolean stringContains(String inputStr,
-			String[] items) {
-		for (int i = 0; i < items.length; i++) {
-			if (inputStr.contains(items[i])) {
-				return true;
-			}
-		}
-		return false;
 	}
 }

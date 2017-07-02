@@ -73,7 +73,7 @@ public class ManualErrorsFormulae {
         	int errorId = detail.getError().getId();
         	addError(errorsAmount, detail.getError());
 
-        	errors.put(errorId, computeError(evaluatedResource.get(), errorId, properties.size()));
+        	errors.put(errorId, computeError(evaluatedResource.get(), errorId, properties));
         }
         
         Set<Integer> errorIds = errors.keySet();
@@ -97,9 +97,13 @@ public class ManualErrorsFormulae {
 		}
 	}
 	
-	private double computeError(EvaluatedResource evaluatedResource, int errorId, int propertiesAmount) {
+	private double computeError(EvaluatedResource evaluatedResource, int errorId, List<List<ResultItem>> properties) {
 		if (errorId >= INCORRECT_DATA && errorId <= INCORRECT_EXTERNAL_LINK) {
-			return erroredOverTotal(evaluatedResource, errorId, propertiesAmount);			
+			if (errorId == INCORRECT_EXTERNAL_LINK) {
+				return erroredLinksOverTotalLinks(evaluatedResource, errorId, properties);
+			} else {
+				return erroredOverTotal(evaluatedResource, errorId, properties.size());				
+			}
 		} else {
 			return 0;
 		}
@@ -118,6 +122,25 @@ public class ManualErrorsFormulae {
 			}
 		}
 		return ((double) numerator) / propertiesAmount;
+	}
+	
+	private double erroredLinksOverTotalLinks(EvaluatedResource evaluatedResource, int errorId, List<List<ResultItem>> properties) {
+		int numerator = 0;
+		int denominator = 0;
+
+		for (EvaluatedResourceDetail detail : evaluatedResource.getDetails()) {
+			if (detail.getError().getId() == errorId) {
+				numerator++;
+			}
+		}
+		
+		for (List<ResultItem> property : properties) {
+			if(StringUtils.containsURL(property.get(1).toString())) {
+				denominator++;
+			}
+		}
+		
+		return ((double) numerator) / denominator;
 	}
 
 	private Optional<EvaluatedResource> evaluatedResource(String resource) {
