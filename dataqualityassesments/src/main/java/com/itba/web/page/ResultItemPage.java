@@ -121,8 +121,8 @@ public class ResultItemPage extends BasePage {
 			score = new ManualErrorsFormulae(campaignRepo, evaluatedResourceRepo, endpointStatsRepo).compute(resource);
 			ResourceScorePanel resourceScorePanel = new ResourceScorePanel("scorePanel", score);
 
-			add(new Label("resourceScore", score.scoreString()));
-			if (score.getScore() == -1) {
+			resourceScorePanel.add(new Label("resourceScore", score.toString()));
+			if (score.getScore() < 0) {
 				resourceScorePanel.setVisible(false);
 			}
 			add(resourceScorePanel);
