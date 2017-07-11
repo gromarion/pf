@@ -14,6 +14,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.itba.ManualErrorsFormulae;
 import com.itba.domain.EntityModel;
 import com.itba.domain.model.EvaluatedResource;
 import com.itba.domain.model.EvaluationSession;
@@ -26,11 +27,12 @@ import com.itba.domain.repository.hibernate.PaginatedResult;
 import com.itba.web.WicketSession;
 import com.itba.web.feedback.CustomFeedbackPanel;
 
-import lib.ManualErrorsFormulae;
-
 @SuppressWarnings("serial")
 public class ErrorsByUserPage extends BasePage {
 
+	@SpringBean
+	private ManualErrorsFormulae manualErrorsFormulae;
+	
 	@SpringBean
 	private EvaluatedResourceRepo evaluatedResourceRepo;
 
@@ -76,9 +78,7 @@ public class ErrorsByUserPage extends BasePage {
 				evaluatedResource
 						.add(new Label("resourceTimestamp", evaluatedResource.getModelObject().getFormattedDate()));
 				try {
-					evaluatedResource.add(new Label("resourceScore",
-							new ManualErrorsFormulae(campaignRepo, evaluatedResourceRepo, endpointStatsRepo)
-									.compute(evaluatedResource.getModelObject().getResource()).scoreString()));
+					evaluatedResource.add(new Label("resourceScore", manualErrorsFormulae.compute(evaluatedResource.getModelObject().getResource()).scoreString()));
 				} catch (JSONException | IOException e) {
 					e.printStackTrace();
 					setResponsePage(ErrorPage.class);

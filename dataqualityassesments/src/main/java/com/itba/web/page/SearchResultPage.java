@@ -3,6 +3,7 @@ package com.itba.web.page;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.json.JSONArray;
 import org.apache.wicket.ajax.json.JSONException;
@@ -14,19 +15,23 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import com.itba.ManualErrorsFormulae;
 import com.itba.domain.SparqlRequestHandler;
 import com.itba.domain.model.Campaign;
 import com.itba.domain.repository.CampaignRepo;
 import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.web.WicketSession;
-import lib.ManualErrorsFormulae;
+
 import lib.Score;
 
 @SuppressWarnings("serial")
 public class SearchResultPage extends BasePage {
 	public static int PAGE_LIMIT = 20;
 	
+	@SpringBean
+	private ManualErrorsFormulae manualErrorsFormulae;
 	@SpringBean
 	private CampaignRepo campaignRepo;
 	@SpringBean
@@ -75,7 +80,7 @@ public class SearchResultPage extends BasePage {
 				listItem.add(resultLink);
 				Score resourceScore;
 				try {
-					resourceScore = new ManualErrorsFormulae(campaignRepo, evaluatedResourceRepo, endpointStatsRepo).compute(resource);
+					resourceScore = manualErrorsFormulae.compute(resource);
 					listItem.add(new Label("resourceScore", resourceScore.scoreString()));
 					listItem.add(new Label("resourceErrors", resourceScore.errorsString()));
 				} catch (JSONException | IOException e) {

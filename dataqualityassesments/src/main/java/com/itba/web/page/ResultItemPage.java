@@ -23,6 +23,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.google.common.collect.Lists;
+import com.itba.ManualErrorsFormulae;
 import com.itba.domain.EntityModel;
 import com.itba.domain.SparqlRequestHandler;
 import com.itba.domain.model.Campaign;
@@ -37,7 +38,6 @@ import com.itba.sparql.ResultItem;
 import com.itba.web.WicketSession;
 import com.itba.web.feedback.CustomFeedbackPanel;
 
-import lib.ManualErrorsFormulae;
 import lib.Score;
 
 @SuppressWarnings("serial")
@@ -45,6 +45,9 @@ public class ResultItemPage extends BasePage {
 	
 	private static final String URL_PATTERN = "(?i)\\b((?:https?://|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:\'\".,<>???“”‘’]))";
 
+	@SpringBean
+	private ManualErrorsFormulae manualErrorsFormulae;
+	
 	@SpringBean
 	private CampaignRepo campaignRepo;
 	
@@ -119,7 +122,7 @@ public class ResultItemPage extends BasePage {
 
 		Score score;
 		try {
-			score = new ManualErrorsFormulae(campaignRepo, evaluatedResourceRepo, endpointStatsRepo).compute(resource);
+			score = manualErrorsFormulae.compute(resource);
 			ResourceScorePanel resourceScorePanel = new ResourceScorePanel("scorePanel", score);
 
 			resourceScorePanel.add(new Label("resourceScore", score.toString()));

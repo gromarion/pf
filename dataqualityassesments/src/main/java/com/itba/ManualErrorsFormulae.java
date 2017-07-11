@@ -1,4 +1,4 @@
-package lib;
+package com.itba;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -7,46 +7,60 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.wicket.ajax.json.JSONException;
-import org.apache.wicket.model.IModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.google.common.base.Optional;
-import com.itba.domain.EntityModel;
 import com.itba.domain.SparqlRequestHandler;
-import com.itba.domain.model.Campaign;
 import com.itba.domain.model.Error;
 import com.itba.domain.model.EvaluatedResource;
 import com.itba.domain.model.EvaluatedResourceDetail;
-import com.itba.domain.model.EvaluationSession;
-import com.itba.domain.repository.CampaignRepo;
 import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.sparql.JsonSparqlResult;
 import com.itba.sparql.ResultItem;
 import com.itba.web.WicketSession;
 
+import lib.Score;
+import lib.StringUtils;
+
+@Service
 public class ManualErrorsFormulae {
+	
+	@Autowired
 	private EvaluatedResourceRepo evaluatedResourceRepo;
-	private Campaign campaign;
+	
+	@Autowired
 	private EndpointStatsRepo endpointStatsRepo;
 
+	// TODO: descablear esto. Sacarlo de la DB, tabla de Error
 	private static final int INCORRECT_DATA = 1;
 	private static final int INCORRECT_EXTRACTION = 2;
 	private static final int SEMANTIC_ERROR = 3;
 	private static final int INCORRECT_EXTERNAL_LINK = 4;
 	
-	public ManualErrorsFormulae(CampaignRepo campaignRepo, EvaluatedResourceRepo evaluatedResourceRepo, EndpointStatsRepo endpointStatsRepo) {
-		this.evaluatedResourceRepo = evaluatedResourceRepo;
-		this.campaign = campaignRepo.get(Campaign.class, WicketSession.get().getEvaluationSession().get().getCampaign().getId());
-		this.endpointStatsRepo = endpointStatsRepo;
+	public ManualErrorsFormulae() {
+
 	}
+	
+//	public double computeIndividual(String resource, ) {
+//		IModel<EvaluationSession> currentSession = new EntityModel<EvaluationSession>(EvaluationSession.class);
+//    	currentSession.setObject(WicketSession.get().getEvaluationSession().get());
+//    	Optional<EvaluatedResource> evaluatedResource = evaluatedResource(resource);
+//    	List<List<ResultItem>> properties = new JsonSparqlResult(SparqlRequestHandler.requestResource(resource, campaign, endpointStatsRepo).toString()).data;
+//
+//    	
+//    	
+//    	return computeError();
+//	}
 	
 	// Esto por ahora es un switch case porque no en todos los casos es un tipo
 	// de fórmula erroredOverTotal.
 	public Score compute(String resource) throws JSONException, IOException {
-		IModel<EvaluationSession> currentSession = new EntityModel<EvaluationSession>(EvaluationSession.class);
-    	currentSession.setObject(WicketSession.get().getEvaluationSession().get());
     	Optional<EvaluatedResource> evaluatedResource = evaluatedResource(resource);
-    	List<List<ResultItem>> properties = new JsonSparqlResult(SparqlRequestHandler.requestResource(resource, campaign, endpointStatsRepo).toString()).data;
+    	List<List<ResultItem>> properties = new JsonSparqlResult(
+    			SparqlRequestHandler.requestResource(
+    					resource, WicketSession.get().getEvaluationSession().get().getCampaign(), endpointStatsRepo).toString()).data;
 
         Map<Integer, Double> errors = new HashMap<>();
         Map<String, Integer> errorsAmount = new HashMap<>();
@@ -134,11 +148,8 @@ public class ManualErrorsFormulae {
 	}
 
 	private Optional<EvaluatedResource> evaluatedResource(String resource) {
-		IModel<EvaluationSession> currentSession = new EntityModel<EvaluationSession>(EvaluationSession.class);
-		currentSession.setObject(WicketSession.get().getEvaluationSession().get());
 		String escapedResource = resource.replaceAll("'", "''");
-
-		return evaluatedResourceRepo.getResourceForSession(currentSession.getObject(), escapedResource);
+		return evaluatedResourceRepo.getResourceForSession(WicketSession.get().getEvaluationSession().get(), escapedResource);
 	}
 	
 	private double getWeightForError(int errorId) {
