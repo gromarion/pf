@@ -43,16 +43,16 @@ public class ManualErrorsFormulae {
 
 	}
 	
-//	public double computeIndividual(String resource, ) {
-//		IModel<EvaluationSession> currentSession = new EntityModel<EvaluationSession>(EvaluationSession.class);
-//    	currentSession.setObject(WicketSession.get().getEvaluationSession().get());
-//    	Optional<EvaluatedResource> evaluatedResource = evaluatedResource(resource);
-//    	List<List<ResultItem>> properties = new JsonSparqlResult(SparqlRequestHandler.requestResource(resource, campaign, endpointStatsRepo).toString()).data;
-//
-//    	
-//    	
-//    	return computeError();
-//	}
+	public double computeIndividual(String resource, int errorId) throws JSONException, IOException {
+		Optional<EvaluatedResource> evaluatedResource = evaluatedResource(resource);
+    	List<List<ResultItem>> properties = new JsonSparqlResult(
+    			SparqlRequestHandler.requestResource(
+    					resource, WicketSession.get().getEvaluationSession().get().getCampaign(), endpointStatsRepo).toString()).data;
+
+        Map<Integer, Double> errors = new HashMap<>();        
+    	errors.put(errorId, computeError(evaluatedResource.get(), errorId, properties));
+        return getWeightForError(errorId) * errors.get(errorId);
+	}
 	
 	// Esto por ahora es un switch case porque no en todos los casos es un tipo
 	// de fórmula erroredOverTotal.

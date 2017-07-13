@@ -65,13 +65,13 @@ public class ResultItemPage extends BasePage {
 
 	final IModel<EvaluatedResource> resourceModel = new EntityModel<EvaluatedResource>(EvaluatedResource.class);
 	
-	public ResultItemPage(PageParameters parameters) {
+	public ResultItemPage(PageParameters parameters) {		
 		final String resource = parameters.get("selection").toString();
 		final String search = parameters.get("search").toString();
 		final Campaign campaign = campaignRepo.get(Campaign.class, WicketSession.get().getEvaluationSession().get().getCampaign().getId());
 		final IModel<String> resourceOkLabelMessage = Model.of();
 		final Label resourceOkLabel = new Label("resourceOkLabel", resourceOkLabelMessage);
-		
+
 		resourceModel.setObject(evaluatedResourceRepo.getResourceForSession(WicketSession.get().getEvaluationSession().get(), resource).orNull());
 		
 		final List<String> previouslyEvaluatedDetails = resourceModel.getObject() == null
@@ -93,7 +93,7 @@ public class ResultItemPage extends BasePage {
 					listItem.add(objectLabel);
 					listItem.add(new Label("errorsBadge", "!")
 							.setVisible(previouslyEvaluatedDetails.contains(predicateURL + resultItem.get(1))));
-					listItem.add(new AjaxLink<Void>("errorPageLink") {
+					listItem.add(new AjaxLink<Void>("errorPageLink") { 
 						@Override
 						public void onClick(AjaxRequestTarget target) {
 							PageParameters parameters = new PageParameters();
