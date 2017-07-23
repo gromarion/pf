@@ -40,7 +40,6 @@ public class ManualErrorsFormulae {
 	private static final int INCORRECT_EXTERNAL_LINK = 4;
 	
 	public ManualErrorsFormulae() {
-
 	}
 	
 	public double computeIndividual(String resource, int errorId) throws JSONException, IOException {

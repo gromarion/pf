@@ -10,9 +10,8 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
+import com.itba.EndpointQualityFormulae.EndpointScore;
 import com.itba.domain.model.EndpointStats;
-
-import lib.EndpointQualityFormulae.EndpointScore;
 
 public class EndpointScorePanel extends Panel {
 	private static final long serialVersionUID = 1L;
