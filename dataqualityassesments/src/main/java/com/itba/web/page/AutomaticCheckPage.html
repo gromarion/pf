@@ -6,11 +6,13 @@
 			</h2>
 			<h3>
 				<wicket:message key="SPARQLServerStatus">SPARQL Server Status:</wicket:message>
-				<span wicket:id="SPARQLServerStatus">Normal</span>
+				<span wicket:id="SPARQLServerNormal" class="green">Normal</span>
+				<span wicket:id="SPARQLServerDown" class="red">Down</span>
 			</h3>
 			<h3>
 				<wicket:message key="hasLicense">SPARQL Server Status:</wicket:message>
-				<span wicket:id="hasLicense">Yes</span>
+				<span wicket:id="hasLicense" class="green">Yes</span>
+				<span wicket:id="doesntHaveLicense" class="red">No</span>
 			</h3>
 			<button wicket:id="back" class="btn">
                 <wicket:message key="back">Back</wicket:message>

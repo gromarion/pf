@@ -24,20 +24,32 @@ public class AutomaticCheckPage extends BasePage {
     protected void onInitialize() {
 		super.onInitialize();
 		Campaign campaign = WicketSession.get().getEvaluationSession().get().getCampaign();
-		String hasLicense;
+		boolean hasLicense;
+		boolean isAvailable;
 		try {
-			hasLicense = SparqlRequestHandler.hasLicense(campaign, endpointStatsRepo) ? "Si" : "No";
+			hasLicense = SparqlRequestHandler.hasLicense(campaign, endpointStatsRepo);
 		} catch (IOException e) {
-			hasLicense = "No";
-			add(new Label("SPARQLServerStatus", "Normal"));
+			hasLicense = false;
 		}
 		try {
 			SparqlRequestHandler.requestSuggestions("", campaign, endpointStatsRepo, 0, 1);
-			add(new Label("SPARQLServerStatus", "Normal"));
+			isAvailable = true;
 		} catch (IOException e) {
-			add(new Label("SPARQLServerStatus", "Caído"));
+			isAvailable = false;
 		}
-		add(new Label("hasLicense", hasLicense));
+		Label hasLicenseLabel = new Label("hasLicense", "Si");
+		Label doesntHaveLiceseLabel = new Label("doesntHaveLicense", "No");
+		Label serverNormalLabel = new Label("SPARQLServerNormal", "Normal");
+		Label serverDownLabel = new Label("SPARQLServerDown", "Caído");
+		hasLicenseLabel.setVisible(hasLicense);
+		doesntHaveLiceseLabel.setVisible(!hasLicense);
+		add(hasLicenseLabel);
+		add(doesntHaveLiceseLabel);
+		
+		serverNormalLabel.setVisible(isAvailable);
+		serverDownLabel.setVisible(!isAvailable);
+		add(serverNormalLabel);
+		add(serverDownLabel);
 		
 		Link<Void> backButton = new Link<Void>("back") {
 			@Override
