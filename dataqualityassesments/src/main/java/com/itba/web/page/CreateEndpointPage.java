@@ -4,9 +4,11 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.itba.domain.EntityModel;
@@ -41,6 +43,14 @@ public class CreateEndpointPage extends WebPage {
 				setResponsePage(AutomaticOrManualPage.class);
 			}
 		});
+		
+		Link<Void> backButton = new Link<Void>("back") {
+			@Override
+			public void onClick() {
+				setResponsePage(LoginPage.class);
+			}
+		};
+		form.add(backButton);
 		
 		add(form);
 	}
