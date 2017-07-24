@@ -18,7 +18,6 @@ public class AutomaticOrManualPage extends BasePage {
 		super.onInitialize();
 		add(new BookmarkablePageLink<RegisterUserPage>("automaticCheckLink", AutomaticCheckPage.class));
 		add(new BookmarkablePageLink<RegisterUserPage>("manualCheckLink", ResourceSearchPage.class));
-		add(new BookmarkablePageLink<CreateEndpointPage>("createEndpointLink", CreateEndpointPage.class));
 
 		EndpointScore endpointScore;
 		try {
