@@ -155,14 +155,14 @@ public class ResultItemPage extends BasePage {
 		        if (resourceModel.getObject() != null) {
 		        	if (resourceModel.getObject().isCorrect()) {
 		        		tag.put("class", "btn btn-danger");
-		        		resourceOkLabelMessage.setObject("Quitar de recursos correctos");
+		        		resourceOkLabelMessage.setObject("Quitar de documentos correctos");
 		        	} else {
 		        		tag.put("class", "btn btn-success");
-		        		resourceOkLabelMessage.setObject("Agregar a recursos correctos");
+		        		resourceOkLabelMessage.setObject("Agregar a documenos correctos");
 		        	}
 		        } else {
 		        	tag.put("class", "btn btn-success");
-	        		resourceOkLabelMessage.setObject("Agregar a recursos correctos");
+	        		resourceOkLabelMessage.setObject("Agregar a documentos correctos");
 		        }
 		    }
 		};

@@ -1,8 +1,11 @@
 package lib;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class Score {
+public class Score implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private double score;
 	private int errors;
