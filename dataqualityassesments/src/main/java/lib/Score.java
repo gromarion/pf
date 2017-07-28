@@ -1,8 +1,10 @@
 package lib;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class Score {
+@SuppressWarnings("serial")
+public class Score implements Serializable {
 
 	private double score;
 	private int errors;
