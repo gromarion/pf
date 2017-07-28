@@ -29,6 +29,14 @@ public class SparqlRequestHandler {
 		return RequestHandler.jsonSendGet(endpointStatsRepo, campaign.getEndpoint(), queryURL);
 	}
 
+	public static boolean hasLicense(Campaign campaign, EndpointStatsRepo endpointStatsRepo) throws IOException {
+		String query = campaign.getQueryForLicenseChecking();
+		String queryURL = campaign.generateQueryURL(query);
+		JSONObject response = RequestHandler.jsonSendGet(endpointStatsRepo, campaign.getEndpoint(), queryURL);
+
+		return response.getBoolean("boolean");
+	}
+
 	public static JSONObject requestRandomResource(Campaign campaign, EndpointStatsRepo endpointStatsRepo)
 			throws JSONException, IOException {
 		String sparqlQuery = campaign.getQueryforRandomResource();

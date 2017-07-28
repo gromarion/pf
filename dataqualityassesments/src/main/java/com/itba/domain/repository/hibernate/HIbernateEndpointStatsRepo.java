@@ -1,5 +1,6 @@
 package com.itba.domain.repository.hibernate;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
@@ -10,7 +11,8 @@ import com.itba.domain.model.EndpointStats;
 import com.itba.domain.repository.EndpointStatsRepo;
 
 @Repository
-public class HIbernateEndpointStatsRepo extends AbstractHibernateRepo implements EndpointStatsRepo {
+public class HIbernateEndpointStatsRepo extends AbstractHibernateRepo implements EndpointStatsRepo, Serializable {
+	private static final long serialVersionUID = 1L;
 
 	@Autowired
 	public HIbernateEndpointStatsRepo(SessionFactory sessionFactory) {

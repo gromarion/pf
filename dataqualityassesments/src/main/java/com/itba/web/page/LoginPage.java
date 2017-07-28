@@ -78,6 +78,7 @@ public class LoginPage extends WebPage {
         form.add(new PasswordTextField("password").setRequired(true));
         form.add(new Button("login"));
         add(form);
+        add(new BookmarkablePageLink<CreateEndpointPage>("createEndpointLink", CreateEndpointPage.class));
         add(new BookmarkablePageLink<RegisterUserPage>("registerLink", RegisterUserPage.class));
     }
 }

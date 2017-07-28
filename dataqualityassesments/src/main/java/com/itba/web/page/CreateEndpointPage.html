@@ -1,43 +1,72 @@
-<wicket:extend xmlns:wicket="http://www.w3.org/1999/xhtml">
-	<div class="row">
-		<div class="container">
-			<h2>
-				<wicket:message key="title">New endpoint</wicket:message>
-			</h2>
-			<div>
-				<span><wicket:message key="description">Description</wicket:message></span>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+    <meta charset="utf-8" />
+    <title>Data Quality Assesment</title>
+    <link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:regular,bold' rel='stylesheet' type='text/css' />
+    <link rel="stylesheet" href="style.css" type="text/css" media="screen" title="Stylesheet" />
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css" />
+    <script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
+    <style>
+                div.wicket-aa {
+                    font-family: "Lucida Grande","Lucida Sans Unicode",Tahoma,Verdana;
+                    font-size: 12px;
+                    background-color: white;
+                    border-width: 1px;
+                    border-color: #cccccc;
+                    border-style: solid;
+                    padding: 2px;
+                    margin: 1px 0 0 0;
+                    text-align:left;
+                }
+                div.wicket-aa ul { list-style:none; padding: 2px; margin:0; }
+                div.wicket-aa ul li.selected { background-color: #FFFF00; padding: 2px; margin:0; }
+            </style>
+</head>
+	<body>
+		<div class="row">
+			<div class="container">
+				<h2>
+					<wicket:message key="title">New endpoint</wicket:message>
+				</h2>
+				<div>
+					<span><wicket:message key="description">Description</wicket:message></span>
+				</div>
+				<br/>
+				<div>
+					<a href="https://www.w3.org/wiki/SparqlEndpoints" target="_blank">Lista
+						de endpoints</a>
+				</div>
+				<br/>
+				<form wicket:id="createEndpointForm" method="post"
+					class="form-horizontal">
+					<div class="control-group">
+						<label class="control-label"> <wicket:message key="name">Name</wicket:message>
+						</label>
+						<div class="controls">
+							<input type="text" wicket:id="name" />
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label"> <wicket:message
+								key="endpoint">Endpoint</wicket:message>
+						</label>
+						<div class="controls">
+							<input type="text" wicket:id="endpoint" />
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="controls">
+							<button wicket:id="submit" type="submit" class="btn btn-primary">
+								<wicket:message key="submit">Submit</wicket:message>
+							</button>
+							<button wicket:id="back" class="btn">
+				                <wicket:message key="back">Back</wicket:message>
+				            </button>
+						</div>
+					</div>
+				</form>
 			</div>
-			<br/>
-			<div>
-				<a href="https://www.w3.org/wiki/SparqlEndpoints" target="_blank">Lista
-					de endpoints</a>
-			</div>
-			<br/>
-			<form wicket:id="createEndpointForm" method="post"
-				class="form-horizontal">
-				<div class="control-group">
-					<label class="control-label"> <wicket:message key="name">Name</wicket:message>
-					</label>
-					<div class="controls">
-						<input type="text" wicket:id="name" />
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label"> <wicket:message
-							key="endpoint">Endpoint</wicket:message>
-					</label>
-					<div class="controls">
-						<input type="text" wicket:id="endpoint" />
-					</div>
-				</div>
-				<div class="control-group">
-					<div class="controls">
-						<button wicket:id="submit" type="submit" class="btn btn-primary">
-							<wicket:message key="submit">Submit</wicket:message>
-						</button>
-					</div>
-				</div>
-			</form>
 		</div>
-	</div>
-</wicket:extend>
+	</body>
+</html>
