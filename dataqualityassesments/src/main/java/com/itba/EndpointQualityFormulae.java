@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.itba.domain.SparqlRequestHandler;
 import com.itba.domain.model.Campaign;
 import com.itba.domain.model.EndpointStats;
-import com.itba.domain.repository.CampaignRepo;
 import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.web.WicketSession;
 
@@ -21,15 +20,12 @@ public class EndpointQualityFormulae {
 
 	@Autowired
 	private EndpointStatsRepo endpointStatsRepo;
-	@Autowired
-	private CampaignRepo campaignRepo;
 
 	public EndpointQualityFormulae() {
 	}
 
 	public EndpointScore getScore() throws IOException {
-		return new EndpointScore(campaignRepo.get(Campaign.class,
-				WicketSession.get().getEvaluationSession().get().getCampaign().getId()), endpointStatsRepo);
+		return new EndpointScore(endpointStatsRepo);
 	}
 
 	public static class EndpointScore implements Serializable {
@@ -39,8 +35,8 @@ public class EndpointQualityFormulae {
 		private EndpointStatsRepo endpointStatsRepo;
 		private String score;
 
-		public EndpointScore(Campaign campaign, EndpointStatsRepo endpointStatsRepo) throws IOException {
-			this.campaign = campaign;
+		public EndpointScore(EndpointStatsRepo endpointStatsRepo) throws IOException {
+			this.campaign = WicketSession.get().getEvaluationSession().get().getCampaign();
 			this.endpointStatsRepo = endpointStatsRepo;
 			this.score = computeScore();
 		}
