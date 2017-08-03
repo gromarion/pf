@@ -14,9 +14,17 @@ import org.apache.wicket.ajax.json.JSONObject;
 import com.itba.domain.model.EndpointStats;
 import com.itba.domain.repository.EndpointStatsRepo;
 
+import lib.Cache;
+
 public class RequestHandler {
 	public static String sendGet(EndpointStatsRepo endpointStatsRepo, String endpointURL, String url)
 			throws IOException {
+		Cache cache = Cache.getInstance();
+		String cacheKey = endpointURL + url;
+		Object object = cache.get(cacheKey);
+		if (object != null) {
+			return object.toString();
+		}
 		URL obj;
 		obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -39,7 +47,9 @@ public class RequestHandler {
 			response.append(inputLine);
 		}
 		in.close();
-		return response.toString();
+		String stringResponse = response.toString();
+		cache.put(cacheKey, stringResponse);
+		return stringResponse;
 	}
 
 	public static JSONObject jsonSendGet(EndpointStatsRepo endpointStatsRepo, String endpointURL, String url)

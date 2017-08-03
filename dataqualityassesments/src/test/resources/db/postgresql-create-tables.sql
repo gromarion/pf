@@ -20,6 +20,8 @@ CREATE TABLE campaign (
 
 INSERT INTO campaign (id, name, endpoint, graphs) VALUES (1, 'DBpedia Evaluation Campaign', 'http://live.dbpedia.org/sparql', 'http://live.dbpedia.org');
 
+ALTER SEQUENCE campaign_id_seq RESTART WITH 2;
+
 DROP TABLE IF EXISTS error CASCADE;
 CREATE TABLE error (
   id serial NOT NULL,
@@ -34,6 +36,8 @@ INSERT INTO error (id, name, example, description) VALUES
 	(2, 'Valor del objeto extraído de forma incompleta', 'dbpprop:dateOfBirth “3”', 'Parte de los datos no han podido ser extraídos de forma completa, debido a algún tipo de error durante el proceso.'),
 	(3, 'Objeto semánticamente incorrecto', 'Un dato no confiable podría ser "El atentado al World Trade Center ocurrió el 12 de Septiembre de 2001.", pues si se verifica en otras fuentes se concluirá que efectivamente el atentado fue el 11 de Septiembre del 2001, y no el 12.', 'Un valor es semánticamente correcto cuando representa el estado correcto de un objeto.'),
 	(4, 'Enlace externo incorrecto', 'En el recurso "http://dbpedia.org/page/Canaan_Valley", la propiedad "dbo:wikiPageExternalLink" contiene enlaces caducados, o que no son relevantes al recurso en cuestión.', 'El enlace a un sitio web externo no contiene información relacionada al recurso en cuestión, o ha expirado.');
+
+ALTER SEQUENCE error_id_seq RESTART WITH 5;
 
 DROP TABLE IF EXISTS evaluation_session CASCADE;
 CREATE TABLE evaluation_session (
