@@ -2,7 +2,9 @@ package com.itba;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +12,10 @@ import org.springframework.stereotype.Service;
 import com.itba.domain.SparqlRequestHandler;
 import com.itba.domain.model.Campaign;
 import com.itba.domain.model.EndpointStats;
+import com.itba.domain.model.Error;
 import com.itba.domain.repository.EndpointStatsRepo;
+import com.itba.domain.repository.ErrorRepo;
+import com.itba.domain.repository.EvaluatedResourceDetailRepo;
 import com.itba.web.WicketSession;
 
 import lib.StringUtils;
@@ -20,12 +25,18 @@ public class EndpointQualityFormulae {
 
 	@Autowired
 	private EndpointStatsRepo endpointStatsRepo;
+	
+	@Autowired
+	private EvaluatedResourceDetailRepo evaluatedResourceDetailRepo;
+	
+	@Autowired
+	private ErrorRepo errorRepo;
 
 	public EndpointQualityFormulae() {
 	}
 
 	public EndpointScore getScore() throws IOException {
-		return new EndpointScore(endpointStatsRepo);
+		return new EndpointScore(endpointStatsRepo, evaluatedResourceDetailRepo, errorRepo);
 	}
 
 	public static class EndpointScore implements Serializable {
@@ -33,11 +44,16 @@ public class EndpointQualityFormulae {
 
 		private Campaign campaign;
 		private EndpointStatsRepo endpointStatsRepo;
+		private EvaluatedResourceDetailRepo evaluatedResourceDetailRepo;
+		private ErrorRepo errorRepo;
 		private String score;
 
-		public EndpointScore(EndpointStatsRepo endpointStatsRepo) throws IOException {
+		public EndpointScore(EndpointStatsRepo endpointStatsRepo,
+				EvaluatedResourceDetailRepo evaluatedResourceDetailRepo, ErrorRepo errorRepo) throws IOException {
 			this.campaign = WicketSession.get().getEvaluationSession().get().getCampaign();
 			this.endpointStatsRepo = endpointStatsRepo;
+			this.evaluatedResourceDetailRepo = evaluatedResourceDetailRepo;
+			this.errorRepo = errorRepo;
 			this.score = computeScore();
 		}
 
@@ -45,6 +61,14 @@ public class EndpointQualityFormulae {
 			return campaign.getEndpoint();
 		}
 
+		public Map<Error, Long> getErrorTypeStats() {
+			Map<Error, Long> qtyByError = new HashMap<>();
+			for (Error error : errorRepo.getAll()) {
+				qtyByError.put(error, evaluatedResourceDetailRepo.getQtyByError(error));
+			}
+			return qtyByError;
+		}
+		
 		public List<EndpointStats> getEndpointStats() {
 			return endpointStatsRepo.getAllForEndpoint(campaign.getEndpoint());
 		}
