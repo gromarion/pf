@@ -64,7 +64,10 @@ public class EndpointQualityFormulae {
 		public Map<Error, Long> getErrorTypeStats() {
 			Map<Error, Long> qtyByError = new HashMap<>();
 			for (Error error : errorRepo.getAll()) {
-				qtyByError.put(error, evaluatedResourceDetailRepo.getQtyByError(error));
+				long quantity = evaluatedResourceDetailRepo.getQtyByError(error);
+				if (quantity > 0) {
+					qtyByError.put(error, quantity);
+				}
 			}
 			return qtyByError;
 		}

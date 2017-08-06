@@ -7,12 +7,15 @@ import org.springframework.stereotype.Repository;
 import com.itba.domain.model.Error;
 import com.itba.domain.repository.ErrorRepo;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Repository
-public class HibernateErrorRepo extends AbstractHibernateRepo implements ErrorRepo {
+public class HibernateErrorRepo extends AbstractHibernateRepo implements ErrorRepo, Serializable {
 
-    @Autowired
+	private static final long serialVersionUID = 1L;
+
+	@Autowired
     public HibernateErrorRepo(SessionFactory sessionFactory) {
         super(sessionFactory);
     }
@@ -26,5 +29,4 @@ public class HibernateErrorRepo extends AbstractHibernateRepo implements ErrorRe
     public Error get(int errorId) {
         return get(Error.class, errorId);
     }
-
 }
