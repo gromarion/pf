@@ -2,7 +2,6 @@ package com.itba.web.page;
 
 import java.io.IOException;
 
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.itba.EndpointQualityFormulae;
@@ -17,8 +16,6 @@ public class AutomaticOrManualPage extends BasePage {
 	@Override
 	protected void onInitialize() {
 		super.onInitialize();
-		add(new BookmarkablePageLink<RegisterUserPage>("automaticCheckLink", AutomaticCheckPage.class));
-		add(new BookmarkablePageLink<RegisterUserPage>("manualCheckLink", ResourceSearchPage.class));
 
 		EndpointScore endpointScore;
 		try {
