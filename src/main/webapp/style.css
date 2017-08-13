@@ -102,13 +102,6 @@ a, a :visited, a :hover {
   vertical-align: middle;
 }
 
-.dropdown-menu {
-	top: 65% !important;
-	left: auto !important;
-	right: 0;
-	border-radius: 0px !important;
-}
-
 .resource-search-panel {
 	margin-top: 25px;
 }
