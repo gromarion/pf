@@ -13,7 +13,7 @@ import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import com.itba.EndpointQualityFormulae.EndpointScore;
 import com.itba.domain.model.EndpointStats;
 import com.itba.domain.model.Error;
-import com.itba.web.graphics.DonutChartWithLabels;
+import com.itba.web.charts.DonutChartWithLabels;
 
 @SuppressWarnings("serial")
 public class EndpointScorePanel extends Panel {

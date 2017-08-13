@@ -1,4 +1,4 @@
-package com.itba.web.graphics;
+package com.itba.web.charts;
 
 import java.util.List;
 

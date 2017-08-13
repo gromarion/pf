@@ -4,17 +4,16 @@ import java.util.Map;
 
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
-import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
+
+import com.itba.web.charts.DonutChartWithLabels;
 
 import lib.Score;
 
 @SuppressWarnings("serial")
 public class ResourceScorePanel extends Panel {
 	private Score score;
-
-	private static final String CHART_CONTAINER_ID = "#resource-score-chart";
 
 	public ResourceScorePanel(String id, Score score) {
 		super(id);
@@ -24,18 +23,12 @@ public class ResourceScorePanel extends Panel {
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
-
-		String errorsData = "[";
+		DonutChartWithLabels errorsDataChart = new DonutChartWithLabels("resource-score-chart");
 		Map<String, Integer> errorsAmount = score.getErrorsAmount();
-		Object[] errorNames = errorsAmount.keySet().toArray();
 
-		for (int i = 0; i < errorNames.length; i++) {
-			errorsData += "{'label': '" + errorNames[i] + "', 'value': " + errorsAmount.get(errorNames[i]) + "}";
-			if (i < errorNames.length - 1) {
-				errorsData += ", ";
-			}
+		for (String error : errorsAmount.keySet()) {
+			errorsDataChart.appendData(error, errorsAmount.get(error).toString());
 		}
-		errorsData += "]";
 
 		response.render(JavaScriptHeaderItem
 				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/d3.min.js")));
@@ -43,7 +36,6 @@ public class ResourceScorePanel extends Panel {
 				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/donut-chart.js")));
 		response.render(JavaScriptHeaderItem
 				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/display-donut-chart.js")));
-		response.render(OnDomReadyHeaderItem
-				.forScript("drawChart(" + errorsData + ", '" + CHART_CONTAINER_ID + "');"));
+		response.render(errorsDataChart.getRender());
 	}
 }
