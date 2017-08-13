@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
-import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
@@ -14,12 +13,11 @@ import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import com.itba.EndpointQualityFormulae.EndpointScore;
 import com.itba.domain.model.EndpointStats;
 import com.itba.domain.model.Error;
+import com.itba.web.graphics.DonutChartWithLabels;
 
+@SuppressWarnings("serial")
 public class EndpointScorePanel extends Panel {
-	private static final long serialVersionUID = 1L;
-	private static final String CHART_CONTAINER_ID = "#endpoint-availability-chart";
-	private static final String CHART_CONTAINER_ID_2 = "#endpoint-globaldocs-chart";
-
+	
 	private EndpointScore endpointScore;
 
 	public EndpointScorePanel(String id, EndpointScore endpointScore) {
@@ -41,7 +39,9 @@ public class EndpointScorePanel extends Panel {
 			return;
 		}
 
-		String endpointStatsData = "[";
+		DonutChartWithLabels endpointStatsChart = new DonutChartWithLabels("endpoint-availability-chart");
+		DonutChartWithLabels errorTypeChart = new DonutChartWithLabels("endpoint-globaldocs-chart");
+		
 		Map<String, Integer> statusCodesAmount = new HashMap<>();
 		for (EndpointStats stats : endpointStats) {
 			if (statusCodesAmount.containsKey(stats.getStatusCode())) {
@@ -52,28 +52,15 @@ public class EndpointScorePanel extends Panel {
 		}
 
 		for (String statusCode : statusCodesAmount.keySet()) {
-			endpointStatsData += "{'label': '" + statusCode + "', 'value': " + statusCodesAmount.get(statusCode) + "},";
+			endpointStatsChart.appendData(statusCode, statusCodesAmount.get(statusCode).toString());
+		}
+		for (Error e : errorTypeStats.keySet()) {
+			errorTypeChart.appendData(e.getName(), errorTypeStats.get(e).toString());
 		}
 
-		endpointStatsData = endpointStatsData.substring(0, endpointStatsData.length() - 1);
-		endpointStatsData += "]";
-		
-		StringBuilder errorTypeData = new StringBuilder("[");
-		for (Error e : errorTypeStats.keySet()) {
-			errorTypeData.append("{'label': '" + e.getName() + "', 'value': " + errorTypeStats.get(e) + "},");
-		}
-		errorTypeData.deleteCharAt(errorTypeData.length() - 1);
-		errorTypeData.append("]");
-		
-		response.render(JavaScriptHeaderItem
-				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/d3.min.js")));
-		response.render(JavaScriptHeaderItem
-				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/donut-chart.js")));
-		response.render(OnDomReadyHeaderItem
-				.forScript("drawChart(" + endpointStatsData + ", '" + CHART_CONTAINER_ID + "');"));
-		response.render(OnDomReadyHeaderItem
-				.forScript("drawChart(" + errorTypeData.toString() + ", '" + CHART_CONTAINER_ID_2 + "');"));
-		
-		
+		response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/d3.min.js")));
+		response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/donut-chart.js")));
+		response.render(endpointStatsChart.getRender());
+		response.render(errorTypeChart.getRender());
 	}
 }
