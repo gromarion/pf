@@ -2,10 +2,6 @@ body, p, li, a {
 	font-family: Helvetica, Arial, Sans-Serif;font-size: 13pt;
 }
 
-h1, h2, h3 {
-	font-family: 'Yanone Kaffeesatz', arial, serif;
-}
-
 h1 > a {
 	font-size: 38.5px;
 }
