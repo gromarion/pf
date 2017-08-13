@@ -3,12 +3,12 @@
 	<head>
 	    <meta charset="utf-8" />
 	    <title>Data Quality Assesment</title>
-	    <link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:regular,bold' rel='stylesheet' type='text/css' />
 	    <link rel="stylesheet" href="style.css" type="text/css" media="screen" title="Stylesheet" />
-	    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css" />
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+	    <link rel="icon" type="image/svg" href="../favicon.png">
 	    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 	    <script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
-	    <script type="text/javascript" src="bootstrap/js/dropdown.js"></script>
 	    <style>
 	                div.wicket-aa {
 	                    font-family: "Lucida Grande","Lucida Sans Unicode",Tahoma,Verdana;
@@ -26,24 +26,38 @@
 	            </style>
 	</head>
 	<body>
-		<div class="top-bar">
-			<div class="top-bar-element title">
-				<a wicket:id="home" class="home-link"><wicket:message key="home">Home</wicket:message></a>
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<ul class="nav navbar-nav">
+					<li>
+						<a wicket:id="home" class="home-link"><wicket:message key="home">Home</wicket:message></a>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+							<wicket:message key="actions">Actions</wicket:message>
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li><a href="#" wicket:id="automaticCheckLink"><wicket:message key="automaticChecksOnEndpoint">Make automatic checks on Endpoint</wicket:message></a></li>
+							<li><a href="#" wicket:id="manualCheckLink"><wicket:message key="manualChecks">Start with manual checks</wicket:message></a></li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+							<span wicket:id="user">user</span>
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li><a href="#" wicket:id="errorsByUserPage"><wicket:message key="errorsByUserPageLink">My Evaluated Resources</wicket:message></a></li>
+							<li><a href="#" wicket:id="editUserProfile"><wicket:message key="editUserProfile">Edit profile</wicket:message></a></li>
+							<li><a href="#" wicket:id="logout"><wicket:message key="logout">Log out</wicket:message></a></li>
+						</ul>
+					</li>
+				</ul>
 			</div>
-			<div class="user-session">
-				<div class="top-bar-element session dropdown">
-					<a href="#" data-toggle="dropdown">
-						<span wicket:id="user">user</span>
-						<span class="caret"></span>
-					</a>
-					<ul class="dropdown-menu">
-						<li><a href="#" wicket:id="errorsByUserPage"><wicket:message key="errorsByUserPageLink">My Evaluated Resources</wicket:message></a></li>
-						<li><a href="#" wicket:id="editUserProfile"><wicket:message key="editUserProfile">Edit profile</wicket:message></a></li>
-						<li><a href="#" wicket:id="logout"><wicket:message key="logout">Log out</wicket:message></a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
+		</nav>
 		<div class="container">
 		    <wicket:child />
 		</div>

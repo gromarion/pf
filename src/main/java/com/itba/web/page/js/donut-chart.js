@@ -17,22 +17,16 @@ function drawChart(data, containerID) {
 
 	var radius = Math.min(width, height) / 2;
 
-  console.log("RADIUS = " + radius);
-
 	var pie = d3.layout.pie()
 	  .sort(null)
 	  .value(function(d) {
 	    return d.value;
 	  });
 
-  console.log("OUTER RADIUS 1 = " + radius * 0.8);
-  console.log("INNER RADIUS 1 = " + radius * 0.4);
 	arc = d3.svg.arc()
 	  .outerRadius(radius * 0.8)
 	  .innerRadius(radius * 0.4);
 
-  console.log("INNER RADIUS 2 = " + radius * 0.9);
-  console.log("OUTER RADIUS 2 = " + radius * 0.9);
 	var outerArc = d3.svg.arc()
 	  .innerRadius(radius * 0.9)
 	  .outerRadius(radius * 0.9);
