@@ -9,7 +9,10 @@ function drawChart(data, containerID) {
   const width = parseInt(d3.select(containerID).style("width"), 10);
   const height = parseInt(d3.select(containerID).style("height"), 10);
 
-	var svg = d3.select(containerID).append("svg").append("g");
+  var svgTag = d3.select(containerID).append("svg");
+  svgTag.attr("class", "donut-chart");
+
+	var svg = svgTag.append("g");
 
 	svg.append("g").attr("class", "slices");
 	svg.append("g").attr("class", "labels");
