@@ -8,10 +8,16 @@
 				<wicket:message key="score"></wicket:message><span wicket:id="endpointScore">Score</span>
 			</h2>
 			<div id="endpoint-availability-chart" style="width: 1024px;height: 320px;"/>
-			<svg id="Tipodedatoincorrectamenteextraído" width="24%" height="200"/>
-			<svg id="Valordelobjetoextraídodeformaincompleta" width="24%" height="200"/>
-			<svg id="Objetosemánticamenteincorrecto" width="24%" height="200"/>
-			<svg id="Enlaceexternoincorrecto" width="24%" height="200"/>
+			<svg id="Tipodedatoincorrectamenteextraído" width="24%" height="150"/>
+			<svg id="Valordelobjetoextraídodeformaincompleta" width="24%" height="150"/>
+			<svg id="Objetosemánticamenteincorrecto" width="24%" height="150"/>
+			<svg id="Enlaceexternoincorrecto" width="24%" height="150"/>
+			<ul class="legend">
+			    <li><span class="incorrectly_extracted_data_type"/><wicket:message key="incorrectlyExtractedDataType"/></li>
+			    <li><span class="incorrectly_extracted_value"/><wicket:message key="incorrectlyExtractedValue"/></li>
+			    <li><span class="object_semantically_incorrect"/><wicket:message key="objectSemanticallyIncorrect"/></li>
+			    <li><span class="incorrect_link"/><wicket:message key="incorrectLink"/></li>
+			</ul>
 		</wicket:panel>
 	</body>
 </html>

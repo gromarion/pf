@@ -137,3 +137,35 @@ polyline {
 .red {
 	color: #8B0000;
 }
+
+.legend {
+	list-style: none;
+}
+
+.legend li {
+	margin-right: 10px;
+}
+
+.legend span {
+	border: 1px solid #ccc;
+	float: left;
+	width: 20px;
+	height: 20px;
+	margin: 2px;
+}
+
+.legend .incorrectly_extracted_data_type {
+	background-color: #FF7777;
+}
+
+.legend .incorrectly_extracted_value {
+	background-color: #D4AB6A;
+}
+
+.legend .object_semantically_incorrect {
+	background-color: #808015;
+}
+
+.legend .incorrect_link {
+	background-color: #6DA398;
+}
