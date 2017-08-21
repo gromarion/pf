@@ -9,8 +9,8 @@ import org.apache.wicket.util.string.Strings;
 import com.google.common.collect.Lists;
 
 public class DonutChartWithLabels {
-
 	private static final String DATA_SEPARATOR = ",";
+
 	private final String id;
 	private final List<String> data = Lists.newLinkedList();
 	
@@ -18,20 +18,14 @@ public class DonutChartWithLabels {
 		this.id = id;
 	}
 	
-	public String getId() {
-		return this.id;
+	public void appendData(String key, double value) {
+		data.add("{'label': '" + key + "', 'value': '" + value + "'}");
 	}
-	
-	public void appendData(String key, String value) {
-		data.add("{'label': '" + key + "', 'value': " + value + "}");
-	}
-	
-	private String getJson() {
-		String joinedData = Strings.join(DATA_SEPARATOR, data);
-		return String.format("[%s]", joinedData);
-	}
-	
+		
 	public HeaderItem getRender() {
-		return OnDomReadyHeaderItem.forScript("drawChart(" + getJson() + ", '#" + id + "');");
+		String joinedData = Strings.join(DATA_SEPARATOR, data);
+		String json = String.format("[%s]", joinedData);
+
+		return OnDomReadyHeaderItem.forScript("drawChart(" + json + ", '#" + id + "');");
 	}
 }

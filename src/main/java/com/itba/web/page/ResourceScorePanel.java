@@ -27,7 +27,7 @@ public class ResourceScorePanel extends Panel {
 		Map<String, Integer> errorsAmount = score.getErrorsAmount();
 
 		for (String error : errorsAmount.keySet()) {
-			errorsDataChart.appendData(error, errorsAmount.get(error).toString());
+			errorsDataChart.appendData(error, errorsAmount.get(error));
 		}
 
 		response.render(JavaScriptHeaderItem

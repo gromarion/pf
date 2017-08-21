@@ -14,14 +14,21 @@ import com.itba.EndpointQualityFormulae.EndpointScore;
 import com.itba.domain.model.EndpointStats;
 import com.itba.domain.model.Error;
 import com.itba.web.charts.DonutChartWithLabels;
+import com.itba.web.charts.GaugeChart;
 
 @SuppressWarnings("serial")
 public class EndpointScorePanel extends Panel {
+	private final Map<String, String> errorColors;
 	
 	private EndpointScore endpointScore;
 
 	public EndpointScorePanel(String id, EndpointScore endpointScore) {
 		super(id);
+		this.errorColors = new HashMap<>();
+		errorColors.put("Tipodedatoincorrectamenteextraído", "#FF7777");
+		errorColors.put("Valordelobjetoextraídodeformaincompleta", "#D4AB6A");
+		errorColors.put("Objetosemánticamenteincorrecto", "#808015");
+		errorColors.put("Enlaceexternoincorrecto", "#6DA398");
 		this.endpointScore = endpointScore;
 		
 		add(new Label("endpointURL", endpointScore.getEndpointURL()));
@@ -40,7 +47,7 @@ public class EndpointScorePanel extends Panel {
 		}
 
 		DonutChartWithLabels endpointStatsChart = new DonutChartWithLabels("endpoint-availability-chart");
-		DonutChartWithLabels errorTypeChart = new DonutChartWithLabels("endpoint-globaldocs-chart");
+		GaugeChart errorTypeChart = new GaugeChart();
 		
 		Map<String, Integer> statusCodesAmount = new HashMap<>();
 		for (EndpointStats stats : endpointStats) {
@@ -52,14 +59,16 @@ public class EndpointScorePanel extends Panel {
 		}
 
 		for (String statusCode : statusCodesAmount.keySet()) {
-			endpointStatsChart.appendData(statusCode, statusCodesAmount.get(statusCode).toString());
+			endpointStatsChart.appendData(statusCode, statusCodesAmount.get(statusCode));
 		}
 		for (Error e : errorTypeStats.keySet()) {
-			errorTypeChart.appendData(e.getName(), errorTypeStats.get(e).toString());
+			String id = e.getName().replaceAll(" ", "");
+			errorTypeChart.appendData(id, errorTypeStats.get(e), errorColors.get(id), errorColors.get(id), errorColors.get(id));
 		}
 
 		response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/d3.min.js")));
 		response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/donut-chart.js")));
+		response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/gauge-chart.js")));
 		response.render(endpointStatsChart.getRender());
 		response.render(errorTypeChart.getRender());
 	}
