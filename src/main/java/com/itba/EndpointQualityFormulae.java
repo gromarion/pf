@@ -106,7 +106,7 @@ public class EndpointQualityFormulae {
 				int licenseScore = SparqlRequestHandler.hasLicense(campaign, endpointStatsRepo) ? 1 : 0;
 				double score = (availabilityScore + licenseScore) / 2;
 
-				return StringUtils.letterQualification(score) + " - " + StringUtils.formatDouble(score, 2);
+				return StringUtils.letterQualification(score) + " - " + StringUtils.formatDouble(score, 3);
 			}
 		}
 	}

@@ -33,7 +33,7 @@ public class Score implements Serializable {
 			return "";
 		}
 
-		return StringUtils.formatDouble(score, 2);
+		return StringUtils.formatDouble(score, 3);
 	}
 	
 	public String errorsString() {

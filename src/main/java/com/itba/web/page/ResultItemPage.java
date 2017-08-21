@@ -44,6 +44,7 @@ import com.itba.web.WicketSession;
 import com.itba.web.feedback.CustomFeedbackPanel;
 
 import lib.Score;
+import lib.StringUtils;
 
 @SuppressWarnings("serial")
 public class ResultItemPage extends BasePage {
@@ -110,7 +111,7 @@ public class ResultItemPage extends BasePage {
 			@Override
 			protected void populateItem(ListItem<String> listItem) {
 				Label errorNameLabel = new Label("errorNameLabel", listItem.getModelObject());
-				Label errorScoreLabel = new Label("errorScoreLabel", scoreImpactModel.getObject().get(listItem.getModelObject()));
+				Label errorScoreLabel = new Label("errorScoreLabel", "-" + StringUtils.formatDouble(scoreImpactModel.getObject().get(listItem.getModelObject()), 3));
 				listItem.add(errorNameLabel);
 				listItem.add(errorScoreLabel);
 			}
