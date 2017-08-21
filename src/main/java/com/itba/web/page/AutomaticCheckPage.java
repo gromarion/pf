@@ -54,7 +54,7 @@ public class AutomaticCheckPage extends BasePage {
 		Link<Void> backButton = new Link<Void>("back") {
 			@Override
 			public void onClick() {
-				setResponsePage(AutomaticOrManualPage.class);
+				setResponsePage(HomePage.class);
 			}
 		};
 		

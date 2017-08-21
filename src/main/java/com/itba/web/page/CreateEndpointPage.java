@@ -40,7 +40,7 @@ public class CreateEndpointPage extends WebPage {
 			public void onSubmit() {
 				Campaign newCampaign = new Campaign(name.getValue(), endpoint.getValue());
 				campaigns.save(newCampaign);
-				setResponsePage(AutomaticOrManualPage.class);
+				setResponsePage(HomePage.class);
 			}
 		});
 		

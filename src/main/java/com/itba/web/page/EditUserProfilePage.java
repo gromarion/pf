@@ -19,7 +19,7 @@ public class EditUserProfilePage extends BasePage {
 
 			@Override
 			protected void onSubmit() {
-				setResponsePage(AutomaticOrManualPage.class);
+				setResponsePage(HomePage.class);
 			}
 		};
 		

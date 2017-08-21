@@ -42,7 +42,7 @@ public class LoginPage extends WebPage {
     protected void onInitialize() {
         super.onInitialize();
         if (((WicketSession) getSession()).isSignedIn()) {
-        	setResponsePage(AutomaticOrManualPage.class);
+        	setResponsePage(HomePage.class);
 		}
         add(new CustomFeedbackPanel("feedbackPanel"));
         
@@ -56,7 +56,7 @@ public class LoginPage extends WebPage {
                 if (selectedCampaignModel.getObject() == null) {
                     error(getString("campaignNotFoundError"));
                 } else if (appSession.signIn(username, password, selectedCampaignModel.getObject(), users, evaluationSessions)) {
-                    setResponsePage(AutomaticOrManualPage.class);
+                    setResponsePage(HomePage.class);
                 } else {
                     error(getString("invalidCredentials"));
                 }

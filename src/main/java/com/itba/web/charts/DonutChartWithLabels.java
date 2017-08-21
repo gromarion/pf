@@ -10,7 +10,7 @@ import com.google.common.collect.Lists;
 
 public class DonutChartWithLabels {
 
-	private static final String dataSeparator = ",";
+	private static final String DATA_SEPARATOR = ",";
 	private final String id;
 	private final List<String> data = Lists.newLinkedList();
 	
@@ -27,11 +27,11 @@ public class DonutChartWithLabels {
 	}
 	
 	private String getJson() {
-		String joinedData = Strings.join(dataSeparator, data);
+		String joinedData = Strings.join(DATA_SEPARATOR, data);
 		return String.format("[%s]", joinedData);
 	}
 	
 	public HeaderItem getRender() {
-		return OnDomReadyHeaderItem.forScript("drawChart(" + getJson() + ", '" + "#" + id + "');");
+		return OnDomReadyHeaderItem.forScript("drawChart(" + getJson() + ", '#" + id + "');");
 	}
 }

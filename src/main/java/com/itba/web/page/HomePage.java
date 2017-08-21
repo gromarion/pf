@@ -7,7 +7,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import com.itba.EndpointQualityFormulae;
 import com.itba.EndpointQualityFormulae.EndpointScore;
 
-public class AutomaticOrManualPage extends BasePage {
+public class HomePage extends BasePage {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
