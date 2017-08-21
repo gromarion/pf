@@ -40,7 +40,7 @@ public class EndpointScorePanel extends Panel {
 		super.renderHead(response);
 
 		List<EndpointStats> endpointStats = endpointScore.getEndpointStats();
-		Map<Error, Long> errorTypeStats = endpointScore.getErrorTypeStats();
+		Map<Error, Double> errorTypeStats = endpointScore.getErrorTypeStats();
 		
 		if (endpointStats.isEmpty() && errorTypeStats.isEmpty()) {
 			return;

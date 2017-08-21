@@ -61,10 +61,20 @@ public class EndpointQualityFormulae {
 			return campaign.getEndpoint();
 		}
 
-		public Map<Error, Long> getErrorTypeStats() {
-			Map<Error, Long> qtyByError = new HashMap<>();
+		public Map<Error, Double> getErrorTypeStats() {
+			Map<Error, Double> qtyByError = new HashMap<>();
+			long total = 0;
+
 			for (Error error : errorRepo.getAll()) {
-				qtyByError.put(error, evaluatedResourceDetailRepo.getQtyByError(error));
+				double errorsAmount = evaluatedResourceDetailRepo.getQtyByError(error);
+				total += errorsAmount;
+				qtyByError.put(error, errorsAmount);
+			}
+			if (total > 0) {
+				for (Error error : qtyByError.keySet()) {
+					long errorsAmount = evaluatedResourceDetailRepo.getQtyByError(error);
+					qtyByError.put(error, 100 * (double) errorsAmount / total);
+				}
 			}
 			return qtyByError;
 		}
