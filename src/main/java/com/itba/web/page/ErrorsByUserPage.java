@@ -77,6 +77,8 @@ public class ErrorsByUserPage extends BasePage {
 			protected void populateItem(final ListItem<EvaluatedResource> evaluatedResource) {
 				evaluatedResource
 						.add(new Label("resourceTimestamp", evaluatedResource.getModelObject().getFormattedDate()));
+				evaluatedResource
+						.add(new Label("correctBadge", "!").setVisible(evaluatedResource.getModelObject().isCorrect()));
 				try {
 					evaluatedResource.add(new Label("resourceScore", manualErrorsFormulae.compute(evaluatedResource.getModelObject().getResource()).scoreString()));
 				} catch (JSONException | IOException e) {
