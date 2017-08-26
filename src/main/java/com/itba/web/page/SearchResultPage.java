@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.json.JSONArray;
 import org.apache.wicket.ajax.json.JSONException;
@@ -86,8 +87,9 @@ public class SearchResultPage extends BasePage {
 				} catch (JSONException | IOException e) {
 					setResponsePage(ErrorPage.class);
 				}
-				
-				listItem.add(new Label("correctBadge", "!").setVisible(correctResources.contains(stringModel.getObject())));
+				if (correctResources.contains(stringModel.getObject())) {
+					listItem.add(new AttributeModifier("class", "success"));
+				}
             }
         });
 		AjaxLink<Void> nextPageLink = new AjaxLink<Void>("nextPageLink") {

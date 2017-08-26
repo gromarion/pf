@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.json.JSONException;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -134,12 +135,13 @@ public class ResultItemPage extends BasePage {
 				protected void populateItem(ListItem<List<ResultItem>> listItem) {
 					final List<ResultItem> resultItem = listItem.getModelObject();
 					String predicateURL = resultItem.get(0).value;
+					if (previouslyEvaluatedDetails.contains(predicateURL + resultItem.get(1))) {
+						listItem.add(new AttributeModifier("class", "danger"));
+					}
 					listItem.add(new ExternalLink("predicate", predicateURL, predicateURL));
 					Label objectLabel = new Label("object", transformURLs(resultItem.get(1).toString()));
 					objectLabel.setEscapeModelStrings(false);
 					listItem.add(objectLabel);
-					listItem.add(new Label("errorsBadge", "!")
-							.setVisible(previouslyEvaluatedDetails.contains(predicateURL + resultItem.get(1))));
 					listItem.add(new AjaxLink<Void>("errorPageLink") {
 						@Override
 						public void onClick(AjaxRequestTarget target) {

@@ -91,6 +91,7 @@ public class ErrorSelectionPage extends BasePage {
         final Label errorExampleLabel = new Label("errorExample", errorExample);
         final Label foundErrorsLabel = new Label("foundErrorsLabel", getString("foundErrorsLabel"));
         final Label errorNameLabel = new Label("errorNameLabel", getString("errorNameLabel"));
+        final Label errorCommentLabel = new Label("errorCommentLabel", getString("errorCommentLabel"));
         final Label newErrorLabel = new Label("newErrorLabel", getString("newErrorLabel"));
         
         errorDescriptionLabel.setOutputMarkupId(true);
@@ -106,6 +107,7 @@ public class ErrorSelectionPage extends BasePage {
 			@Override
 			protected void populateItem(final ListItem<EvaluatedResourceDetail> errorDetail) {
 				errorDetail.add(new Label("errorName", errorDetail.getModelObject().getError().getName()));
+				errorDetail.add(new Label("errorComment", errorDetail.getModelObject().getComment()));
 				errorDetail.add(new AjaxLink<Void>("removeErrorLink") {
 					@Override
 					public void onClick(AjaxRequestTarget target) {
@@ -161,6 +163,7 @@ public class ErrorSelectionPage extends BasePage {
 				evaluatedResource.get().setCorrect(false);
 				
 				EvaluatedResourceDetail detail = new EvaluatedResourceDetail(evaluatedResource.get(), errorModel.getObject(), predicate, object);
+				detail.setComment(comments.getValue());
 				evaluatedResourceDetailRepo.save(detail);
 				
 				PageParameters parameters = new PageParameters();
@@ -197,6 +200,7 @@ public class ErrorSelectionPage extends BasePage {
         add(newErrorLabel.setVisible(availableErrors.getObject().size() > 0));
         add(foundErrorsLabel.setVisible(usedErrorDetails.getObject().size() > 0));
         add(errorNameLabel.setVisible(usedErrorDetails.getObject().size() > 0));
+        add(errorCommentLabel.setVisible(usedErrorDetails.getObject().size() > 0));
     }
 
 	@Override

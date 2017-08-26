@@ -3,6 +3,7 @@ package com.itba.web.page;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.json.JSONException;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -77,8 +78,9 @@ public class ErrorsByUserPage extends BasePage {
 			protected void populateItem(final ListItem<EvaluatedResource> evaluatedResource) {
 				evaluatedResource
 						.add(new Label("resourceTimestamp", evaluatedResource.getModelObject().getFormattedDate()));
-				evaluatedResource
-						.add(new Label("correctBadge", "!").setVisible(evaluatedResource.getModelObject().isCorrect()));
+				if (evaluatedResource.getModelObject().isCorrect()) {
+					evaluatedResource.add(new AttributeModifier("class", "success"));
+				}
 				try {
 					evaluatedResource.add(new Label("resourceScore", manualErrorsFormulae.compute(evaluatedResource.getModelObject().getResource()).scoreString()));
 				} catch (JSONException | IOException e) {
