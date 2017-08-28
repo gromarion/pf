@@ -12,6 +12,7 @@
 					<tr>
 						<th><span wicket:id="errorNameLabel">Some error name label</span></th>
 						<th><span wicket:id="errorCommentLabel">Some error comment label</span></th>
+						<th><span wicket:id="errorActions">Some error actions</span></th>
 						<th></th>
 					</tr>
 				</thead>
@@ -19,8 +20,17 @@
 					<tr wicket:id="usedErrorDetails">
 						<td><span wicket:id="errorName">Some error name</span></td>
 						<td><span wicket:id="errorComment">Some error comment</span></td>
-						<td><a wicket:id="removeErrorLink" class="btn btn-link" title="Eliminar"
-							href="#"><i class="icon-remove"></i></a></td>
+						<td>
+							<div wicket:id="editCommentModal"></div>
+							<a wicket:id="editCommentLink" title="Editar Comentario"
+								class="btn btn-link" href="#" data-toggle="modal" data-target="#myModal">
+								<i class="icon-pencil"></i>
+							</a>
+							<a wicket:id="removeErrorLink" title="Eliminar"
+								class="btn btn-link" href="#">
+								<i class="icon-remove"></i>
+							</a>
+						</td>
 					</tr>
 				</tbody>
 			</table>

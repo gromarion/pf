@@ -1,6 +1,8 @@
 package com.itba.web.page;
 
 import java.util.List;
+
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -19,6 +21,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
 import com.google.common.base.Optional;
 import com.itba.domain.EntityModel;
 import com.itba.domain.model.Error;
@@ -30,6 +33,8 @@ import com.itba.domain.repository.EvaluatedResourceDetailRepo;
 import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.web.WicketSession;
 import com.itba.web.feedback.CustomFeedbackPanel;
+import com.itba.web.modal.MyModal;
+
 import lib.StringUtils;
 
 @SuppressWarnings("serial")
@@ -92,6 +97,7 @@ public class ErrorSelectionPage extends BasePage {
         final Label foundErrorsLabel = new Label("foundErrorsLabel", getString("foundErrorsLabel"));
         final Label errorNameLabel = new Label("errorNameLabel", getString("errorNameLabel"));
         final Label errorCommentLabel = new Label("errorCommentLabel", getString("errorCommentLabel"));
+        final Label errorActions = new Label("errorActions", getString("errorActions"));
         final Label newErrorLabel = new Label("newErrorLabel", getString("newErrorLabel"));
         
         errorDescriptionLabel.setOutputMarkupId(true);
@@ -106,20 +112,26 @@ public class ErrorSelectionPage extends BasePage {
     	add(new ListView<EvaluatedResourceDetail>("usedErrorDetails", usedErrorDetails) {
 			@Override
 			protected void populateItem(final ListItem<EvaluatedResourceDetail> errorDetail) {
+				final PageParameters refreshParameters = new PageParameters();
+				refreshParameters.add("predicate", predicate);
+				refreshParameters.add("object", object);
+				refreshParameters.add("resource", resource);
 				errorDetail.add(new Label("errorName", errorDetail.getModelObject().getError().getName()));
 				errorDetail.add(new Label("errorComment", errorDetail.getModelObject().getComment()));
 				errorDetail.add(new AjaxLink<Void>("removeErrorLink") {
 					@Override
 					public void onClick(AjaxRequestTarget target) {
 						evaluatedResourceDetailRepo.delete(errorDetail.getModelObject());
-						PageParameters parameters = new PageParameters();
-						parameters.add("predicate", predicate);
-						parameters.add("object", object);
-						parameters.add("resource", resource);
-						setResponsePage(ErrorSelectionPage.class, parameters);
+						setResponsePage(ErrorSelectionPage.class, refreshParameters);
 					}
 				});
-
+				errorDetail.add(new AjaxLink<Void>("editCommentLink") {
+					@Override
+					public void onClick(AjaxRequestTarget target) {
+						// XXX: do nothing for now...
+					}
+				}.add(new AttributeModifier("data-target", "#modal" + errorDetail.getModelObject().getId())));
+				errorDetail.add(new MyModal("editCommentModal", "Editar comentario", errorDetail.getModel(), refreshParameters));
 			}
 		}.setVisible(usedErrorDetails.getObject().size() > 0));
         
@@ -201,6 +213,7 @@ public class ErrorSelectionPage extends BasePage {
         add(foundErrorsLabel.setVisible(usedErrorDetails.getObject().size() > 0));
         add(errorNameLabel.setVisible(usedErrorDetails.getObject().size() > 0));
         add(errorCommentLabel.setVisible(usedErrorDetails.getObject().size() > 0));
+        add(errorActions.setVisible(usedErrorDetails.getObject().size() > 0));
     }
 
 	@Override
