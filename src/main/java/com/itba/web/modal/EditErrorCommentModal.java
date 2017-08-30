@@ -18,18 +18,18 @@ import com.itba.domain.repository.EvaluatedResourceDetailRepo;
 import com.itba.web.page.ErrorSelectionPage;
 
 @SuppressWarnings("serial")
-public class MyModal extends Panel {
+public class EditErrorCommentModal extends Panel {
 	
 	@SpringBean
 	private EvaluatedResourceDetailRepo evaluatedResourceDetailRepo;
 	
-	public MyModal(String id, String title, final IModel<EvaluatedResourceDetail> detailModel, final PageParameters refreshParameters) {
+	public EditErrorCommentModal(String id, String title, final IModel<EvaluatedResourceDetail> detailModel, final PageParameters refreshParameters) {
 		super(id);
 		final Label titleLabel = new Label("titleLabel", title);
         final TextArea<String> comments = new TextArea<String>("comments", Model.of(detailModel.getObject().getComment()));
         final Button submit = new Button("submit");
-        Form<MyModal> form = new Form<MyModal>("commentForm",
-                new CompoundPropertyModel<MyModal>(this)) {
+        Form<EditErrorCommentModal> form = new Form<EditErrorCommentModal>("commentForm",
+                new CompoundPropertyModel<EditErrorCommentModal>(this)) {
 			@Override
             protected void onSubmit() {
 				detailModel.getObject().setComment(comments.getValue());

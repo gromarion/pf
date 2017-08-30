@@ -33,7 +33,7 @@ import com.itba.domain.repository.EvaluatedResourceDetailRepo;
 import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.web.WicketSession;
 import com.itba.web.feedback.CustomFeedbackPanel;
-import com.itba.web.modal.MyModal;
+import com.itba.web.modal.EditErrorCommentModal;
 
 import lib.StringUtils;
 
@@ -131,7 +131,7 @@ public class ErrorSelectionPage extends BasePage {
 						// XXX: do nothing for now...
 					}
 				}.add(new AttributeModifier("data-target", "#modal" + errorDetail.getModelObject().getId())));
-				errorDetail.add(new MyModal("editCommentModal", "Editar comentario", errorDetail.getModel(), refreshParameters));
+				errorDetail.add(new EditErrorCommentModal("editCommentModal", "Editar comentario", errorDetail.getModel(), refreshParameters));
 			}
 		}.setVisible(usedErrorDetails.getObject().size() > 0));
         
