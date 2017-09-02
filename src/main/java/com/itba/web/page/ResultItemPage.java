@@ -28,7 +28,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.google.common.collect.Lists;
-import com.itba.ManualErrorsFormulae;
 import com.itba.domain.EntityModel;
 import com.itba.domain.SparqlRequestHandler;
 import com.itba.domain.model.Campaign;
@@ -39,6 +38,7 @@ import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.domain.repository.ErrorRepo;
 import com.itba.domain.repository.EvaluatedResourceDetailRepo;
 import com.itba.domain.repository.EvaluatedResourceRepo;
+import com.itba.formulae.ManualErrorsFormulae;
 import com.itba.sparql.JsonSparqlResult;
 import com.itba.sparql.ResultItem;
 import com.itba.web.WicketSession;

@@ -1,4 +1,4 @@
-package com.itba;
+package com.itba.formulae;
 
 import java.io.IOException;
 import java.util.HashMap;

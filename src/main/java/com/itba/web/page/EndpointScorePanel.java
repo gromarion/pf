@@ -10,9 +10,9 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
-import com.itba.EndpointQualityFormulae.EndpointScore;
 import com.itba.domain.model.EndpointStats;
 import com.itba.domain.model.Error;
+import com.itba.formulae.EndpointQualityFormulae.EndpointScore;
 import com.itba.web.charts.DonutChartWithLabels;
 import com.itba.web.charts.GaugeChart;
 
@@ -32,7 +32,7 @@ public class EndpointScorePanel extends Panel {
 		this.endpointScore = endpointScore;
 		
 		add(new Label("endpointURL", endpointScore.getEndpointURL()));
-		add(new Label("endpointScore", endpointScore.getScore()));
+		add(new Label("endpointScore", endpointScore.getScoreString()));
 	}
 
 	@Override
