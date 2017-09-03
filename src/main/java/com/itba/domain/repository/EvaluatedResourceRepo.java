@@ -19,5 +19,11 @@ public interface EvaluatedResourceRepo extends HibernateRepo {
     List<String> getErroredForSession(EvaluationSession session);
 
 	List<String> getCorrectForSession(EvaluationSession session);
+	
+	List<EvaluatedResource> getAll();
+	
+	List<String> getErrored();
+
+	List<String> getCorrect();
 }
 

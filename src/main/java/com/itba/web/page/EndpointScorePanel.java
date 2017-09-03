@@ -22,7 +22,7 @@ import com.itba.web.charts.GaugeChart;
 
 @SuppressWarnings("serial")
 public class EndpointScorePanel extends Panel {
-	private static final int DURATION = 1;
+	private static final double DURATION = 2.5;
 	private static final String TOTAL_RESOURCES_ID = "totalResources";
 	private static final String ERRORED_RESOURCES_ID = "erroredResources";
 	private static final String CORRECT_RESOURCES_ID = "correctResources";
@@ -78,9 +78,8 @@ public class EndpointScorePanel extends Panel {
 					errorColors.get(id));
 		}
 
-		EvaluationSession session = WicketSession.get().getEvaluationSession().get();
-		int totalResources = evaluatedResourceRepo.getAllForSession(session).size();
-		int erroredResources = evaluatedResourceRepo.getErroredForSession(session).size();
+		int totalResources = evaluatedResourceRepo.getAll().size();
+		int erroredResources = evaluatedResourceRepo.getErrored().size();
 		int correctResources = totalResources - erroredResources;
 
 		response.render(JavaScriptHeaderItem
