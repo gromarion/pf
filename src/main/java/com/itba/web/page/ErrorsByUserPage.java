@@ -91,6 +91,7 @@ public class ErrorsByUserPage extends BasePage {
 					@Override
 					public void onClick(AjaxRequestTarget target) {
 						PageParameters parameters = new PageParameters();
+						parameters.add("comesFromMyResources", "true");
 						parameters.add("selection", evaluatedResource.getModelObject().getResource());
 						setResponsePage(ResultItemPage.class, parameters);
 					}

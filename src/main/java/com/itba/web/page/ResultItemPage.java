@@ -15,7 +15,6 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -74,6 +73,7 @@ public class ResultItemPage extends BasePage {
 	private final IModel<EvaluatedResource> resourceModel = new EntityModel<EvaluatedResource>(EvaluatedResource.class);
 
 	public ResultItemPage(PageParameters parameters) {
+		final String comesFromMyResources = parameters.get("comesFromMyResources").toString();
 		final String resource = parameters.get("selection").toString();
 		final String search = parameters.get("search").toString();
 		final Campaign campaign = campaignRepo.get(Campaign.class,
@@ -129,7 +129,7 @@ public class ResultItemPage extends BasePage {
 		add(errorScoreHeaderLabel.setVisible(!scoreImpactModel.getObject().isEmpty()));
 		add(commentsTitleLabel.setVisible(hasComments));
 		add(commentsContainer.setVisible(hasComments));
-		add(new EditResourceCommentModal("editCommentModal", "Editar comentario", resource, resourceModel));
+		add(new EditResourceCommentModal("editCommentModal", "Editar comentario", resource, comesFromMyResources, resourceModel));
 
 		final List<String> previouslyEvaluatedDetails = resourceModel.getObject() == null
 				? Lists.<String>newLinkedList()
@@ -168,14 +168,13 @@ public class ResultItemPage extends BasePage {
 		}
 		final CustomFeedbackPanel customFeedbackPanel = new CustomFeedbackPanel("feedbackPanel");
 		customFeedbackPanel.setOutputMarkupId(true);
-		Form<Void> form = new Form<>("form");
 
 		Score score;
 		try {
 			score = manualErrorsFormulae.compute(resource);
 			ResourceScorePanel resourceScorePanel = new ResourceScorePanel("scorePanel", score);
 			resourceScorePanel.add(new Label("resourceScore", score.toString()));
-			if (score.getScore() < 0) {
+			if (score.getScore() < 0 || score.getErrors() == 0) {
 				resourceScorePanel.setVisible(false);
 			}
 			add(resourceScorePanel);
@@ -194,6 +193,7 @@ public class ResultItemPage extends BasePage {
 				resourceModel.getObject().setCorrect(!resourceModel.getObject().isCorrect());
 				PageParameters parameters = new PageParameters();
 				parameters.add("selection", resource);
+				parameters.add("comesFromMyResources", comesFromMyResources);
 				setResponsePage(ResultItemPage.class, parameters);
 			}
 
@@ -218,18 +218,21 @@ public class ResultItemPage extends BasePage {
 		Link<Void> backButton = new Link<Void>("back") {
 			@Override
 			public void onClick() {
-				PageParameters parameters = new PageParameters();
-				String searchString = search == null ? "" : search;
-				parameters.add("search", searchString);
-				setResponsePage(SearchResultPage.class, parameters);
+				if (!Strings.isNullOrEmpty(comesFromMyResources)) {
+					setResponsePage(ErrorsByUserPage.class);
+				} else {
+					PageParameters parameters = new PageParameters();
+					String searchString = search == null ? "" : search;
+					parameters.add("search", searchString);
+					setResponsePage(SearchResultPage.class, parameters);
+				}
 			}
 		};
 
 		resourceOkButton.add(resourceOkLabel);
-		form.add(resourceOkButton.setVisible(resourceModel.getObject() == null
+		add(resourceOkButton.setVisible(resourceModel.getObject() == null
 				|| (resourceModel.getObject() != null && !resourceModel.getObject().hasDetails())));
 		add(new ResourceSearchPanel("search"));
-		add(form);
 		String resourceName = resource.substring(resource.lastIndexOf('/') + 1);
 		add(new ExternalLink("resourceName", resource, resourceName.replace('_', ' ')));
 

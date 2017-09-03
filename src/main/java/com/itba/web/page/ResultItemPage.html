@@ -24,6 +24,18 @@
 		</tbody>
 	</table>
 
+	<div class="container-fluid">
+		<div class="row">
+			<button wicket:id="resourceOkButton" class="btn btn-success">
+				<span wicket:id="resourceOkLabel">Is resource OK?</span>
+			</button>
+			<button class="btn btn-primary" href="#" data-toggle="modal"
+				data-target="#editCommentModal">
+				<wicket:message key="editCommentLabel">Edit comment</wicket:message>
+			</button>
+		</div>
+	</div>
+
 	<h3>
 		<span wicket:id="commentsTitleLabel">Comments Title</span>
 	</h3>
@@ -31,17 +43,7 @@
 	<div wicket:id="commentsContainer" class="well well-sm">
 		<span wicket:id="comments">Comments</span>
 	</div>
-	<button class="btn btn-primary" href="#" data-toggle="modal" data-target="#editCommentModal">
-		<wicket:message key="editCommentLabel">Edit comment</wicket:message>
-	</button>
 
-	<form wicket:id="form">
-		<div class="control-group">
-			<button wicket:id="resourceOkButton" class="btn btn-success">
-				<span wicket:id="resourceOkLabel">Is resource OK?</span>
-			</button>
-		</div>
-	</form>
 	<div wicket:id="feedbackPanel"></div>
 	<table class="table table-striped">
 		<thead>

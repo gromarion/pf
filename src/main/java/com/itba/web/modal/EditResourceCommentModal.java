@@ -22,7 +22,7 @@ public class EditResourceCommentModal extends Panel {
 	@SpringBean
 	private EvaluatedResourceRepo evaluatedResourceRepo;
 	
-	public EditResourceCommentModal(final String id, final String title, final String resource, final IModel<EvaluatedResource> resourceModel) {
+	public EditResourceCommentModal(final String id, final String title, final String resource, final String comesFromMyResources, final IModel<EvaluatedResource> resourceModel) {
 		super(id);
 
 		final Label titleLabel = new Label("titleLabel", title);
@@ -39,6 +39,7 @@ public class EditResourceCommentModal extends Panel {
 				resourceModel.getObject().setComments(comments.getValue());
 				evaluatedResourceRepo.save(resourceModel.getObject());
 				PageParameters parameters = new PageParameters();
+				parameters.add("comesFromMyResources", comesFromMyResources);
 				parameters.add("selection", resource);
 				setResponsePage(ResultItemPage.class, parameters);
             }
