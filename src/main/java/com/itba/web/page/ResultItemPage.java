@@ -13,10 +13,9 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.json.JSONException;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -27,6 +26,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.itba.ManualErrorsFormulae;
 import com.itba.domain.EntityModel;
@@ -43,6 +43,7 @@ import com.itba.sparql.JsonSparqlResult;
 import com.itba.sparql.ResultItem;
 import com.itba.web.WicketSession;
 import com.itba.web.feedback.CustomFeedbackPanel;
+import com.itba.web.modal.EditResourceCommentModal;
 
 import lib.Score;
 import lib.StringUtils;
@@ -81,8 +82,9 @@ public class ResultItemPage extends BasePage {
 		final Label resourceOkLabel = new Label("resourceOkLabel", resourceOkLabelMessage);
 		final Label errorNameHeaderLabel = new Label("errorNameHeaderLabel", getString("errorNameHeaderLabel"));
 		final Label errorScoreHeaderLabel = new Label("errorScoreHeaderLabel", getString("errorScoreHeaderLabel"));
-
-
+		final Label commentsTitleLabel = new Label("commentsTitleLabel", getString("comments"));
+		final WebMarkupContainer commentsContainer = new WebMarkupContainer("commentsContainer");
+		
 		resourceModel.setObject(evaluatedResourceRepo
 				.getResourceForSession(WicketSession.get().getEvaluationSession().get(), resource).orNull());
 
@@ -118,9 +120,16 @@ public class ResultItemPage extends BasePage {
 			}
 		};
 		
+		boolean hasComments = resourceModel.getObject() != null && !Strings.isNullOrEmpty(resourceModel.getObject().getComments());
+		final Label commentsLabel = new Label("comments", hasComments ? resourceModel.getObject().getComments() : "");
+
+		commentsContainer.add(commentsLabel);
 		add(detailsList.setVisible(!scoreImpactModel.getObject().isEmpty()));
 		add(errorNameHeaderLabel.setVisible(!scoreImpactModel.getObject().isEmpty()));
 		add(errorScoreHeaderLabel.setVisible(!scoreImpactModel.getObject().isEmpty()));
+		add(commentsTitleLabel.setVisible(hasComments));
+		add(commentsContainer.setVisible(hasComments));
+		add(new EditResourceCommentModal("editCommentModal", "Editar comentario", resource, resourceModel));
 
 		final List<String> previouslyEvaluatedDetails = resourceModel.getObject() == null
 				? Lists.<String>newLinkedList()
@@ -160,22 +169,11 @@ public class ResultItemPage extends BasePage {
 		final CustomFeedbackPanel customFeedbackPanel = new CustomFeedbackPanel("feedbackPanel");
 		customFeedbackPanel.setOutputMarkupId(true);
 		Form<Void> form = new Form<>("form");
-		final TextArea<String> comments = new TextArea<String>("comments", Model.of(""));
-		comments.setOutputMarkupId(true);
-		Button submit = new Button("submit") {
-			@Override
-			public void onSubmit() {
-				super.onSubmit();
-			}
-		};
 
 		Score score;
 		try {
 			score = manualErrorsFormulae.compute(resource);
-			// TODO: hacer el manejo del scoring adentro de este panel
-			// directamente??
 			ResourceScorePanel resourceScorePanel = new ResourceScorePanel("scorePanel", score);
-
 			resourceScorePanel.add(new Label("resourceScore", score.toString()));
 			if (score.getScore() < 0) {
 				resourceScorePanel.setVisible(false);
@@ -193,9 +191,7 @@ public class ResultItemPage extends BasePage {
 							new EvaluatedResource(WicketSession.get().getEvaluationSession().get(), resource));
 					evaluatedResourceRepo.save(resourceModel.getObject());
 				}
-
 				resourceModel.getObject().setCorrect(!resourceModel.getObject().isCorrect());
-
 				PageParameters parameters = new PageParameters();
 				parameters.add("selection", resource);
 				setResponsePage(ResultItemPage.class, parameters);
@@ -232,14 +228,12 @@ public class ResultItemPage extends BasePage {
 		resourceOkButton.add(resourceOkLabel);
 		form.add(resourceOkButton.setVisible(resourceModel.getObject() == null
 				|| (resourceModel.getObject() != null && !resourceModel.getObject().hasDetails())));
-		form.add(backButton);
-		form.add(comments);
-		form.add(submit);
 		add(new ResourceSearchPanel("search"));
 		add(form);
 		String resourceName = resource.substring(resource.lastIndexOf('/') + 1);
 		add(new ExternalLink("resourceName", resource, resourceName.replace('_', ' ')));
 
+		add(backButton);
 		add(customFeedbackPanel);
 	}
 

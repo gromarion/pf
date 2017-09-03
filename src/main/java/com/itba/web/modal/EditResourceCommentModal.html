@@ -1,0 +1,33 @@
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+	<div class="modal fade" id="editCommentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">
+						<span wicket:id="titleLabel">Title</span>
+					</h4>
+				</div>
+				<form wicket:id="commentForm" method="post" class="form-horizontal">
+					<div class="modal-body">
+						<div class="control-group">
+							<div class="controls">
+								<textarea wicket:id="comments" rows="2" cols="40"></textarea>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">
+							<wicket:message key="close">Close</wicket:message>
+						</button>
+						<button type="submit" class="btn btn-primary" wicket:id="submit">
+							<wicket:message key="save">Save</wicket:message>
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</wicket:panel>

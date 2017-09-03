@@ -2,12 +2,15 @@
 	<div class="input-append">
 		<div wicket:id="search" />
 	</div>
+	<button wicket:id="back" class="btn btn-default">
+		<wicket:message key="back">Back</wicket:message>
+	</button>
 	<h1>
 		<a href="#" wicket:id="resourceName" target="_blank">Resource Name</a>
 	</h1>
 	<div wicket:id="scorePanel" />
 	<table class="table table-striped">
- 		<thead>
+		<thead>
 			<tr>
 				<th><span wicket:id="errorNameHeaderLabel">Error Header</span></th>
 				<th><span wicket:id="errorScoreHeaderLabel">Score Header</span></th>
@@ -20,21 +23,22 @@
 			</tr>
 		</tbody>
 	</table>
+
+	<h3>
+		<span wicket:id="commentsTitleLabel">Comments Title</span>
+	</h3>
+	<div wicket:id="editCommentModal"></div>
+	<div wicket:id="commentsContainer" class="well well-sm">
+		<span wicket:id="comments">Comments</span>
+	</div>
+	<button class="btn btn-primary" href="#" data-toggle="modal" data-target="#editCommentModal">
+		<wicket:message key="editCommentLabel">Edit comment</wicket:message>
+	</button>
+
 	<form wicket:id="form">
 		<div class="control-group">
-			<label class="control-label"> <wicket:message key="comments">Comments</wicket:message>
-			</label>
-			<div class="controls">
-				<textarea wicket:id="comments" rows="2" cols="40"></textarea>
-			</div>
 			<button wicket:id="resourceOkButton" class="btn btn-success">
 				<span wicket:id="resourceOkLabel">Is resource OK?</span>
-			</button>
-			<button wicket:id="submit" type="submit" class="btn btn-primary">
-				<wicket:message key="submit">Submit</wicket:message>
-			</button>
-			<button wicket:id="back" class="btn">
-				<wicket:message key="back">Back</wicket:message>
 			</button>
 		</div>
 	</form>
@@ -52,11 +56,9 @@
 				<td><a href="#" target="_blank" wicket:id="predicate">Some
 						Predicate</a></td>
 				<td><span wicket:id="object">Some Object</span></td>
-				<td>
-					<a wicket:id="errorPageLink" class="btn btn-link" href="#">
-						<i class="icon-pencil"/>
-					</a>
-				</td>
+				<td><a wicket:id="errorPageLink" class="btn btn-link" href="#">
+						<i class="icon-pencil" />
+				</a></td>
 			</tr>
 		</tbody>
 	</table>

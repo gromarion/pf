@@ -23,7 +23,7 @@ public class EditErrorCommentModal extends Panel {
 	@SpringBean
 	private EvaluatedResourceDetailRepo evaluatedResourceDetailRepo;
 	
-	public EditErrorCommentModal(String id, String title, final IModel<EvaluatedResourceDetail> detailModel, final PageParameters refreshParameters) {
+	public EditErrorCommentModal(final String id, final String title, final IModel<EvaluatedResourceDetail> detailModel, final PageParameters refreshParameters) {
 		super(id);
 		final Label titleLabel = new Label("titleLabel", title);
         final TextArea<String> comments = new TextArea<String>("comments", Model.of(detailModel.getObject().getComment()));
