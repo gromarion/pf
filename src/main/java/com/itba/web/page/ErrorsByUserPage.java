@@ -15,7 +15,6 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.itba.ManualErrorsFormulae;
 import com.itba.domain.EntityModel;
 import com.itba.domain.model.EvaluatedResource;
 import com.itba.domain.model.EvaluationSession;
@@ -25,6 +24,7 @@ import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.domain.repository.UserRepo;
 import com.itba.domain.repository.hibernate.PaginatedResult;
+import com.itba.formulae.ManualErrorsFormulae;
 import com.itba.web.WicketSession;
 import com.itba.web.feedback.CustomFeedbackPanel;
 

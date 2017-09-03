@@ -71,4 +71,22 @@ public class HibernateEvaluatedResourceRepo extends AbstractHibernateRepo implem
 				+ session.getId() + " AND e.correct = true");
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<EvaluatedResource> getAll() {
+		return getSession().createQuery("SELECT e FROM EvaluatedResource e").list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<String> getErrored() {
+		return getSession().createQuery("SELECT e.resource FROM EvaluatedResource e WHERE e.correct = false").list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<String> getCorrect() {
+		return getSession().createQuery("SELECT e.resource FROM EvaluatedResource e WHERE e.correct = true").list();
+	}
 }

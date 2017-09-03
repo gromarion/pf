@@ -1,4 +1,4 @@
-package com.itba;
+package com.itba.formulae;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -46,7 +46,7 @@ public class EndpointQualityFormulae {
 		private EndpointStatsRepo endpointStatsRepo;
 		private EvaluatedResourceDetailRepo evaluatedResourceDetailRepo;
 		private ErrorRepo errorRepo;
-		private String score;
+		private double score;
 
 		public EndpointScore(EndpointStatsRepo endpointStatsRepo,
 				EvaluatedResourceDetailRepo evaluatedResourceDetailRepo, ErrorRepo errorRepo) throws IOException {
@@ -82,12 +82,20 @@ public class EndpointQualityFormulae {
 		public List<EndpointStats> getEndpointStats() {
 			return endpointStatsRepo.getAllForEndpoint(campaign.getEndpoint());
 		}
-
-		public String getScore() {
+		
+		public double getScore() {
 			return score;
 		}
 
-		private String computeScore() throws IOException {
+		public String getScoreString() {
+			if (score < 0.001) {
+				return StringUtils.letterQualification(1) + " - 1";
+			} else {
+				return StringUtils.letterQualification(score) + " - " + StringUtils.formatDouble(score, 3);				
+			}
+		}
+
+		private double computeScore() throws IOException {
 			int successfulResponses = 0;
 			int erroredResponses = 0;
 
@@ -107,13 +115,11 @@ public class EndpointQualityFormulae {
 				}
 			}
 			if (erroredResponses == 0) {
-				return StringUtils.letterQualification(1) + " - 1";
+				return 0;
 			} else {
 				double availabilityScore = 1 - ((double) erroredResponses / (successfulResponses + erroredResponses));
 				int licenseScore = SparqlRequestHandler.hasLicense(campaign, endpointStatsRepo) ? 1 : 0;
-				double score = (availabilityScore + licenseScore) / 2;
-
-				return StringUtils.letterQualification(score) + " - " + StringUtils.formatDouble(score, 3);
+				return (availabilityScore + licenseScore) / 2;
 			}
 		}
 	}
