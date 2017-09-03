@@ -1,5 +1,6 @@
 package com.itba.web.page;
 
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
@@ -11,6 +12,7 @@ import com.itba.domain.EntityModel;
 import com.itba.domain.model.User;
 
 @SuppressWarnings("serial")
+@AuthorizeInstantiation("USER")
 public class EditUserProfilePage extends BasePage {
 
 	public EditUserProfilePage(User user) {

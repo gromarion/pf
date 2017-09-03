@@ -56,7 +56,7 @@ public class LoginPage extends WebPage {
                 if (selectedCampaignModel.getObject() == null) {
                     error(getString("campaignNotFoundError"));
                 } else if (appSession.signIn(username, password, selectedCampaignModel.getObject(), users, evaluationSessions)) {
-                    setResponsePage(AutomaticOrManualPage.class);
+                	setResponsePage(AutomaticOrManualPage.class);
                 } else {
                     error(getString("invalidCredentials"));
                 }
