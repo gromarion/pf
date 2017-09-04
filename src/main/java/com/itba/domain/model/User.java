@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.apache.wicket.authroles.authorization.strategies.role.Roles;
+
 import com.itba.domain.PersistentEntity;
 
 @Entity
@@ -13,27 +15,31 @@ import com.itba.domain.PersistentEntity;
 public class User extends PersistentEntity {
 
 	private String fullName;
-	
-    private String username;
-	
-    private String password;
 
-    @OneToMany(mappedBy = "user")
-    private Set<EvaluationSession> sessions;
+	private String username;
 
-    User(){}
+	private String password;
 
-    public User(String fullName, String name, String password) {
-        this.fullName = fullName;
-    	this.username = name;
-        this.password = password;
-    }
+	private Roles roles = null;
 
-    public boolean checkPassword(String password) {
-        return this.password.equals(password);
-    }
-    
-    public String getConfirmedPassword() {
+	@OneToMany(mappedBy = "user")
+	private Set<EvaluationSession> sessions;
+
+	User() {
+	}
+
+	public User(String fullName, String name, String password, String roles) {
+		this.fullName = fullName;
+		this.username = name;
+		this.password = password;
+		this.roles = new Roles(roles);
+	}
+
+	public boolean checkPassword(String password) {
+		return this.password.equals(password);
+	}
+
+	public String getConfirmedPassword() {
 		return password;
 	}
 
@@ -51,5 +57,13 @@ public class User extends PersistentEntity {
 
 	public Set<EvaluationSession> getSessions() {
 		return sessions;
+	}
+
+	public boolean hasRole(String role) {
+		return roles.hasRole(role);
+	}
+
+	public boolean hasAnyRole(Roles roles) {
+		return this.roles.hasAnyRole(roles);
 	}
 }
