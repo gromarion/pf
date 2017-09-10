@@ -76,6 +76,16 @@
                     </div>
                 </div>
             </form>
+            
+            <form wicket:id="guestForm" method="post" class="form-horizontal">
+            	<div class="control-group">
+                    <div class="controls">
+                        <button wicket:id="guestLogin" type="submit" class="btn btn-primary">
+                            <wicket:message key="guestSubmit">Submit</wicket:message>
+                        </button>
+                    </div>
+                </div>
+            </form>
             <div class="control-group">
 				<div class="controls">
 					<a href="#" wicket:id="createEndpointLink"><wicket:message key="createNewEndpoint">Create new endpoint</wicket:message></a>

@@ -1,8 +1,10 @@
 package com.itba.web.page;
 
 import java.io.IOException;
+
 import org.apache.wicket.ajax.json.JSONException;
 import org.apache.wicket.ajax.json.JSONObject;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
@@ -11,6 +13,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
 import com.itba.domain.SparqlRequestHandler;
 import com.itba.domain.model.Campaign;
 import com.itba.domain.repository.CampaignRepo;
@@ -18,6 +21,7 @@ import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.web.WicketSession;
 
 @SuppressWarnings("serial")
+@AuthorizeInstantiation({"EVALUATOR", "ADMIN"})
 public class ResourceSearchPanel extends Panel {
 	@SpringBean
 	CampaignRepo campaignRepo;
