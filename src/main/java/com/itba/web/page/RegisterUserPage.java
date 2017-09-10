@@ -41,7 +41,7 @@ public class RegisterUserPage extends WebPage {
                 } else if (!password.equals(confirmedPassword)) {
                 	error(getString("passwordMismatch"));
                 } else {
-                	user = new User(fullName, username, password, "GUEST");
+                	user = new User(fullName, username, password, "EVALUATOR");
                 	users.save(user);
                 	setResponsePage(LoginPage.class);
                 }

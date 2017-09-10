@@ -12,7 +12,7 @@ import com.itba.domain.EntityModel;
 import com.itba.domain.model.User;
 
 @SuppressWarnings("serial")
-@AuthorizeInstantiation({"USER", "ADMIN"})
+@AuthorizeInstantiation({"EVALUATOR", "ADMIN"})
 public class EditUserProfilePage extends BasePage {
 
 	public EditUserProfilePage(User user) {

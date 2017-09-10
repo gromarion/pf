@@ -7,6 +7,7 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.json.JSONException;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -29,11 +30,12 @@ import com.itba.web.WicketSession;
 import com.itba.web.feedback.CustomFeedbackPanel;
 
 @SuppressWarnings("serial")
+@AuthorizeInstantiation({ "EVALUATOR", "ADMIN" })
 public class ErrorsByUserPage extends BasePage {
 
 	@SpringBean
 	private ManualErrorsFormulae manualErrorsFormulae;
-	
+
 	@SpringBean
 	private EvaluatedResourceRepo evaluatedResourceRepo;
 
@@ -66,10 +68,15 @@ public class ErrorsByUserPage extends BasePage {
 		final IModel<List<EvaluatedResource>> evaluatedResources = new LoadableDetachableModel<List<EvaluatedResource>>() {
 			@Override
 			protected List<EvaluatedResource> load() {
-				PaginatedResult<EvaluatedResource> result = evaluatedResourceRepo
-						.getAllForSession(currentSession.getObject(), fetchPage(parameters));
-				hasNextPage = result.hasNextPage();
-				return result.getResult();
+				User username = userRepo.getByUsername(WicketSession.get().getUsername());
+				if (username.hasRole("ADMIN")) {
+					List<EvaluatedResource> result = evaluatedResourceRepo.getAll();
+					return result;
+				} else {
+					PaginatedResult<EvaluatedResource> result = evaluatedResourceRepo.getAllForSession(currentSession.getObject(), fetchPage(parameters));
+					hasNextPage = result.hasNextPage();
+					return result.getResult();
+				}
 			}
 		};
 
@@ -82,7 +89,8 @@ public class ErrorsByUserPage extends BasePage {
 					evaluatedResource.add(new AttributeModifier("class", "success"));
 				}
 				try {
-					evaluatedResource.add(new Label("resourceScore", manualErrorsFormulae.compute(evaluatedResource.getModelObject().getResource()).scoreString()));
+					evaluatedResource.add(new Label("resourceScore", manualErrorsFormulae
+							.compute(evaluatedResource.getModelObject().getResource()).scoreString()));
 				} catch (JSONException | IOException e) {
 					e.printStackTrace();
 					setResponsePage(ErrorPage.class);
