@@ -85,11 +85,14 @@ public class ErrorsByUserPage extends BasePage {
 			protected List<EvaluatedResource> load() {
 				User username = userRepo.getByUsername(WicketSession.get().getUsername());
 				if (username.hasRole("ADMIN")) {
-					List<EvaluatedResource> result = evaluatedResourceRepo.getAll();
-					return result;
+					PaginatedResult<EvaluatedResource> result = evaluatedResourceRepo.getAllPaginated(page);
+					hasNextPage = result.hasNextPage();
+
+					return result.getResult();
 				} else {
 					PaginatedResult<EvaluatedResource> result = getResult(parameters);
 					hasNextPage = result.hasNextPage();
+
 					return result.getResult();
 				}
 			}

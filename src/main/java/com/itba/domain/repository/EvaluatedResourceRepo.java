@@ -22,6 +22,8 @@ public interface EvaluatedResourceRepo extends HibernateRepo {
 	
 	List<EvaluatedResource> getAll();
 	
+	PaginatedResult<EvaluatedResource> getAllPaginated(int page);
+	
 	List<String> getErrored();
 
 	List<String> getCorrect();
