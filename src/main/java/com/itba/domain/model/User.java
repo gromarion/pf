@@ -15,13 +15,9 @@ import com.itba.domain.PersistentEntity;
 public class User extends PersistentEntity {
 
 	private String fullName;
-
 	private String username;
-
 	private String password;
-
-	private Roles roles = null;
-
+	private String roles;
 	@OneToMany(mappedBy = "user")
 	private Set<EvaluationSession> sessions;
 
@@ -32,7 +28,7 @@ public class User extends PersistentEntity {
 		this.fullName = fullName;
 		this.username = name;
 		this.password = password;
-		this.roles = new Roles(roles);
+		this.roles = roles;
 	}
 
 	public boolean checkPassword(String password) {
@@ -60,10 +56,10 @@ public class User extends PersistentEntity {
 	}
 
 	public boolean hasRole(String role) {
-		return roles.hasRole(role);
+		return new Roles(roles).hasRole(role);
 	}
 
 	public boolean hasAnyRole(Roles roles) {
-		return this.roles.hasAnyRole(roles);
+		return new Roles(this.roles).hasAnyRole(roles);
 	}
 }

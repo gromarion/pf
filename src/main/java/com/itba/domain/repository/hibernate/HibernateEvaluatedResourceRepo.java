@@ -38,11 +38,11 @@ public class HibernateEvaluatedResourceRepo extends AbstractHibernateRepo implem
 	@Override
 	public PaginatedResult<EvaluatedResource> getAllForSession(final EvaluationSession session, int page) {
 		Query query = getSession()
-				.createQuery("SELECT e FROM EvaluatedResource e " + " WHERE e.session = " + session.getId())
+				.createQuery("SELECT e FROM EvaluatedResource e WHERE e.session = " + session.getId())
 				.setMaxResults(LIMIT).setFirstResult(page);
 
 		Query countQuery = getSession()
-				.createQuery("SELECT COUNT(*) FROM EvaluatedResource WHERE e.session = " + session.getId());
+				.createQuery("SELECT COUNT(*) FROM EvaluatedResource e WHERE e.session = " + session.getId());
 
 		return new PaginatedResult<EvaluatedResource>(query.list(), page, (long) countQuery.uniqueResult(), LIMIT);
 	}
@@ -76,7 +76,7 @@ public class HibernateEvaluatedResourceRepo extends AbstractHibernateRepo implem
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<EvaluatedResource> getAll() {
-		return getSession().createQuery("SELECT COUNT(*) FROM EvaluatedResource").list();
+		return getSession().createQuery("SELECT e FROM EvaluatedResource e").list();
 	}
 
 	@SuppressWarnings("unchecked")
