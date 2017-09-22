@@ -34,6 +34,8 @@ import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.web.WicketSession;
 import com.itba.web.feedback.CustomFeedbackPanel;
 import com.itba.web.modal.EditErrorCommentModal;
+import com.itba.web.tooltip.Tooltip;
+import com.itba.web.tooltip.Tooltip.Position;
 
 import lib.StringUtils;
 

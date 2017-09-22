@@ -12,7 +12,10 @@
 	    <script type="text/javascript">
 	    	$('#myModal').on('shown.bs.modal', function () {
 	    	  $('#myInput').focus()
-	    	})
+	    	});
+	    	$(function () {
+	   			$('[data-toggle="tooltip"]').tooltip()
+	    	});
 	    </script>
 	    <style>
 	                div.wicket-aa {

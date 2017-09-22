@@ -43,6 +43,8 @@ import com.itba.sparql.ResultItem;
 import com.itba.web.WicketSession;
 import com.itba.web.feedback.CustomFeedbackPanel;
 import com.itba.web.modal.EditResourceCommentModal;
+import com.itba.web.tooltip.Tooltip;
+import com.itba.web.tooltip.Tooltip.Position;
 
 import lib.Score;
 import lib.StringUtils;
@@ -215,6 +217,8 @@ public class ResultItemPage extends BasePage {
 			}
 		};
 
+		Tooltip.addToComponent(resourceOkButton, Position.TOP, "Un tooltip sobre este botón");
+		
 		Link<Void> backButton = new Link<Void>("back") {
 			@Override
 			public void onClick() {
