@@ -146,10 +146,9 @@ public class ErrorsByUserPage extends BasePage {
 		        	getRequestCycle().scheduleRequestHandlerAfterCurrent(new ResourceStreamRequestHandler(resourceStream, file.getName()));
 		        }
 		    }
-		};
+		}.setDeleteAfterDownload(true);
 
 		Tooltip.addToComponent(reportDownloadLink, Position.RIGHT, getString("downloadLink"));
-		
 		add(reportDownloadLink);
 
 	DropDownChoice<Error> errorListChoice=new DropDownChoice<Error>("errorList",errorModel,new LoadableDetachableModel<List<Error>>(){@Override protected List<Error>load(){return availableErrors.getObject();}},new ChoiceRenderer<Error>("name")){};
