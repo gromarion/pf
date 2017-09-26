@@ -1,6 +1,10 @@
 package com.itba.web.page;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -16,12 +20,17 @@ import org.apache.wicket.authroles.authorization.strategies.role.annotations.Aut
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.link.DownloadLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.request.handler.resource.ResourceStreamRequestHandler;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.resource.FileResourceStream;
+import org.apache.wicket.util.resource.IResourceStream;
 
 import com.itba.domain.EntityModel;
 import com.itba.domain.model.Error;
@@ -38,11 +47,15 @@ import com.itba.domain.repository.hibernate.PaginatedResult;
 import com.itba.formulae.ManualErrorsFormulae;
 import com.itba.web.WicketSession;
 import com.itba.web.feedback.CustomFeedbackPanel;
+import com.itba.web.tooltip.Tooltip;
+import com.itba.web.tooltip.Tooltip.Position;
 
 @SuppressWarnings("serial")
 @AuthorizeInstantiation({ "EVALUATOR", "ADMIN" })
 public class ErrorsByUserPage extends BasePage {
 
+	private static final String[] csvHeader = {"Campaign", "User", "Date","Correct", "Resource", "Predicate", "Object", "Error"};
+	
 	@SpringBean
 	private ManualErrorsFormulae manualErrorsFormulae;
 	@SpringBean
@@ -60,12 +73,7 @@ public class ErrorsByUserPage extends BasePage {
 	private final IModel<User> userModel = new EntityModel<User>(User.class);
 	private final IModel<EvaluationSession> currentSession = new EntityModel<EvaluationSession>(
 			EvaluationSession.class);
-	private final IModel<List<Error>> availableErrors = new LoadableDetachableModel<List<Error>>() {
-		@Override
-		protected List<Error> load() {
-			return errorRepo.getAll();
-		}
-	};
+	private final IModel<List<Error>> availableErrors=new LoadableDetachableModel<List<Error>>(){@Override protected List<Error>load(){return errorRepo.getAll();}};
 	private boolean hasNextPage;
 
 	public ErrorsByUserPage(final PageParameters parameters) {
@@ -98,18 +106,55 @@ public class ErrorsByUserPage extends BasePage {
 			}
 		};
 		
-		DropDownChoice<Error> errorListChoice = 
-	        new DropDownChoice<Error>("errorList", errorModel,
-	                new LoadableDetachableModel<List<Error>>() {
-	                    @Override
-	                    protected List<Error> load() { 
-	                        return availableErrors.getObject();
-	                    }
-	                }
-	            , new ChoiceRenderer<Error>("name")) {
-        };
-        
-        OnChangeAjaxBehavior onChangeAjaxBehavior = new OnChangeAjaxBehavior() {
+		IModel<File> fileModel = new AbstractReadOnlyModel<File>() {
+		    @Override
+		    public File getObject() {
+		    	File reportFile = new File("report.csv");
+	    		FileOutputStream fos;
+				try {
+					fos = new FileOutputStream(reportFile);
+				
+	    		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+				User username = userRepo.getByUsername(WicketSession.get().getUsername());
+				List<EvaluatedResource> evaluatedResources =
+						username.hasRole("ADMIN") ? evaluatedResourceRepo.getAll() : evaluatedResourceRepo.getAllForSession(currentSession.getObject());
+	    		bw.write(String.join(",", csvHeader));
+				bw.newLine();
+				for (EvaluatedResource resource : evaluatedResources) {
+	    			for (String line : resource.getAsCsvLines(',')) {
+	    				bw.write(line);
+	    				bw.newLine();
+	    			}
+	    		}
+	    		bw.close();
+		        return reportFile;
+				} catch (IOException e) {
+					e.printStackTrace();
+					return null;
+				}
+		    }
+		};
+
+		DownloadLink reportDownloadLink = new DownloadLink("reportDownloadLink", fileModel) {
+		    @Override
+		    public void onClick() {
+		        File file = (File) getModelObject();
+		        if (file == null) {
+		        	error("No se pudo descargar el archivo.");
+		        } else {
+		        	IResourceStream resourceStream = new FileResourceStream(new org.apache.wicket.util.file.File(file));
+		        	getRequestCycle().scheduleRequestHandlerAfterCurrent(new ResourceStreamRequestHandler(resourceStream, file.getName()));
+		        }
+		    }
+		};
+
+		Tooltip.addToComponent(reportDownloadLink, Position.RIGHT, getString("downloadLink"));
+		
+		add(reportDownloadLink);
+
+	DropDownChoice<Error> errorListChoice=new DropDownChoice<Error>("errorList",errorModel,new LoadableDetachableModel<List<Error>>(){@Override protected List<Error>load(){return availableErrors.getObject();}},new ChoiceRenderer<Error>("name")){};
+
+	OnChangeAjaxBehavior onChangeAjaxBehavior = new OnChangeAjaxBehavior() {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
             	int errorId = errorModel.getObject().getId();
@@ -150,15 +195,8 @@ public class ErrorsByUserPage extends BasePage {
 			}
 		});
 
-		AjaxLink<Void> nextPageLink = new AjaxLink<Void>("nextPageLink") {
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				PageParameters parameters = new PageParameters();
-				parameters.set("page", page + 1);
-				setResponsePage(SearchResultPage.class, parameters);
-			}
-		};
-		AjaxLink<Void> previousPageLink = new AjaxLink<Void>("previousPageLink") {
+	AjaxLink<Void> nextPageLink=new AjaxLink<Void>("nextPageLink"){@Override public void onClick(AjaxRequestTarget target){PageParameters parameters=new PageParameters();parameters.set("page",page+1);setResponsePage(SearchResultPage.class,parameters);}};
+	AjaxLink<Void> previousPageLink = new AjaxLink<Void>("previousPageLink") {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				PageParameters parameters = new PageParameters();
@@ -185,13 +223,14 @@ public class ErrorsByUserPage extends BasePage {
 
 		return page == null ? 0 : Integer.parseInt(page);
 	}
-	
+
 	private PaginatedResult<EvaluatedResource> getResult(PageParameters parameters) {
-		PaginatedResult<EvaluatedResource> result = evaluatedResourceRepo.getAllForSession(currentSession.getObject(), fetchPage(parameters));
+		PaginatedResult<EvaluatedResource> result = evaluatedResourceRepo.getAllForSession(currentSession.getObject(),
+				fetchPage(parameters));
 		if (Strings.isNotEmpty(parameters.get("errorId").toString())) {
 			int errorId = Integer.parseInt(parameters.get("errorId").toString());
 			Set<EvaluatedResource> filteredEvaluatedResource = new HashSet<>();
-		
+
 			for (EvaluatedResource evaluatedResource : result.getResult()) {
 				for (EvaluatedResourceDetail evaluatedResourceDetail : evaluatedResource.getDetails()) {
 					if (evaluatedResourceDetail.getError().getId() == errorId) {
@@ -201,7 +240,7 @@ public class ErrorsByUserPage extends BasePage {
 			}
 			result.setResult(new ArrayList<EvaluatedResource>(filteredEvaluatedResource));
 		}
-		
+
 		return result;
 	}
 }

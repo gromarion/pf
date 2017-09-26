@@ -32,4 +32,8 @@ public class EvaluationSession extends PersistentEntity {
 	public Campaign getCampaign() {
 		return campaign;
 	}
+	
+	public User getUser() {
+		return this.user;
+	}
 }

@@ -2,6 +2,7 @@ package com.itba.domain.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -10,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.google.common.collect.Lists;
 import com.itba.domain.PersistentEntity;
 
 @Entity
@@ -87,5 +89,34 @@ public class EvaluatedResource extends PersistentEntity {
 	
 	public boolean hasDetails() {
 		return details.size() > 0;
+	}
+	
+	public List<String> getAsCsvLines(Character separator) {
+		List<String> lines = Lists.newArrayList();
+		StringBuilder prefixBuilder = new StringBuilder();
+		prefixBuilder.append(session.getCampaign().getName()).append(separator);
+		prefixBuilder.append(session.getUser().getFullName()).append(separator);
+		prefixBuilder.append(getFormattedDate()).append(separator);
+		prefixBuilder.append(correct).append(separator);
+		prefixBuilder.append(resource).append(separator);
+		String prefix = prefixBuilder.toString();
+		
+		if (!this.correct) {
+			for (EvaluatedResourceDetail detail : details) {
+				StringBuilder builder = new StringBuilder();
+				builder.append(prefix);
+				builder.append(detail.getPredicate()).append(separator);
+				builder.append(detail.getObject()).append(separator);
+				builder.append(detail.getError().getName());
+				lines.add(builder.toString());
+			}
+		} else {
+			StringBuilder builder = new StringBuilder();
+			builder.append(prefix);
+			builder.append(separator);
+			builder.append(separator);
+			lines.add(builder.toString());
+		}
+		return lines;
 	}
 }

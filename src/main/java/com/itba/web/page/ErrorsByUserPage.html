@@ -2,15 +2,19 @@
 	<div class="row">
 		<div class="container">
 			<div class="row">
+				<a type="button" class="btn btn-info glyphicon glyphicon-download"
+					wicket:id="reportDownloadLink" value="Download"></a>
+			</div>
+			<div class="row">
 				<h2>
 					<wicket:message key="titleLabel">Title</wicket:message>
 				</h2>
 			</div>
 			<div wicket:id="feedbackPanel"></div>
-			<span>
+			<div class="row">
 				<wicket:message key="errorListFilter">Error type</wicket:message>
-			</span>
-			<select wicket:id="errorList"></select>
+				<select wicket:id="errorList"></select>
+			</div>
 			<table class="table table-striped">
 				<thead>
 					<tr>
@@ -21,17 +25,20 @@
 				</thead>
 				<tbody>
 					<tr wicket:id="evaluatedResources">
-						<td><a wicket:id="resultLink" class="btn btn-link" href="#"><span wicket:id="resourceName">Some resource</span></a></td>
+						<td><a wicket:id="resultLink" class="btn btn-link" href="#"><span
+								wicket:id="resourceName">Some resource</span></a></td>
 						<td><span wicket:id="resourceScore">1.000</span></td>
 						<td><span wicket:id="resourceTimestamp">1/1/1970 00:00</span></td>
 					</tr>
 				</tbody>
 			</table>
 			<div class="paginator">
-		    	<a wicket:id="previousPageLink" href="#" class="btn btn-primary"><wicket:message key="previousPage"></wicket:message></a>
-		    	<wicket:message key="page">Página</wicket:message> <span wicket:id="currentPage">1</span>
-		    	<a wicket:id="nextPageLink" href="#" class="btn btn-primary"><wicket:message key="nextPage"></wicket:message></a>
-		    </div>
+				<a wicket:id="previousPageLink" href="#" class="btn btn-primary"><wicket:message
+						key="previousPage"></wicket:message></a>
+				<wicket:message key="page">Página</wicket:message>
+				<span wicket:id="currentPage">1</span> <a wicket:id="nextPageLink"
+					href="#" class="btn btn-primary"><wicket:message key="nextPage"></wicket:message></a>
+			</div>
 		</div>
 	</div>
 </wicket:extend>
