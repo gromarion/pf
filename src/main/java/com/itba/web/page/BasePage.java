@@ -20,8 +20,8 @@ public class BasePage extends WebPage {
 		add(new Link<Void>("home") {
 			@Override
 			public void onClick() {
-			setResponsePage(getApplication().getHomePage());
-		}
+				setResponsePage(getApplication().getHomePage());
+			}
 		});
 
 		add(new BookmarkablePageLink<ErrorsByUserPage>("errorsByUserPage", ErrorsByUserPage.class));
