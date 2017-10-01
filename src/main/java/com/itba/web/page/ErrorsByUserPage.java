@@ -54,7 +54,7 @@ import com.itba.web.tooltip.Tooltip.Position;
 @AuthorizeInstantiation({ "EVALUATOR", "ADMIN" })
 public class ErrorsByUserPage extends BasePage {
 
-	private static final String[] csvHeader = {"Campaign", "User", "Date","Correct", "Resource", "Predicate", "Object", "Error"};
+	private static final String[] CSV_HEADER = {"Campaign", "User", "Date", "Correct", "Resource", "Predicate", "Object", "Error"};
 	
 	@SpringBean
 	private ManualErrorsFormulae manualErrorsFormulae;
@@ -118,7 +118,7 @@ public class ErrorsByUserPage extends BasePage {
 				User username = userRepo.getByUsername(WicketSession.get().getUsername());
 				List<EvaluatedResource> evaluatedResources =
 						username.hasRole("ADMIN") ? evaluatedResourceRepo.getAll() : evaluatedResourceRepo.getAllForSession(currentSession.getObject());
-	    		bw.write(String.join(",", csvHeader));
+	    		bw.write(String.join(",", CSV_HEADER));
 				bw.newLine();
 				for (EvaluatedResource resource : evaluatedResources) {
 	    			for (String line : resource.getAsCsvLines(',')) {

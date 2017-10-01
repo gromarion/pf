@@ -56,7 +56,8 @@ public class BasePage extends WebPage {
 		}
 
 		add(new BookmarkablePageLink<RegisterUserPage>("automaticCheckLink", AutomaticCheckPage.class));
-		add(new BookmarkablePageLink<RegisterUserPage>("manualCheckLink", ResourceSearchPage.class));
+		add(new BookmarkablePageLink<RegisterUserPage>("manualCheckLink", HomePage.class));
+		add(new BookmarkablePageLink<RegisterUserPage>("reportsLink", ReportsPage.class));
 	}
 
 	protected WicketSession getAppSession() {
