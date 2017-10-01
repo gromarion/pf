@@ -48,8 +48,7 @@ public class ResourceSearchPanel extends Panel {
 
 		searchForm.add(searchTextField);
 		searchForm.add(submit);
-		add(searchForm);
-		add(new Link<Void>("fetchRandom") {
+		searchForm.add(new Link<Void>("fetchRandom") {
 			@Override
 			public void onClick() {
 				final Campaign campaign = campaignRepo.get(Campaign.class, WicketSession.get().getEvaluationSession().get().getCampaign().getId());
@@ -66,5 +65,6 @@ public class ResourceSearchPanel extends Panel {
 				}
 			}
 		});
+		add(searchForm);
 	}
 }

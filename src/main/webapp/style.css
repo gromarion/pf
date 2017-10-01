@@ -106,8 +106,8 @@ a, a :visited, a :hover {
 	margin-top: 25px;
 }
 
-.search-button {
-	margin-left: 5px !important;
+.resource-search-input {
+	margin-bottom: 10px;
 }
 
 .bold {
