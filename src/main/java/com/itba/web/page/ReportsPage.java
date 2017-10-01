@@ -4,14 +4,15 @@ import java.io.IOException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.itba.domain.model.User;
 import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.formulae.EndpointQualityFormulae;
 import com.itba.formulae.EndpointQualityFormulae.EndpointScore;
 
 @SuppressWarnings("serial")
-@AuthorizeInstantiation({"EVALUATOR", "ADMIN"})
+@AuthorizeInstantiation({User.EVALUATOR_ROLE, User.ADMIN_ROLE})
 public class ReportsPage extends BasePage {
-
+	
 	@SpringBean
 	private EndpointQualityFormulae endpointQualityFormulae;
 	@SpringBean

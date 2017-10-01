@@ -8,12 +8,13 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import com.itba.domain.SparqlRequestHandler;
 import com.itba.domain.model.Campaign;
+import com.itba.domain.model.User;
 import com.itba.domain.repository.CampaignRepo;
 import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.web.WicketSession;
 
 @SuppressWarnings("serial")
-@AuthorizeInstantiation({"EVALUATOR", "ADMIN"})
+@AuthorizeInstantiation({User.EVALUATOR_ROLE, User.ADMIN_ROLE})
 public class AutomaticCheckPage extends BasePage {
 	private static final long serialVersionUID = 1L;
 	
