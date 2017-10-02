@@ -1,0 +1,26 @@
+<wicket:extend xmlns:wicket="http://www.w3.org/1999/xhtml">
+	<div class="row">
+		<div class="container">
+			<div class="row">
+				<h2>
+					<wicket:message key="titleLabel">Title</wicket:message>
+				</h2>
+			</div>
+			<div wicket:id="feedbackPanel"></div>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th><wicket:message key="fullnameLabel">Resource</wicket:message></th>
+						<th><wicket:message key="usernameLabel">Resource score</wicket:message></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr wicket:id="allUsers">
+						<td><span wicket:id="fullname">name</span></td>
+						<td><span wicket:id="username">username</span></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</wicket:extend>
