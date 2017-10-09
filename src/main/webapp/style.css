@@ -110,6 +110,14 @@ a, a :visited, a :hover {
 	margin-bottom: 10px;
 }
 
+.search-button {
+	margin: 0 5px 0 5px;
+}
+
+.guest-login {
+	margin: 5px 0 5px 0;
+}
+
 .bold {
 	font-weight: bold;
 }
