@@ -5,13 +5,9 @@
 				<div class="resource-search-input">
 					<input type="text" class="form-control" wicket:id="textField" style="width:500px">
 				</div>
-				<div class="container">
-					<div class="row">
-						<div class="col-xs-9 col-md-5" align="center">
-							<button wicket:id="submit" type="submit" class="btn"><wicket:message key="searchButton">Search</wicket:message></button>
-							<button wicket:id="fetchRandom" class="btn"><wicket:message key="fetchRandom"></wicket:message></button>
-						</div>
-					</div>
+				<div class="d-flex justify-content-center">
+					<button wicket:id="submit" type="submit" class="btn"><wicket:message key="searchButton">Search</wicket:message></button>
+					<button wicket:id="fetchRandom" class="btn"><wicket:message key="fetchRandom"></wicket:message></button>
 				</div>
 			</form>
 		</wicket:panel>

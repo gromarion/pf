@@ -1,15 +1,14 @@
 <wicket:extend xmlns:wicket="http://www.w3.org/1999/xhtml">
 	<div wicket:id="feedbackPanel"/>
 
-	<h2 class="text-center">
-		<wicket:message key="title">Title</wicket:message>
-	</h2>
-	<div class="row">
-    	<div class="col-md-12 col-md-offset-3">
-
-    		<div class="input-append">
-				<div wicket:id="search"/>
-			</div>
-    	</div>
+	<div class="d-flex align-items-center">
+		<div>
+			<h2>
+				<wicket:message key="title">Title</wicket:message>
+			</h2>
+		</div>
+		<div class="input-append">
+			<div wicket:id="search"/>
+		</div>
 	</div>
 </wicket:extend>
