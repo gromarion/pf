@@ -8,7 +8,7 @@ h1 > a {
 
 body {
 	margin: 0;
-  padding-top: 70px !important;
+  margin-top: 70px !important;
 }
 
 #hd {
@@ -124,6 +124,10 @@ a, a :visited, a :hover {
 
 .title {
 	margin-bottom: 25px;
+}
+
+.ignore-navbar {
+	margin-top: 25px !important;
 }
 
 .donut-chart {
