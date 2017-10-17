@@ -3,36 +3,10 @@
 	<head>
 	    <meta charset="utf-8" />
 	    <title>Data Quality Assesment</title>
-	    <link rel="stylesheet" href="style.css" type="text/css" media="screen" title="Stylesheet" />
 	    <link rel="icon" type="image/svg" href="../favicon.png">
-	    <script type="text/javascript" src="jquery-3.2.1.min.js"></script>
-	    <script type="text/javascript" src="tether.min.js"></script>
-	    <script type="text/javascript" src="popper.js"></script>
-	    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" type="text/css">
-			<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
-	    <script type="text/javascript">
-	    	$('#myModal').on('shown.bs.modal', function () {
-	    	  $('#myInput').focus()
-	    	});
-	    	$(function () {
-	   			$('[data-toggle="tooltip"]').tooltip()
-	    	});
-	    </script>
-	    <style>
-	                div.wicket-aa {
-	                    font-family: "Lucida Grande","Lucida Sans Unicode",Tahoma,Verdana;
-	                    font-size: 12px;
-	                    background-color: white;
-	                    border-width: 1px;
-	                    border-color: #cccccc;
-	                    border-style: solid;
-	                    padding: 2px;
-	                    margin: 1px 0 0 0;
-	                    text-align:left;
-	                }
-	                div.wicket-aa ul { list-style:none; padding: 2px; margin:0; }
-	                div.wicket-aa ul li.selected { background-color: #FFFF00; padding: 2px; margin:0; }
-	            </style>
+	    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+	    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+	    <link rel="stylesheet" href="style.css">
 	</head>
 	<body>
 		<nav class="navbar fixed-top navbar-expand navbar-light bg-light">
@@ -70,5 +44,17 @@
 		<div class="container h-100">
 		    <wicket:child />
 		</div>
+		<script type="text/javascript" src="jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="tether.min.js"></script>
+    <script type="text/javascript" src="popper.js"></script>
+    <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    	$('#myModal').on('shown.bs.modal', function () {
+    	  $('#myInput').focus()
+    	});
+    	$(function () {
+   			$('[data-toggle="tooltip"]').tooltip()
+    	});
+    </script>
 	</body>
 </html>

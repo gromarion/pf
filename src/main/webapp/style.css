@@ -1,5 +1,6 @@
 body, p, li, a {
-	font-family: Helvetica, Arial, Sans-Serif;font-size: 13pt;
+	font-family: Helvetica, Arial, Sans-Serif;
+	font-size: 13pt;
 }
 
 h1 > a {
@@ -51,9 +52,15 @@ body {
 	margin-right : 5px;
 }
 
-body { margin-top : 0; padding-top : 0;}
+body {
+	margin-top : 0;
+	padding-top : 0;
+}
 
-#logo, #logo h1 { margin-top : 0; padding-top : 0;}
+#logo, #logo h1 {
+	margin-top : 0;
+	padding-top : 0;
+}
 
 #bd {
 	position : absolute;
@@ -73,13 +80,14 @@ body { margin-top : 0; padding-top : 0;}
 }
 
 h2 {
-	padding : 0; margin:0;
+	padding : 0;
+	margin:0;
 	font-size:36pt;
-	color:#FF5500;
 }
 
 h3 {
-	padding : 0; margin:0;
+	padding : 0;
+	margin:0;
 	font-size:24pt;
 	color:#092E67;
 }
