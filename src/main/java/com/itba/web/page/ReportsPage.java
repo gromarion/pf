@@ -24,6 +24,7 @@ public class ReportsPage extends BasePage {
 
 		EndpointScore endpointScore;
 		try {
+			// TODO: y si acá adentro se le pasan distintas campañas?
 			endpointScore = endpointQualityFormulae.getScore();
 			EndpointScorePanel endpointScorePanel = new EndpointScorePanel("endpointScorePanel", endpointScore,
 					evaluatedResourceRepo);

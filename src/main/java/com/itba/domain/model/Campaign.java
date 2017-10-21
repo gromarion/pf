@@ -26,6 +26,9 @@ public class Campaign extends PersistentEntity implements Serializable {
 
 	@Column(name = "graphs")
 	private String graphs;
+	
+	@Column(name = "params")
+	private String params;
 
 	@OneToMany(mappedBy = "campaign")
 	private Set<EvaluationSession> sessions;
@@ -33,9 +36,11 @@ public class Campaign extends PersistentEntity implements Serializable {
 	Campaign() {
 	}
 
-	public Campaign(String name, String endpoint) {
+	public Campaign(String name, String endpoint, String graph, String params) {
 		this.name = name;
 		this.endpoint = endpoint;
+		this.graphs = graph;
+		this.params = params;
 	}
 
 	public String getName() {
@@ -55,7 +60,7 @@ public class Campaign extends PersistentEntity implements Serializable {
 		retVal += endpoint;
 		retVal += "?format=json&query=";
 		try {
-			retVal += URLEncoder.encode(sparqlQuery, "UTF-8").replace("#", "%23");
+			retVal += URLEncoder.encode(sparqlQuery, "UTF-8").replace("#", "%23") + params;
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
@@ -68,26 +73,22 @@ public class Campaign extends PersistentEntity implements Serializable {
 	}
 
 	public String getQueryforRandomResource() {
-		int offset = new Random().nextInt(760129);
-
-		return " SELECT ?s " + " WHERE { ?s foaf:isPrimaryTopicOf ?o } LIMIT 1 OFFSET " + offset;
+		int offset = new Random().nextInt(100);
+		return " SELECT ?s ?p ?o " + " FROM <"+graphs+"> WHERE { ?s ?p ?o } LIMIT 1 OFFSET " + offset;
 	}
 
 	public String getQueryforRandomClassResource(String classURI, long maxRand) {
 		int offset = new Random().nextInt((int) maxRand);
-
 		return " SELECT ?s " + " WHERE { ?s rdf:type <" + classURI + "> } LIMIT 1 OFFSET " + offset;
 	}
 
 	public String getQueryforClassCount(String classURI) {
-
 		return " SELECT count(?s) " + " WHERE { ?s rdf:type <" + classURI + "> }";
 	}
 
 	public String getQueryforSearchResultPage(String namepart, int offset, int limit) {
-
-		return " SELECT ?s " + " WHERE { ?s foaf:isPrimaryTopicOf ?o . " + " FILTER regex(str(?s), '" + namepart
-				+ "', 'i'). }" + " LIMIT " + limit + " OFFSET " + offset;
+		return " SELECT ?s ?p ?o FROM <" + graphs + "> WHERE { ?s ?p ?o . " + " FILTER regex(str(?s), '" + namepart + "') }"
+				+ " LIMIT " + limit + " OFFSET " + offset;
 	}
 
 	public String getQueryForLicenseChecking() {

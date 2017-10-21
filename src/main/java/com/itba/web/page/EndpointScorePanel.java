@@ -57,6 +57,7 @@ public class EndpointScorePanel extends Panel {
 		}
 
 		DonutChartWithLabels endpointStatsChart = new DonutChartWithLabels("endpoint-availability-chart");
+		// TODO: tener un array de estos para mostrar stats de más de una campaña?
 		GaugeChart errorTypeChart = new GaugeChart();
 
 		Map<String, Integer> statusCodesAmount = new HashMap<>();

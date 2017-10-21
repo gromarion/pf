@@ -99,4 +99,22 @@ public class HibernateEvaluatedResourceRepo extends AbstractHibernateRepo implem
 	public List<String> getCorrect() {
 		return getSession().createQuery("SELECT e.resource FROM EvaluatedResource e WHERE e.correct = true").list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<EvaluatedResource> getStatistic_1() {
+		return getSession().createQuery(
+				"select e FROM EvaluatedResource e"
+				+ " where e.correct = false"
+				+ " group by e.resource"
+				+ " having count(distinct e.session.user) > 1").list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<EvaluatedResource> getStatistic_2() {
+		return getSession().createQuery(
+				"select e FROM EvaluatedResource e"
+				+ " where e.correct = true"
+				+ " group by e.resource"
+				+ " having count(distinct e.session.user) > 1").list();
+	}
 }

@@ -66,6 +66,7 @@ public class EndpointQualityFormulae {
 			long total = 0;
 
 			for (Error error : errorRepo.getAll()) {
+				// TODO: ojo que esto no está parametrizado por campaña!!
 				double errorsAmount = evaluatedResourceDetailRepo.getQtyByError(error);
 				total += errorsAmount;
 				qtyByError.put(error, errorsAmount);
