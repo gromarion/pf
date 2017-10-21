@@ -3,7 +3,6 @@ package com.itba.web.page;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -26,7 +25,7 @@ import com.itba.web.WicketSession;
 import com.itba.web.feedback.CustomFeedbackPanel;
 
 @SuppressWarnings("serial")
-public class LoginPage extends WebPage {
+public class LoginPage extends AnonimousPage {
 	@SpringBean
 	private UserRepo users;
 
