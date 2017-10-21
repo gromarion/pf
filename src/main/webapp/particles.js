@@ -1,5 +1,3 @@
-/* Downloaded from https://scriptscodes.com/ */			//******************************************************
-// Yet Another Particle Engine
 var cos = Math.cos,
     sin = Math.sin,
     sqrt = Math.sqrt,
@@ -10,11 +8,11 @@ var cos = Math.cos,
     PI = Math.PI,
     sqr = function(v){return v*v;},
     particles = [],
-    drawScale = 1,
+    drawScale = 0.25,
     emitters = [],
     forces  = [],
     collidedMass = 0,
-    maxParticles = 50,
+    maxParticles = 15,
     emissionRate = 1;
 
 //-------------------------------------------------------
@@ -149,16 +147,6 @@ Particle.prototype.reactToForces = function (fields) {
 
   this.ac.add(new Vector(totalAccelerationX, totalAccelerationY));
   this.lastPos = this.pos.clone();
-  // if(this.mass > 20) {
-  //   var chance = 1 / (this.mass - 20);
-  //   if(Math.random()>chance) {
-  //     this.supernova = true;
-  //     this.supernovaDur = 10;
-  //     this.alive = false;
-  //     if(particles.length <= maxParticles) collidedMass += this.mass;
-  //     delete this.size;
-  //   }
-  // }
 };
 Particle.prototype.grow = function (another) {
   this.mass += another.mass;
@@ -189,7 +177,7 @@ Particle.prototype.forceBetween = function(another, distance) {
 };
 
 //******************************************************
-//This certainly doesn't *sub*mit to particles, that's for sure
+// This certainly doesn't *sub*mit to particles, that's for sure
 function ParticleEmitter(pos, vc, ang) {
   // to do config options for emitter - random, static, show emitter, emitter color, etc
   this.pos = pos; 
@@ -224,8 +212,6 @@ Force.prototype.grow = function (another) {
   another.alive = false;
 };
 
-
-
 function G(data) {
   return 0.00674 * data;
 }
@@ -234,7 +220,7 @@ function G(data) {
 var canvas = document.querySelector('#scene');
 var ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+canvas.height = window.outerHeight;
 var canvasWidth = canvas.width;
 var canvasHeight = canvas.height;
 
@@ -246,52 +232,32 @@ var renderToCanvas = function (width, height, renderFunction) {
     return buffer;
 };
 
-maxParticles = 500; 
-emissionRate = 1; 
+maxParticles = 100; 
+emissionRate = 1;
 drawScale = 1.3;
 minParticleSize = 2;
 emitters = [
-  //br
   new ParticleEmitter(
     new Vector(
       canvasWidth / 2 * drawScale + 400, 
-      canvasHeight / 2 * drawScale
-      ), 
+      canvasHeight / 2 * drawScale), 
     Vector.fromAngle(2, 5),
     1
   ),
-  //   // bl
-  //   new ParticleEmitter(
-  //   new Vector(
-  //     canvasWidth / 2 * drawScale - 400, 
-  //     canvasHeight / 2 * drawScale + 400
-  //     ), 
-  //   Vector.fromAngle(1.5, 1),
-  //   1
-  // ),
-    // tl
   new ParticleEmitter(
     new Vector(
       canvasWidth / 2 * drawScale - 400, 
-      canvasHeight / 2 * drawScale
-      ), 
+      canvasHeight / 2 * drawScale), 
     Vector.fromAngle(5, 5),
     1
-  ),
-  //   // tr
-  //   new ParticleEmitter(
-  //   new Vector(
-  //     canvasWidth / 2 * drawScale + 400, 
-  //     canvasHeight / 2 * drawScale - 400
-  //     ), 
-  //   Vector.fromAngle(4.5, 1),
-  //   1
-  // )
+  )
 ];
 forces  = [
   new Force(
-    new Vector((canvasWidth / 2 * drawScale) ,
-               (canvasHeight / 2 * drawScale)), 1800)
+    new Vector(
+      (canvasWidth / 2 * drawScale) ,
+      (canvasHeight / 2 * drawScale)),
+    450)
 ];
 
 function loop() {
@@ -307,24 +273,40 @@ function clear() {
     
 var ctr = 0;
 var c = [
-  'rgba(255,255,255,',
-  'rgba(0,150,255,',
-  'rgba(255,255,128,',
-  'rgba(255,255,255,'
-];
+  'rgba(240,248,255,',
+  'rgba(230,230,250,',
+  'rgba(176,224,230,',
+  'rgba(173,216,230,',
+  'rgba(135,206,250,',
+  'rgba(135,206,235,',
+  'rgba(0,191,255,',
+  'rgba(176,196,222,',
+  'rgba(30,144,255,',
+  'rgba(100,149,237,',
+  'rgba(70,130,180,',
+  'rgba(95,158,160,',
+  'rgba(123,104,238,',
+  'rgba(106,90,205,',
+  'rgba(72,61,139,',
+  'rgba(65,105,225,',
+  'rgba(0,0,255,',
+  'rgba(0,0,205,',
+  'rgba(0,0,139,',
+  'rgba(0,0,128,',
+  'rgba(25,25,112,',
+  'rgba(138,43,226,',
+  'rgba(75,0,130,'];
+
 function rndc() {
-  return c[~~(Math.random() * c.length-1)];
+  return c[Math.round(Math.abs(Math.random() * c.length-1))];
 }
-var c2 = 'rgba(255,64,32,';
 function addNewParticles() {
   var _emit = function() {
     var ret = 0;
     for (var i = 0; i < emitters.length; i++) {
       for (var j = 0; j < emissionRate; j++) {
         var p = emitters[i].emit();
-        p.color = ( ctr % 10 === 0 )
-          ? ( Math.random() * 5 <= 1 ? c2 : rndc() ) 
-          : rndc();
+        p.color = rndc();
         p.mass = ~~(Math.random() * 5);
         particles.push(p);
         ret += p.mass;
@@ -410,13 +392,6 @@ function renderParticle(p) {
       p.doubleSize = false;
       actualSize *= 2;
     }
-    // if(p.supernova) {
-    //   actualSize *= 6;
-    //   opacity = 0.15;
-    //   p.supernovaDur = p.supernovaDur - 1;
-    //   if(p.supernovaDur === 0)
-    //     p.supernova = false;
-    // }
     var cacheKey = actualSize + '_' + p.opacity + '_' + p.color;
     var cacheValue = offscreenCache[cacheKey];
     if(!cacheValue) {
@@ -465,11 +440,6 @@ function renderScene(ofsContext) {
       f = fills[f];
       var o = p.burp === true ? 1 : f.opacity;
       p.burp = false;
-      // ofsContext.fillStyle = 'rgba(255,255,255,' + o + ')';
-      // ofsContext.arc(position.x / drawScale, 
-      //   position.y / drawScale, 
-      //   f.size / drawScale, 0, Math.PI*2, true); 
-      // ofsContext.fill();
     }
     ofsContext.closePath();
   }
@@ -494,11 +464,9 @@ function queue() {
 }
 
 $('canvas').mousedown(function(e){
-
 });
 
 $('canvas').mouseup(function(e){
-
 });
 
 loop();
