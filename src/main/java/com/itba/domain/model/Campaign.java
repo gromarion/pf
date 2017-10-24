@@ -6,6 +6,7 @@ import java.net.URLEncoder;
 import java.util.Random;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -30,7 +31,7 @@ public class Campaign extends PersistentEntity implements Serializable {
 	@Column(name = "params")
 	private String params;
 
-	@OneToMany(mappedBy = "campaign")
+	@OneToMany(mappedBy = "campaign", cascade = CascadeType.ALL)
 	private Set<EvaluationSession> sessions;
 
 	Campaign() {
@@ -43,16 +44,49 @@ public class Campaign extends PersistentEntity implements Serializable {
 		this.params = params;
 	}
 
+	public boolean hasEvaluations() {
+		for (EvaluationSession session: sessions) {
+			if (!session.getEvaluatedResources().isEmpty()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public Set<EvaluationSession> getSessions() {
+		return sessions;
+	}
+	
 	public String getName() {
 		return name;
 	}
 
-	public Set<EvaluationSession> getSessions() {
-		return sessions;
-	}
-
 	public String getEndpoint() {
 		return endpoint;
+	}
+	
+	public String getGraphs() {
+		return graphs;
+	}
+	
+	public String getParams() {
+		return params;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setEndpoint(String endpoint) {
+		this.endpoint = endpoint;
+	}
+
+	public void setGraphs(String graphs) {
+		this.graphs = graphs;
+	}
+
+	public void setParams(String params) {
+		this.params = params;
 	}
 
 	public String generateQueryURL(String sparqlQuery) {

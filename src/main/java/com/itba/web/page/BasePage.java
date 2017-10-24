@@ -4,12 +4,18 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.itba.domain.model.User;
+import com.itba.domain.repository.UserRepo;
 import com.itba.web.WicketSession;
 
 @SuppressWarnings("serial")
 public class BasePage extends WebPage {
 
+	@SpringBean
+	UserRepo userRepo;
+	
 	public BasePage() {
 		WicketSession session = getAppSession();
 
@@ -17,6 +23,8 @@ public class BasePage extends WebPage {
 			redirectToInterceptPage(new LoginPage());
 		}
 
+		User currentUser = userRepo.getByUsername(session.getUsername());
+		
 		add(new Link<Void>("home") {
 			@Override
 			public void onClick() {
@@ -34,6 +42,15 @@ public class BasePage extends WebPage {
 				setResponsePage(new EditUserProfilePage(WicketSession.get().getUser()));
 			}
 		};
+		
+		Link<Void> adminEndpointsLink = new Link<Void>("adminEndpointsLink") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick() {
+				setResponsePage(new AdminEndpointsPage());
+			}
+		};
 
 		Link<Void> logout = new Link<Void>("logout") {
 			private static final long serialVersionUID = 1L;
@@ -45,6 +62,7 @@ public class BasePage extends WebPage {
 			}
 		};
 
+		add(adminEndpointsLink.setVisible(currentUser.hasRole(User.ADMIN_ROLE)));
 		add(editUserProfile);
 		add(logout);
 		Label user = new Label("user", WicketSession.get().getFullName());
