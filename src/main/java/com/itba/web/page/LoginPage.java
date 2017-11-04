@@ -71,7 +71,7 @@ public class LoginPage extends WebPage {
 					protected List<Campaign> load() {
 						return campaigns.getAll();
 					}
-				}, new ChoiceRenderer<Campaign>("endpoint"));
+				}, new ChoiceRenderer<Campaign>("name"));
 
 		form.add(campaignDropDownChoice);
 		form.add(new TextField<String>("username").setRequired(true));
