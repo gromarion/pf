@@ -13,7 +13,6 @@ import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
 import com.itba.domain.model.EndpointStats;
 import com.itba.domain.model.Error;
-import com.itba.domain.model.EvaluatedResource;
 import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.formulae.EndpointQualityFormulae.EndpointScore;
 import com.itba.web.charts.DonutChartWithLabels;
@@ -78,9 +77,8 @@ public class EndpointScorePanel extends Panel {
 					errorColors.get(id));
 		}
 
-		List<EvaluatedResource> resources = evaluatedResourceRepo.getAll();
-		int totalResources = resources.size();
-		int erroredResources = evaluatedResourceRepo.getErrored().size();
+		int totalResources = evaluatedResourceRepo.getAllByCampaign(endpointScore.getCampaign()).size();
+		int erroredResources = evaluatedResourceRepo.getErroredByCampaign(endpointScore.getCampaign()).size();
 		int correctResources = totalResources - erroredResources;
 
 		response.render(JavaScriptHeaderItem

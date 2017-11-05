@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.google.common.base.Optional;
+import com.itba.domain.model.Campaign;
 import com.itba.domain.model.EvaluatedResource;
 import com.itba.domain.model.EvaluationSession;
 import com.itba.domain.repository.EvaluatedResourceRepo;
@@ -72,12 +73,6 @@ public class HibernateEvaluatedResourceRepo extends AbstractHibernateRepo implem
 				+ session.getId() + " AND e.correct = true");
 		return query.list();
 	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<EvaluatedResource> getAll() {
-		return getSession().createQuery("SELECT e FROM EvaluatedResource e").list();
-	}
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -90,6 +85,12 @@ public class HibernateEvaluatedResourceRepo extends AbstractHibernateRepo implem
 
 	@SuppressWarnings("unchecked")
 	@Override
+	public List<EvaluatedResource> getAll() {
+		return getSession().createQuery("SELECT e FROM EvaluatedResource e").list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
 	public List<String> getErrored() {
 		return getSession().createQuery("SELECT e.resource FROM EvaluatedResource e WHERE e.correct = false").list();
 	}
@@ -98,6 +99,29 @@ public class HibernateEvaluatedResourceRepo extends AbstractHibernateRepo implem
 	@Override
 	public List<String> getCorrect() {
 		return getSession().createQuery("SELECT e.resource FROM EvaluatedResource e WHERE e.correct = true").list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<EvaluatedResource> getAllByCampaign(Campaign c) {
+		return getSession().createQuery("SELECT e FROM EvaluatedResource e"
+				+ " WHERE e.resource.session.campaign = " + c.getId()).list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<String> getErroredByCampaign(Campaign c) {
+		return getSession().createQuery("SELECT e.resource FROM EvaluatedResource e"
+				+ " WHERE e.correct = false"
+				+ " AND e.resource.session.campaign = " + c.getId()).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<String> getCorrectByCampaign(Campaign c) {
+		return getSession().createQuery("SELECT e.resource FROM EvaluatedResource e"
+				+ " WHERE e.correct = true"
+				+ " AND e.resource.session.campaign = " + c.getId()).list();
 	}
 	
 	@SuppressWarnings("unchecked")

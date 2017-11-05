@@ -16,7 +16,6 @@ import com.itba.domain.model.Error;
 import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.domain.repository.ErrorRepo;
 import com.itba.domain.repository.EvaluatedResourceDetailRepo;
-import com.itba.web.WicketSession;
 
 import lib.StringUtils;
 
@@ -35,8 +34,8 @@ public class EndpointQualityFormulae {
 	public EndpointQualityFormulae() {
 	}
 
-	public EndpointScore getScore() throws IOException {
-		return new EndpointScore(endpointStatsRepo, evaluatedResourceDetailRepo, errorRepo);
+	public EndpointScore getScore(Campaign campaign) throws IOException {
+		return new EndpointScore(endpointStatsRepo, evaluatedResourceDetailRepo, errorRepo, campaign);
 	}
 
 	public static class EndpointScore implements Serializable {
@@ -49,8 +48,10 @@ public class EndpointQualityFormulae {
 		private double score;
 
 		public EndpointScore(EndpointStatsRepo endpointStatsRepo,
-				EvaluatedResourceDetailRepo evaluatedResourceDetailRepo, ErrorRepo errorRepo) throws IOException {
-			this.campaign = WicketSession.get().getEvaluationSession().get().getCampaign();
+				EvaluatedResourceDetailRepo evaluatedResourceDetailRepo,
+				ErrorRepo errorRepo,
+				Campaign campaign) throws IOException {
+			this.campaign = campaign;
 			this.endpointStatsRepo = endpointStatsRepo;
 			this.evaluatedResourceDetailRepo = evaluatedResourceDetailRepo;
 			this.errorRepo = errorRepo;
@@ -58,7 +59,11 @@ public class EndpointQualityFormulae {
 		}
 
 		public String getEndpointURL() {
-			return campaign.getEndpoint();
+			return campaign.getEndpoint(); // se llama desde el EndpointScorePanel
+		}
+		
+		public Campaign getCampaign() {
+			return campaign;
 		}
 
 		public Map<Error, Double> getErrorTypeStats() {
@@ -66,14 +71,15 @@ public class EndpointQualityFormulae {
 			long total = 0;
 
 			for (Error error : errorRepo.getAll()) {
-				// TODO: ojo que esto no está parametrizado por campaña!!
-				double errorsAmount = evaluatedResourceDetailRepo.getQtyByError(error);
+				// reemplazar por getQtyByError si campaign no está
+				double errorsAmount = evaluatedResourceDetailRepo.getQtyByErrorAndCampaign(error, campaign);
 				total += errorsAmount;
 				qtyByError.put(error, errorsAmount);
 			}
 			if (total > 0) {
 				for (Error error : qtyByError.keySet()) {
-					long errorsAmount = evaluatedResourceDetailRepo.getQtyByError(error);
+					// reemplazar por getQtyByError si campaign no está
+					long errorsAmount = evaluatedResourceDetailRepo.getQtyByErrorAndCampaign(error, campaign);
 					qtyByError.put(error, 100 * (double) errorsAmount / total);
 				}
 			}
@@ -81,6 +87,7 @@ public class EndpointQualityFormulae {
 		}
 		
 		public List<EndpointStats> getEndpointStats() {
+			// TODO: cambiarlo para que devuelva un pama de endpoint -> EndpointStats??
 			return endpointStatsRepo.getAllForEndpoint(campaign.getEndpoint());
 		}
 		
@@ -118,6 +125,7 @@ public class EndpointQualityFormulae {
 			if (erroredResponses == 0) {
 				return 0;
 			} else {
+				// Ver cómo manejar las licencias para el reporte general
 				double availabilityScore = 1 - ((double) erroredResponses / (successfulResponses + erroredResponses));
 				int licenseScore = SparqlRequestHandler.hasLicense(campaign, endpointStatsRepo) ? 1 : 0;
 				return (availabilityScore + licenseScore) / 2;

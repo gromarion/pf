@@ -2,7 +2,10 @@ package com.itba.domain.repository;
 
 import java.util.List;
 
+import org.apache.wicket.MarkupContainer;
+
 import com.google.common.base.Optional;
+import com.itba.domain.model.Campaign;
 import com.itba.domain.model.EvaluatedResource;
 import com.itba.domain.model.EvaluationSession;
 import com.itba.domain.repository.hibernate.HibernateRepo;
@@ -27,5 +30,11 @@ public interface EvaluatedResourceRepo extends HibernateRepo {
 	List<String> getErrored();
 
 	List<String> getCorrect();
+
+	List<EvaluatedResource> getAllByCampaign(Campaign c);
+
+	List<String> getErroredByCampaign(Campaign c);
+
+	List<String> getCorrectByCampaign(Campaign c);
 }
 

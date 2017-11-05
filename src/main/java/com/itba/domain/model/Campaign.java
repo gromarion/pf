@@ -107,7 +107,7 @@ public class Campaign extends PersistentEntity implements Serializable {
 	}
 
 	public String getQueryforRandomResource() {
-		int offset = new Random().nextInt(100);
+		int offset = new Random().nextInt(100); // select count(*) where {[] a ?Concept} LIMIT 100
 		return " SELECT ?s ?p ?o " + " FROM <"+graphs+"> WHERE { ?s ?p ?o } LIMIT 1 OFFSET " + offset;
 	}
 
