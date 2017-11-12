@@ -1,5 +1,6 @@
 package com.itba.domain.model;
 
+import java.sql.Timestamp;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -22,6 +23,7 @@ public class User extends PersistentEntity {
 	private String username;
 	private String password;
 	private String roles;
+	private Timestamp deleted_at;
 	@OneToMany(mappedBy = "user")
 	private Set<EvaluationSession> sessions;
 
@@ -65,5 +67,9 @@ public class User extends PersistentEntity {
 
 	public boolean hasAnyRole(Roles roles) {
 		return new Roles(this.roles).hasAnyRole(roles);
+	}
+	
+	public boolean isDeleted() {
+		return deleted_at != null;
 	}
 }
