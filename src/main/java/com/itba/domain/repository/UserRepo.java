@@ -12,5 +12,7 @@ public interface UserRepo extends HibernateRepo {
     public User getByUsername(String name);
     
     public List<User> getAll();
-
+    
+    public void deleteUser(int userId);
+    
 }

@@ -10,14 +10,18 @@
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<th><wicket:message key="fullnameLabel">Resource</wicket:message></th>
-						<th><wicket:message key="usernameLabel">Resource score</wicket:message></th>
+						<th><wicket:message key="fullnameLabel">Name</wicket:message></th>
+						<th><wicket:message key="usernameLabel">Username</wicket:message></th>
+						<th><wicket:message key="deleteLabel">Delete</wicket:message></th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr wicket:id="allUsers">
 						<td><span wicket:id="fullname">name</span></td>
 						<td><span wicket:id="username">username</span></td>
+						<td><a wicket:id="deleteUser" class="btn btn-link" href="#">
+						<wicket:message key="deleteLabel">Delete</wicket:message>
+						</a></td>	
 					</tr>
 				</tbody>
 			</table>
