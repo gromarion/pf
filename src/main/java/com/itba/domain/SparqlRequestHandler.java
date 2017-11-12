@@ -17,7 +17,6 @@ public class SparqlRequestHandler {
 		String query = campaign.getQueryforSearchResultPage(search, offset, limit);
 		String queryURL = campaign.generateQueryURL(query);
 		JSONObject response = RequestHandler.jsonSendGet(endpointStatsRepo, campaign.getEndpoint(), queryURL);
-
 		return (JSONArray) ((JSONObject) response.get("results")).get("bindings");
 	}
 
@@ -25,7 +24,6 @@ public class SparqlRequestHandler {
 			throws JSONException, IOException {
 		String sparqlQuery = campaign.getQueryforResourceTriples(resource);
 		String queryURL = campaign.generateQueryURL(sparqlQuery);
-
 		return RequestHandler.jsonSendGet(endpointStatsRepo, campaign.getEndpoint(), queryURL);
 	}
 
@@ -33,16 +31,21 @@ public class SparqlRequestHandler {
 		String query = campaign.getQueryForLicenseChecking();
 		String queryURL = campaign.generateQueryURL(query);
 		JSONObject response = RequestHandler.jsonSendGet(endpointStatsRepo, campaign.getEndpoint(), queryURL);
-
 		return response.getBoolean("boolean");
+	}
+	
+	public static int getEndpointSize(Campaign campaign, EndpointStatsRepo endpointStatsRepo) throws IOException {
+		String query = campaign.getQueryForEndpointSize();
+		String queryURL = campaign.generateQueryURL(query);
+		JSONObject response = RequestHandler.jsonSendGet(endpointStatsRepo, campaign.getEndpoint(), queryURL);
+		return ((JSONObject)((JSONObject)((JSONArray) ((JSONObject) response.get("results")).get("bindings")).get(0)).get("c")).getInt("value");
 	}
 
 	public static JSONObject requestRandomResource(Campaign campaign, EndpointStatsRepo endpointStatsRepo)
 			throws JSONException, IOException {
-		String sparqlQuery = campaign.getQueryforRandomResource();
+		String sparqlQuery = campaign.getQueryforRandomResource(getEndpointSize(campaign, endpointStatsRepo));
 		String queryURL = campaign.generateQueryURL(sparqlQuery);
 		JSONObject response = RequestHandler.jsonSendGet(endpointStatsRepo, campaign.getEndpoint(), queryURL);
-
 		return (JSONObject) ((JSONArray) ((JSONObject) response.get("results")).get("bindings")).get(0);
 	}
 }

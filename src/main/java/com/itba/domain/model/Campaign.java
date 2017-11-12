@@ -106,8 +106,12 @@ public class Campaign extends PersistentEntity implements Serializable {
 		return "select ?p ?o " + "where {<" + resource + "> ?p ?o} ORDER BY ?p";
 	}
 
-	public String getQueryforRandomResource() {
-		int offset = new Random().nextInt(100); // select count(*) where {[] a ?Concept} LIMIT 100
+	public String getQueryForEndpointSize() {
+		return " SELECT (count(?s) as ?c) FROM <"+graphs+"> WHERE { ?s ?p ?o }";
+	}
+	
+	public String getQueryforRandomResource(int endpointSize) {
+		int offset = new Random().nextInt(endpointSize);
 		return " SELECT ?s ?p ?o " + " FROM <"+graphs+"> WHERE { ?s ?p ?o } LIMIT 1 OFFSET " + offset;
 	}
 
