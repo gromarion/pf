@@ -4,14 +4,20 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.itba.domain.repository.UserRepo;
 import com.itba.web.WicketSession;
 
 @SuppressWarnings("serial")
 public class BasePage extends WebPage {
 
+	@SpringBean
+	private UserRepo userRepo;
+
 	public BasePage() {
 		WicketSession session = getAppSession();
+		boolean guest = userRepo.getByUsername(session.getUsername()).hasRole("GUEST");
 
 		if (!session.isSignedIn()) {
 			redirectToInterceptPage(new LoginPage());
@@ -24,7 +30,11 @@ public class BasePage extends WebPage {
 			}
 		});
 
-		add(new BookmarkablePageLink<ErrorsByUserPage>("errorsByUserPage", ErrorsByUserPage.class));
+		BookmarkablePageLink<ErrorsByUserPage> errorsByUser = new BookmarkablePageLink<>("errorsByUserPage",
+				ErrorsByUserPage.class);
+
+		errorsByUser.setVisible(!guest);
+		add(errorsByUser);
 
 		Link<Void> editUserProfile = new Link<Void>("editUserProfile") {
 			private static final long serialVersionUID = 1L;
@@ -35,6 +45,15 @@ public class BasePage extends WebPage {
 			}
 		};
 
+		Link<Void> adminUsers = new Link<Void>("adminUsers") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick() {
+				setResponsePage(new AdminUsersPage());
+			}
+		};
+		
 		Link<Void> logout = new Link<Void>("logout") {
 			private static final long serialVersionUID = 1L;
 
@@ -45,7 +64,10 @@ public class BasePage extends WebPage {
 			}
 		};
 
+		editUserProfile.setVisible(!guest);
+		adminUsers.setVisible(!guest);
 		add(editUserProfile);
+		add(adminUsers);
 		add(logout);
 		Label user = new Label("user", WicketSession.get().getFullName());
 		add(user);
@@ -55,12 +77,18 @@ public class BasePage extends WebPage {
 			user.setVisible(false);
 		}
 
-		add(new BookmarkablePageLink<RegisterUserPage>("automaticCheckLink", AutomaticCheckPage.class));
-		add(new BookmarkablePageLink<RegisterUserPage>("manualCheckLink", HomePage.class));
-		add(new BookmarkablePageLink<RegisterUserPage>("reportsLink", ReportsPage.class));
+		BookmarkablePageLink<RegisterUserPage> automaticCheck = new BookmarkablePageLink<>("automaticCheckLink",
+				AutomaticCheckPage.class);
+		BookmarkablePageLink<RegisterUserPage> manualCheck = new BookmarkablePageLink<>("manualCheckLink",
+				ResourceSearchPage.class);
+		
+		automaticCheck.setVisible(!guest);
+		manualCheck.setVisible(!guest);
+		add(automaticCheck);
+		add(manualCheck);
 	}
 
 	protected WicketSession getAppSession() {
-        return (WicketSession) getSession();
-    }
+		return (WicketSession) getSession();
+	}
 }
