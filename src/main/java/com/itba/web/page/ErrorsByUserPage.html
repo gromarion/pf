@@ -1,26 +1,32 @@
 <wicket:extend xmlns:wicket="http://www.w3.org/1999/xhtml">
-	<div class="row">
+	<div class="row margin-top-75">
 		<div class="container">
 			<div class="row">
 				<a type="button" class="btn btn-info glyphicon glyphicon-download"
-					wicket:id="reportDownloadLink" value="Download"></a>
+					wicket:id="reportDownloadLink" value="Download">Download</a>
 			</div>
 			<div class="row">
 				<h2>
 					<wicket:message key="titleLabel">Title</wicket:message>
 				</h2>
 			</div>
-			<div wicket:id="feedbackPanel"></div>
+			<div wicket:id="feedbackPanel"/>
 			<div class="row">
 				<wicket:message key="errorListFilter">Error type</wicket:message>
-				<select wicket:id="errorList"></select>
+				<select wicket:id="errorList"/>
 			</div>
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<th><wicket:message key="resourceNameLabel">Resource</wicket:message></th>
-						<th><wicket:message key="resourceScoreLabel">Resource score</wicket:message></th>
-						<th><wicket:message key="resourceTimestampLabel">Evaluation date</wicket:message></th>
+						<th>
+							<wicket:message key="resourceNameLabel">Resource</wicket:message>
+						</th>
+						<th>
+							<wicket:message key="resourceScoreLabel">Resource score</wicket:message>
+						</th>
+						<th>
+							<wicket:message key="resourceTimestampLabel">Evaluation date</wicket:message>
+						</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -34,10 +40,13 @@
 			</table>
 			<div class="paginator">
 				<a wicket:id="previousPageLink" href="#" class="btn btn-primary"><wicket:message
-						key="previousPage"></wicket:message></a>
+						key="previousPage">Previous</wicket:message></a>
 				<wicket:message key="page">Página</wicket:message>
-				<span wicket:id="currentPage">1</span> <a wicket:id="nextPageLink"
-					href="#" class="btn btn-primary"><wicket:message key="nextPage"></wicket:message></a>
+				<span wicket:id="currentPage">1</span>
+				<a wicket:id="nextPageLink"
+					href="#" class="btn btn-primary">
+					<wicket:message key="nextPage">Next</wicket:message>
+				</a>
 			</div>
 		</div>
 	</div>
