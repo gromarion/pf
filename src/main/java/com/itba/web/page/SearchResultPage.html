@@ -8,20 +8,38 @@
     <table class="table table-striped">
         <tbody>
         <tr>
-        	<th><wicket:message key="resourceURL">Resource URL</wicket:message></th>
-        	<th><wicket:message key="resourceScore">Score</wicket:message></th>
-        	<th><wicket:message key="resourceErrors">Errors amount</wicket:message></th>
+        	<th>
+                <wicket:message key="resourceURL">Resource URL</wicket:message>
+            </th>
+        	<th>
+                <wicket:message key="resourceScore">Score</wicket:message>
+            </th>
+        	<th>
+                <wicket:message key="resourceErrors">Errors amount</wicket:message>
+            </th>
         </tr>
         <tr wicket:id="searchResultList">
-            <td><a wicket:id="resultLink" href="#"><span wicket:id="linkText"></span></a></td>
-            <td><span wicket:id="resourceScore">12345</span></td>
-            <td><span wicket:id="resourceErrors">4</span></td>
+            <td>
+                <a wicket:id="resultLink" href="#">
+                    <span wicket:id="linkText">Resource link</span>
+                </a>
+            </td>
+            <td>
+                <span wicket:id="resourceScore">12345</span>
+            </td>
+            <td>
+                <span wicket:id="resourceErrors">4</span>
+            </td>
         </tr>
         </tbody>
     </table>
     <div class="paginator">
-    	<a wicket:id="previousPageLink" href="#" class="btn btn-primary"><wicket:message key="previousPage"></wicket:message></a>
+    	<a wicket:id="previousPageLink" href="#" class="btn btn-primary">
+            <wicket:message key="previousPage">Previous</wicket:message>
+        </a>
     	<wicket:message key="page">Página</wicket:message> <span wicket:id="currentPage">1</span>
-    	<a wicket:id="nextPageLink" href="#" class="btn btn-primary"><wicket:message key="nextPage"></wicket:message></a>
+    	<a wicket:id="nextPageLink" href="#" class="btn btn-primary">
+            <wicket:message key="nextPage">Next</wicket:message>
+        </a>
     </div>
 </wicket:extend>

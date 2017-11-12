@@ -12,6 +12,7 @@ import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.ListChoice;
 import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -36,6 +37,7 @@ import com.itba.web.feedback.CustomFeedbackPanel;
 import com.itba.web.modal.EditErrorCommentModal;
 
 import lib.StringUtils;
+import utils.URLHelper;
 
 @SuppressWarnings("serial")
 public class ErrorSelectionPage extends BasePage {
@@ -89,9 +91,10 @@ public class ErrorSelectionPage extends BasePage {
         currentSession.setObject(WicketSession.get().getEvaluationSession().get());
             	
         final TextArea<String> comments = new TextArea<String>("comments", Model.of(""));
-        final Label predicateLabel = new Label("predicateLabel", predicate);
-        final Label objectLabel = new Label("objectLabel", object);
-        final Label resourceLabel = new Label("resourceLabel", resource);
+        final ExternalLink predicateLink = new ExternalLink("predicateLink", predicate, predicate);
+        final Label objectLabel = new Label("objectLabel", URLHelper.transformURLs(object));
+        objectLabel.setEscapeModelStrings(false);
+        final ExternalLink resourceLink = new ExternalLink("resourceLink", resource, resource);
         final Label errorDescriptionLabel = new Label("errorDescription", errorDescription);
         final Label errorExampleLabel = new Label("errorExample", errorExample);
         final Label foundErrorsLabel = new Label("foundErrorsLabel", getString("foundErrorsLabel"));
@@ -128,7 +131,7 @@ public class ErrorSelectionPage extends BasePage {
 				errorDetail.add(new AjaxLink<Void>("editCommentLink") {
 					@Override
 					public void onClick(AjaxRequestTarget target) {
-						// XXX: do nothing for now...
+						// TODO: do nothing for now...
 					}
 				}.add(new AttributeModifier("data-target", "#modal" + errorDetail.getModelObject().getId())));
 				errorDetail.add(new EditErrorCommentModal("editCommentModal", "Editar comentario", errorDetail.getModel(), refreshParameters));
@@ -189,9 +192,9 @@ public class ErrorSelectionPage extends BasePage {
         form.add(comments);
         form.add(errorListChoice);
         form.add(errorDescriptionLabel);
-        form.add(resourceLabel);
+        form.add(resourceLink);
         form.add(objectLabel);
-        form.add(predicateLabel);
+        form.add(predicateLink);
         form.add(errorExampleLabel);
         
         Button submit = new Button("submit");
