@@ -1,0 +1,46 @@
+<html>
+	<body>
+		<wicket:panel>
+			<div class="row">
+				<h2>
+					<wicket:message key="foundErrorsLabel">Found errors</wicket:message>
+				</h2>
+			</div>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>
+							<wicket:message key="errorNameLabel">Some error name label</wicket:message>
+							</th>
+						<th>
+							<wicket:message key="errorCommentLabel">Some error comment label</wicket:message>
+						</th>
+						<th>
+							<wicket:message key="errorActions">Some error actions</wicket:message>
+						</th>
+						<th/>
+					</tr>
+				</thead>
+				<tbody>
+					<tr wicket:id="usedErrorDetails">
+						<td>
+							<span wicket:id="errorName">Some error name</span>
+						</td>
+						<td>
+							<span wicket:id="errorComment">Some error comment</span>
+						</td>
+						<td>
+							<div wicket:id="editCommentModal"/>
+							<a wicket:id="editCommentLink" title="Editar Comentario" class="btn btn-link" href="#" data-toggle="modal" data-target="#myModal">
+								<i class="icon-pencil"/>
+							</a>
+							<a wicket:id="removeErrorLink" title="Eliminar" class="btn btn-link" href="#">
+								<i class="icon-remove"/>
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</wicket:panel>
+	</body>
+</html>

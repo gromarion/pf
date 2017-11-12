@@ -2,20 +2,16 @@ package com.itba.web.page;
 
 import java.util.List;
 
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
+import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.ListChoice;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -34,7 +30,6 @@ import com.itba.domain.repository.EvaluatedResourceDetailRepo;
 import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.web.WicketSession;
 import com.itba.web.feedback.CustomFeedbackPanel;
-import com.itba.web.modal.EditErrorCommentModal;
 
 import lib.StringUtils;
 import utils.URLHelper;
@@ -44,10 +39,8 @@ public class ErrorSelectionPage extends BasePage {
 	
 	@SpringBean
 	private ErrorRepo errorRepo;
-
 	@SpringBean
 	private EvaluatedResourceRepo evaluatedResourceRepo;
-
 	@SpringBean
 	private EvaluatedResourceDetailRepo evaluatedResourceDetailRepo;
 
@@ -67,22 +60,22 @@ public class ErrorSelectionPage extends BasePage {
     	if (!((WicketSession) getSession()).isSignedIn()) {
         	setResponsePage(LoginPage.class);
 		}
-        add(new CustomFeedbackPanel("feedbackPanel"));
-        
-        final String predicate = parameters.get("predicate").toString();
-        final String object = parameters.get("object").toString();
-        final String resource = parameters.get("resource").toString();
-        
-        final IModel<List<EvaluatedResourceDetail>> usedErrorDetails = new LoadableDetachableModel<List<EvaluatedResourceDetail>>() {
-    	    @Override
-    	    protected List<EvaluatedResourceDetail> load() { 
-    	        return evaluatedResourceDetailRepo.getPreviousErrors(resource, predicate, object);
-    	    }
-    	};
-        
+
+    	final String predicate = parameters.get("predicate").toString();
+    	final String object = parameters.get("object").toString();
+    	final String resource = parameters.get("resource").toString();
+    	
+    	SelectedErrorsTablePanel selectedErrorsTablePanel = new SelectedErrorsTablePanel("selectedErrorsTablePanel", predicate, object, resource);
+    	
+    	add(selectedErrorsTablePanel);
+    	IModel<List<EvaluatedResourceDetail>> usedErrorDetails = selectedErrorsTablePanel.getUsedErrorDetails();
+    	selectedErrorsTablePanel.setVisible(usedErrorDetails.getObject().size() > 0);
+    	
     	for (int i = 0 ; i < usedErrorDetails.getObject().size() ; i++) {
     		availableErrors.getObject().remove(usedErrorDetails.getObject().get(i).getError());
     	}
+    	
+        add(new CustomFeedbackPanel("feedbackPanel"));
     	
     	if(!StringUtils.containsURL(object)) {
     		availableErrors.getObject().remove(errorRepo.get(4));
@@ -97,11 +90,6 @@ public class ErrorSelectionPage extends BasePage {
         final ExternalLink resourceLink = new ExternalLink("resourceLink", resource, resource);
         final Label errorDescriptionLabel = new Label("errorDescription", errorDescription);
         final Label errorExampleLabel = new Label("errorExample", errorExample);
-        final Label foundErrorsLabel = new Label("foundErrorsLabel", getString("foundErrorsLabel"));
-        final Label errorNameLabel = new Label("errorNameLabel", getString("errorNameLabel"));
-        final Label errorCommentLabel = new Label("errorCommentLabel", getString("errorCommentLabel"));
-        final Label errorActions = new Label("errorActions", getString("errorActions"));
-        final Label newErrorLabel = new Label("newErrorLabel", getString("newErrorLabel"));
         
         errorDescriptionLabel.setOutputMarkupId(true);
         errorExampleLabel.setOutputMarkupId(true);
@@ -112,34 +100,8 @@ public class ErrorSelectionPage extends BasePage {
         	errorExampleLabel.setDefaultModelObject(errorModel.getObject().getExample());
         }
     	
-    	add(new ListView<EvaluatedResourceDetail>("usedErrorDetails", usedErrorDetails) {
-			@Override
-			protected void populateItem(final ListItem<EvaluatedResourceDetail> errorDetail) {
-				final PageParameters refreshParameters = new PageParameters();
-				refreshParameters.add("predicate", predicate);
-				refreshParameters.add("object", object);
-				refreshParameters.add("resource", resource);
-				errorDetail.add(new Label("errorName", errorDetail.getModelObject().getError().getName()));
-				errorDetail.add(new Label("errorComment", errorDetail.getModelObject().getComment()));
-				errorDetail.add(new AjaxLink<Void>("removeErrorLink") {
-					@Override
-					public void onClick(AjaxRequestTarget target) {
-						evaluatedResourceDetailRepo.delete(errorDetail.getModelObject());
-						setResponsePage(ErrorSelectionPage.class, refreshParameters);
-					}
-				});
-				errorDetail.add(new AjaxLink<Void>("editCommentLink") {
-					@Override
-					public void onClick(AjaxRequestTarget target) {
-						// TODO: do nothing for now...
-					}
-				}.add(new AttributeModifier("data-target", "#modal" + errorDetail.getModelObject().getId())));
-				errorDetail.add(new EditErrorCommentModal("editCommentModal", "Editar comentario", errorDetail.getModel(), refreshParameters));
-			}
-		}.setVisible(usedErrorDetails.getObject().size() > 0));
-        
-        ListChoice<Error> errorListChoice = 
-                new ListChoice<Error>("errorList", errorModel,
+    	DropDownChoice<Error> errorListChoice = 
+                new DropDownChoice<Error>("errorList", errorModel,
                         new LoadableDetachableModel<List<Error>>() {
                             @Override
                             protected List<Error> load() { 
@@ -201,7 +163,7 @@ public class ErrorSelectionPage extends BasePage {
         if (availableErrors.getObject().size() == 0) submit.setVisible(false);
         form.add(submit);
         
-        add(new Link<Void>("back") {
+        Link<Void> backButton = new Link<Void>("back") {
 			@Override
 			public void onClick() {
 				PageParameters parameters = new PageParameters();
@@ -209,14 +171,10 @@ public class ErrorSelectionPage extends BasePage {
                 parameters.add("selection", resourceURL);
                 setResponsePage(ResultItemPage.class, parameters);
 			}
-		});
+		};
+		form.add(backButton);
         
         add(form.setVisible(availableErrors.getObject().size() > 0));
-        add(newErrorLabel.setVisible(availableErrors.getObject().size() > 0));
-        add(foundErrorsLabel.setVisible(usedErrorDetails.getObject().size() > 0));
-        add(errorNameLabel.setVisible(usedErrorDetails.getObject().size() > 0));
-        add(errorCommentLabel.setVisible(usedErrorDetails.getObject().size() > 0));
-        add(errorActions.setVisible(usedErrorDetails.getObject().size() > 0));
     }
 
 	@Override
