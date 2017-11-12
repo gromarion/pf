@@ -1,40 +1,47 @@
 <wicket:extend xmlns:wicket="http://www.w3.org/1999/xhtml">
-    <div class="row">
-        <div class="container">
-            <h2><wicket:message key="title">Edit profile</wicket:message></h2>
-            <form wicket:id="editUserForm" method="post" class="form-horizontal">
-            	<div class="control-group">
-                    <label class="control-label">
-                        <wicket:message key="fullName">Full name</wicket:message>
-                    </label>
-                    <div class="controls">
-                        <input type="text" wicket:id="fullName" />
+    <div class="container h-100 margin-top-75">
+        <div class="row justify-content-center align-items-center resource-search-panel">
+            <h1>
+                <wicket:message key="title">Edit profile</wicket:message>
+            </h1>
+        </div>
+        <div class="row justify-content-center align-items-center">
+            <div class="container">
+                <div class="row justify-content-center align-items-center">
+                    <div class="container">
+                        <div class="row justify-content-center align-items-center">
+                            <div class="col-5">
+                                <form wicket:id="editUserForm" method="post">
+                                	<div class="form-group">
+                                        <label for="fullName">
+                                            <wicket:message key="fullName">Full name</wicket:message>
+                                        </label>
+                                        <input wicket:id="fullName" class="form-control" type="text" placeholder="Nombre completo" id="fullName"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password">
+                                            <wicket:message key="password">Password</wicket:message>
+                                        </label>
+                                        <input wicket:id="password" class="form-control" type="password" placeholder="Contraseña" id="password"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="confirmedPassword">
+                                            <wicket:message key="confirmedPassword">Password</wicket:message>
+                                        </label>
+                                        <input wicket:id="confirmedPassword" class="form-control" type="password" placeholder="Repetir contraseña" id="confirmedPassword"/>
+                                    </div>
+                                    <button wicket:id="submit" type="submit" class="btn btn-primary">
+                                        <wicket:message key="submit">Submit</wicket:message>
+                                    </button>
+                                    <button wicket:id="cancel" class="btn">
+                                        <wicket:message key="cancel">Back</wicket:message>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="control-group">
-                    <label class="control-label">
-                        <wicket:message key="password">Password</wicket:message>
-                    </label>
-                    <div class="controls">
-                        <input type="password" wicket:id="password" />
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label">
-                        <wicket:message key="confirmedPassword">Password</wicket:message>
-                    </label>
-                    <div class="controls">
-                        <input type="password" wicket:id="confirmedPassword" />
-                    </div>
-                </div>
-                <div class="control-group">
-                    <div class="controls">
-                        <button wicket:id="submit" type="submit" class="btn btn-primary">
-                            <wicket:message key="submit">Submit</wicket:message>
-                        </button>
-                    </div>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 </wicket:extend>

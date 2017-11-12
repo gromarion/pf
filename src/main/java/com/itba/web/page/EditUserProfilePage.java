@@ -6,6 +6,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.CompoundPropertyModel;
 
 import com.itba.domain.EntityModel;
@@ -36,6 +37,14 @@ public class EditUserProfilePage extends BasePage {
 		form.add(confirmedPasswordField);
 		form.add(new Button("submit"));
 		form.add(new EqualPasswordInputValidator(passwordField, confirmedPasswordField));
+		
+		Link<Void> cancelButton = new Link<Void>("cancel") {
+			@Override
+			public void onClick() {
+				setResponsePage(HomePage.class);
+			}
+		};
+		form.add(cancelButton);
 		add(form);
 	}
 }
