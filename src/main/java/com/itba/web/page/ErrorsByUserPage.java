@@ -51,11 +51,12 @@ import com.itba.web.tooltip.Tooltip;
 import com.itba.web.tooltip.Tooltip.Position;
 
 @SuppressWarnings("serial")
-@AuthorizeInstantiation({User.EVALUATOR_ROLE, User.ADMIN_ROLE})
+@AuthorizeInstantiation({ User.EVALUATOR_ROLE, User.ADMIN_ROLE })
 public class ErrorsByUserPage extends BasePage {
 
-	private static final String[] CSV_HEADER = {"Campaign", "User", "Date", "Correct", "Resource", "Predicate", "Object", "Error"};
-	
+	private static final String[] CSV_HEADER = { "Campaign", "User", "Date", "Correct", "Resource", "Predicate",
+			"Object", "Error" };
+
 	@SpringBean
 	private ManualErrorsFormulae manualErrorsFormulae;
 	@SpringBean
@@ -73,97 +74,101 @@ public class ErrorsByUserPage extends BasePage {
 	private final IModel<User> userModel = new EntityModel<User>(User.class);
 	private final IModel<EvaluationSession> currentSession = new EntityModel<EvaluationSession>(
 			EvaluationSession.class);
-	private final IModel<List<Error>> availableErrors=new LoadableDetachableModel<List<Error>>(){@Override protected List<Error>load(){return errorRepo.getAll();}};
+	private final IModel<List<Error>> availableErrors = new LoadableDetachableModel<List<Error>>() {
+		@Override
+		protected List<Error> load() {
+			return errorRepo.getAll();
+		}
+	};
 	private boolean hasNextPage;
 
 	public ErrorsByUserPage(final PageParameters parameters) {
 		add(new CustomFeedbackPanel("feedbackPanel"));
-
-		// TODO: que esta página sea parametrizable por usuario y campaña
-		// final String userName = parameters.get("userName").toString();
-		// final String campaignName =
-		// parameters.get("campaignName").toString();
-		// userModel.setObject(userRepo.getByUsername(userName));
-
+		userModel.setObject(userRepo.getByUsername(WicketSession.get().getUsername()));
 		currentSession.setObject(WicketSession.get().getEvaluationSession().get());
 		final int page = fetchPage(parameters);
 
 		final IModel<List<EvaluatedResource>> evaluatedResources = new LoadableDetachableModel<List<EvaluatedResource>>() {
 			@Override
 			protected List<EvaluatedResource> load() {
-				User username = userRepo.getByUsername(WicketSession.get().getUsername());
-				if (username.hasRole(User.ADMIN_ROLE)) {
+				if (userModel.getObject().hasRole(User.ADMIN_ROLE)) {
 					PaginatedResult<EvaluatedResource> result = evaluatedResourceRepo.getAllPaginated(page);
 					hasNextPage = result.hasNextPage();
-
 					return result.getResult();
 				} else {
 					PaginatedResult<EvaluatedResource> result = getResult(parameters);
 					hasNextPage = result.hasNextPage();
-
 					return result.getResult();
 				}
 			}
 		};
-		
+
 		IModel<File> fileModel = new AbstractReadOnlyModel<File>() {
-		    @Override
-		    public File getObject() {
-		    	File reportFile = new File("report.csv");
-	    		FileOutputStream fos;
+			@Override
+			public File getObject() {
+				File reportFile = new File("report.csv");
+				FileOutputStream fos;
 				try {
 					fos = new FileOutputStream(reportFile);
-				
-	    		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
-				User username = userRepo.getByUsername(WicketSession.get().getUsername());
-				List<EvaluatedResource> evaluatedResources =
-						username.hasRole("ADMIN") ? evaluatedResourceRepo.getAll() : evaluatedResourceRepo.getAllForSession(currentSession.getObject());
-	    		bw.write(String.join(",", CSV_HEADER));
-				bw.newLine();
-				for (EvaluatedResource resource : evaluatedResources) {
-	    			for (String line : resource.getAsCsvLines(',')) {
-	    				bw.write(line);
-	    				bw.newLine();
-	    			}
-	    		}
-	    		bw.close();
-		        return reportFile;
+
+					BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+					List<EvaluatedResource> evaluatedResources = userModel.getObject().hasRole("ADMIN")
+							? evaluatedResourceRepo.getAll()
+							: evaluatedResourceRepo.getAllForSession(currentSession.getObject());
+					bw.write(String.join(",", CSV_HEADER));
+					bw.newLine();
+					for (EvaluatedResource resource : evaluatedResources) {
+						for (String line : resource.getAsCsvLines(',')) {
+							bw.write(line);
+							bw.newLine();
+						}
+					}
+					bw.close();
+					return reportFile;
 				} catch (IOException e) {
 					e.printStackTrace();
 					return null;
 				}
-		    }
+			}
 		};
 
 		DownloadLink reportDownloadLink = new DownloadLink("reportDownloadLink", fileModel) {
-		    @Override
-		    public void onClick() {
-		        File file = (File) getModelObject();
-		        if (file == null) {
-		        	error("No se pudo descargar el archivo.");
-		        } else {
-		        	IResourceStream resourceStream = new FileResourceStream(new org.apache.wicket.util.file.File(file));
-		        	getRequestCycle().scheduleRequestHandlerAfterCurrent(new ResourceStreamRequestHandler(resourceStream, file.getName()));
-		        }
-		    }
+			@Override
+			public void onClick() {
+				File file = (File) getModelObject();
+				if (file == null) {
+					error("No se pudo descargar el archivo.");
+				} else {
+					IResourceStream resourceStream = new FileResourceStream(new org.apache.wicket.util.file.File(file));
+					getRequestCycle().scheduleRequestHandlerAfterCurrent(
+							new ResourceStreamRequestHandler(resourceStream, file.getName()));
+				}
+			}
 		}.setDeleteAfterDownload(true);
 
 		Tooltip.addToComponent(reportDownloadLink, Position.RIGHT, getString("downloadLink"));
 		add(reportDownloadLink);
 
-	DropDownChoice<Error> errorListChoice=new DropDownChoice<Error>("errorList",errorModel,new LoadableDetachableModel<List<Error>>(){@Override protected List<Error>load(){return availableErrors.getObject();}},new ChoiceRenderer<Error>("name")){};
+		DropDownChoice<Error> errorListChoice = new DropDownChoice<Error>("errorList", errorModel,
+				new LoadableDetachableModel<List<Error>>() {
+					@Override
+					protected List<Error> load() {
+						return availableErrors.getObject();
+					}
+				}, new ChoiceRenderer<Error>("name")) {
+		};
 
-	OnChangeAjaxBehavior onChangeAjaxBehavior = new OnChangeAjaxBehavior() {
-            @Override
-            protected void onUpdate(AjaxRequestTarget target) {
-            	int errorId = errorModel.getObject().getId();
-            	PageParameters parameters = new PageParameters();
+		OnChangeAjaxBehavior onChangeAjaxBehavior = new OnChangeAjaxBehavior() {
+			@Override
+			protected void onUpdate(AjaxRequestTarget target) {
+				int errorId = errorModel.getObject().getId();
+				PageParameters parameters = new PageParameters();
 				parameters.add("errorId", errorId);
 				setResponsePage(ErrorsByUserPage.class, parameters);
-            }
-        };
-        errorListChoice.add(onChangeAjaxBehavior);
-        add(errorListChoice);
+			}
+		};
+		errorListChoice.add(onChangeAjaxBehavior);
+		add(errorListChoice);
 
 		add(new ListView<EvaluatedResource>("evaluatedResources", evaluatedResources) {
 			@Override
@@ -194,8 +199,15 @@ public class ErrorsByUserPage extends BasePage {
 			}
 		});
 
-	AjaxLink<Void> nextPageLink=new AjaxLink<Void>("nextPageLink"){@Override public void onClick(AjaxRequestTarget target){PageParameters parameters=new PageParameters();parameters.set("page",page+1);setResponsePage(SearchResultPage.class,parameters);}};
-	AjaxLink<Void> previousPageLink = new AjaxLink<Void>("previousPageLink") {
+		AjaxLink<Void> nextPageLink = new AjaxLink<Void>("nextPageLink") {
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				PageParameters parameters = new PageParameters();
+				parameters.set("page", page + 1);
+				setResponsePage(SearchResultPage.class, parameters);
+			}
+		};
+		AjaxLink<Void> previousPageLink = new AjaxLink<Void>("previousPageLink") {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				PageParameters parameters = new PageParameters();
@@ -204,6 +216,8 @@ public class ErrorsByUserPage extends BasePage {
 				setResponsePage(SearchResultPage.class, parameters);
 			}
 		};
+
+		add(new Label("titleLabel", userModel.getObject().hasRole("ADMIN") ? getString("adminTitleLabel") : getString("titleLabel")));
 		add(new Label("currentPage", page + 1));
 		previousPageLink.setVisible(page > 0);
 		add(previousPageLink);

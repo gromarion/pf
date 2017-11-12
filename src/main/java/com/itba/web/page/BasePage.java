@@ -32,7 +32,9 @@ public class BasePage extends WebPage {
 			}
 		});
 
-		add(new BookmarkablePageLink<ErrorsByUserPage>("errorsByUserPage", ErrorsByUserPage.class));
+		add(new BookmarkablePageLink<ErrorsByUserPage>("errorsByUserPage", ErrorsByUserPage.class)
+				.add(new Label("errorsByUserPageLabel", currentUser.hasRole(User.ADMIN_ROLE) ?
+						getString("errorsByUserPageAdminLink") : getString("errorsByUserPageLink"))));
 
 		Link<Void> editUserProfile = new Link<Void>("editUserProfile") {
 			private static final long serialVersionUID = 1L;
