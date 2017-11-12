@@ -80,7 +80,8 @@ public class BasePage extends WebPage {
 		BookmarkablePageLink<RegisterUserPage> automaticCheck = new BookmarkablePageLink<>("automaticCheckLink",
 				AutomaticCheckPage.class);
 		BookmarkablePageLink<RegisterUserPage> manualCheck = new BookmarkablePageLink<>("manualCheckLink",
-				ResourceSearchPage.class);
+				HomePage.class);
+		add(new BookmarkablePageLink<RegisterUserPage>("reportsLink", ReportsPage.class));
 		
 		automaticCheck.setVisible(!guest);
 		manualCheck.setVisible(!guest);
