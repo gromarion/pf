@@ -12,7 +12,7 @@ import com.itba.domain.EntityModel;
 import com.itba.domain.model.User;
 
 @SuppressWarnings("serial")
-@AuthorizeInstantiation({"EVALUATOR", "ADMIN"})
+@AuthorizeInstantiation({User.EVALUATOR_ROLE, User.ADMIN_ROLE})
 public class EditUserProfilePage extends BasePage {
 
 	public EditUserProfilePage(User user) {
@@ -27,7 +27,7 @@ public class EditUserProfilePage extends BasePage {
 		
 		PasswordTextField passwordField = new PasswordTextField("password");
 		passwordField.setRequired(true);
-		
+
 		PasswordTextField confirmedPasswordField = new PasswordTextField("confirmedPassword");
 		confirmedPasswordField.setRequired(true);
 

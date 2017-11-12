@@ -14,6 +14,10 @@ import com.itba.domain.PersistentEntity;
 @Entity
 @Table(name = "users")
 public class User extends PersistentEntity {
+	
+	public static final String ADMIN_ROLE = "ADMIN";
+	public static final String EVALUATOR_ROLE = "EVALUATOR";
+	public static final String GUEST_ROLE = "GUEST";
 
 	private String fullName;
 	private String username;

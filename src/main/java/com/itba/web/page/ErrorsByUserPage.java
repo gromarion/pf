@@ -51,10 +51,10 @@ import com.itba.web.tooltip.Tooltip;
 import com.itba.web.tooltip.Tooltip.Position;
 
 @SuppressWarnings("serial")
-@AuthorizeInstantiation({ "EVALUATOR", "ADMIN" })
+@AuthorizeInstantiation({User.EVALUATOR_ROLE, User.ADMIN_ROLE})
 public class ErrorsByUserPage extends BasePage {
 
-	private static final String[] csvHeader = {"Campaign", "User", "Date","Correct", "Resource", "Predicate", "Object", "Error"};
+	private static final String[] CSV_HEADER = {"Campaign", "User", "Date", "Correct", "Resource", "Predicate", "Object", "Error"};
 	
 	@SpringBean
 	private ManualErrorsFormulae manualErrorsFormulae;
@@ -92,7 +92,7 @@ public class ErrorsByUserPage extends BasePage {
 			@Override
 			protected List<EvaluatedResource> load() {
 				User username = userRepo.getByUsername(WicketSession.get().getUsername());
-				if (username.hasRole("ADMIN")) {
+				if (username.hasRole(User.ADMIN_ROLE)) {
 					PaginatedResult<EvaluatedResource> result = evaluatedResourceRepo.getAllPaginated(page);
 					hasNextPage = result.hasNextPage();
 
@@ -118,7 +118,7 @@ public class ErrorsByUserPage extends BasePage {
 				User username = userRepo.getByUsername(WicketSession.get().getUsername());
 				List<EvaluatedResource> evaluatedResources =
 						username.hasRole("ADMIN") ? evaluatedResourceRepo.getAll() : evaluatedResourceRepo.getAllForSession(currentSession.getObject());
-	    		bw.write(String.join(",", csvHeader));
+	    		bw.write(String.join(",", CSV_HEADER));
 				bw.newLine();
 				for (EvaluatedResource resource : evaluatedResources) {
 	    			for (String line : resource.getAsCsvLines(',')) {

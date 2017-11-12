@@ -16,12 +16,13 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.itba.domain.SparqlRequestHandler;
 import com.itba.domain.model.Campaign;
+import com.itba.domain.model.User;
 import com.itba.domain.repository.CampaignRepo;
 import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.web.WicketSession;
 
 @SuppressWarnings("serial")
-@AuthorizeInstantiation({"EVALUATOR", "ADMIN"})
+@AuthorizeInstantiation({User.EVALUATOR_ROLE, User.ADMIN_ROLE})
 public class ResourceSearchPanel extends Panel {
 	@SpringBean
 	CampaignRepo campaignRepo;
@@ -47,8 +48,7 @@ public class ResourceSearchPanel extends Panel {
 
 		searchForm.add(searchTextField);
 		searchForm.add(submit);
-		add(searchForm);
-		add(new Link<Void>("fetchRandom") {
+		searchForm.add(new Link<Void>("fetchRandom") {
 			@Override
 			public void onClick() {
 				final Campaign campaign = campaignRepo.get(Campaign.class, WicketSession.get().getEvaluationSession().get().getCampaign().getId());
@@ -65,5 +65,6 @@ public class ResourceSearchPanel extends Panel {
 				}
 			}
 		});
+		add(searchForm);
 	}
 }

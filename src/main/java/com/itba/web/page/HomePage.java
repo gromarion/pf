@@ -1,37 +1,14 @@
 package com.itba.web.page;
 
-import java.io.IOException;
+import com.itba.web.feedback.CustomFeedbackPanel;
 
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.itba.domain.repository.EvaluatedResourceRepo;
-import com.itba.formulae.EndpointQualityFormulae;
-import com.itba.formulae.EndpointQualityFormulae.EndpointScore;
-
+@SuppressWarnings("serial")
 public class HomePage extends BasePage {
-	private static final long serialVersionUID = 1L;
-
-	@SpringBean
-	private EndpointQualityFormulae endpointQualityFormulae;
-
-	@SpringBean
-	private EvaluatedResourceRepo evaluatedResourceRepo;
 
 	@Override
 	protected void onInitialize() {
 		super.onInitialize();
-
-		EndpointScore endpointScore;
-		try {
-			endpointScore = endpointQualityFormulae.getScore();
-			EndpointScorePanel endpointScorePanel = new EndpointScorePanel("endpointScorePanel", endpointScore,
-					evaluatedResourceRepo);
-
-			endpointScorePanel.setVisible(!endpointScore.getEndpointStats().isEmpty());
-			add(endpointScorePanel);
-		} catch (IOException e) {
-			setResponsePage(ErrorPage.class);
-			e.printStackTrace();
-		}
+		add(new CustomFeedbackPanel("feedbackPanel"));
+		add(new ResourceSearchPanel("search"));
 	}
 }
