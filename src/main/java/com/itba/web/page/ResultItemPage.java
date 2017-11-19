@@ -139,7 +139,7 @@ public class ResultItemPage extends BasePage {
 					final List<ResultItem> resultItem = listItem.getModelObject();
 					String predicateURL = resultItem.get(0).value;
 					if (previouslyEvaluatedDetails.contains(predicateURL + resultItem.get(1))) {
-						listItem.add(new AttributeModifier("class", "danger"));
+						listItem.add(new AttributeModifier("class", "table-danger"));
 					}
 					listItem.add(new ExternalLink("predicate", predicateURL, predicateURL));
 					Label objectLabel = new Label("object", URLHelper.transformURLs(resultItem.get(1).toString()));

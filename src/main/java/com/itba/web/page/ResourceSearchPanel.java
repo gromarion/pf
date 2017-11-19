@@ -33,7 +33,7 @@ public class ResourceSearchPanel extends Panel {
 		Form<Void> searchForm = new Form<>("search-form");
 		final TextField<String> searchTextField = new TextField<String>("textField", Model.of(""));
 		searchTextField.setOutputMarkupId(true);
-		
+
 		Button submit = new Button("submit") {
 			@Override
 			public void onSubmit() {
@@ -49,14 +49,15 @@ public class ResourceSearchPanel extends Panel {
 		searchForm.add(new Link<Void>("fetchRandom") {
 			@Override
 			public void onClick() {
-				final Campaign campaign = campaignRepo.get(Campaign.class, WicketSession.get().getEvaluationSession().get().getCampaign().getId());
+				final Campaign campaign = campaignRepo.get(Campaign.class,
+						WicketSession.get().getEvaluationSession().get().getCampaign().getId());
 				PageParameters parameters = new PageParameters();
 				JSONObject ans;
 				try {
 					ans = SparqlRequestHandler.requestRandomResource(campaign, endpointStatsRepo);
 					String resourceURL = (String) ((JSONObject) ans.get("s")).get("value");
 					parameters.add("selection", resourceURL);
-					
+
 					setResponsePage(ResultItemPage.class, parameters);
 				} catch (JSONException | IOException e) {
 					setResponsePage(ErrorPage.class);
