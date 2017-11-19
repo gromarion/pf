@@ -191,6 +191,7 @@ public class ErrorsByUserPage extends BasePage {
 						PageParameters parameters = new PageParameters();
 						parameters.add("comesFromMyResources", "true");
 						parameters.add("selection", evaluatedResource.getModelObject().getResource());
+						parameters.add("resourceSessionId", evaluatedResource.getModelObject().getSession().getId());
 						setResponsePage(ResultItemPage.class, parameters);
 					}
 				};

@@ -23,6 +23,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.itba.domain.EntityModel;
@@ -30,11 +31,13 @@ import com.itba.domain.SparqlRequestHandler;
 import com.itba.domain.model.Campaign;
 import com.itba.domain.model.EvaluatedResource;
 import com.itba.domain.model.EvaluatedResourceDetail;
+import com.itba.domain.model.EvaluationSession;
 import com.itba.domain.repository.CampaignRepo;
 import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.domain.repository.ErrorRepo;
 import com.itba.domain.repository.EvaluatedResourceDetailRepo;
 import com.itba.domain.repository.EvaluatedResourceRepo;
+import com.itba.domain.repository.EvaluationSessionRepo;
 import com.itba.formulae.ManualErrorsFormulae;
 import com.itba.sparql.JsonSparqlResult;
 import com.itba.sparql.ResultItem;
@@ -54,6 +57,9 @@ public class ResultItemPage extends BasePage {
 	@SpringBean
 	private ManualErrorsFormulae manualErrorsFormulae;
 	@SpringBean
+	private EvaluationSessionRepo sessionRepo;
+	
+	@SpringBean
 	private CampaignRepo campaignRepo;
 	@SpringBean
 	private ErrorRepo errorRepo;
@@ -70,8 +76,7 @@ public class ResultItemPage extends BasePage {
 		final String comesFromMyResources = parameters.get("comesFromMyResources").toString();
 		final String resource = parameters.get("selection").toString();
 		final String search = parameters.get("search").toString();
-		final Campaign campaign = campaignRepo.get(Campaign.class,
-				WicketSession.get().getEvaluationSession().get().getCampaign().getId());
+		
 		final IModel<String> resourceOkLabelMessage = Model.of();
 		final Label resourceOkLabel = new Label("resourceOkLabel", resourceOkLabelMessage);
 		final Label errorNameHeaderLabel = new Label("errorNameHeaderLabel", getString("errorNameHeaderLabel"));
@@ -79,8 +84,18 @@ public class ResultItemPage extends BasePage {
 		final Label commentsTitleLabel = new Label("commentsTitleLabel", getString("comments"));
 		final WebMarkupContainer commentsContainer = new WebMarkupContainer("commentsContainer");
 		
+		Optional<EvaluationSession> resourceSession = Optional.absent();
+		if (!parameters.get("resourceSessionId").isNull()) {
+			resourceSession = Optional.of(sessionRepo.get(parameters.get("resourceSessionId").toInt()));
+		}
+		
 		resourceModel.setObject(evaluatedResourceRepo
-				.getResourceForSession(WicketSession.get().getEvaluationSession().get(), resource).orNull());
+				.getResourceForSession(resourceSession.isPresent() ? resourceSession.get() :
+						WicketSession.get().getEvaluationSession().get(), resource).orNull());
+		
+		final Campaign campaign = resourceModel.getObject() == null ?
+				WicketSession.get().getEvaluationSession().get().getCampaign() : 
+				resourceModel.getObject().getSession().getCampaign();
 
 		final LoadableDetachableModel<Map<String, Double>> scoreImpactModel = new LoadableDetachableModel<Map<String, Double>>() {
 			@Override

@@ -124,8 +124,8 @@ public class Campaign extends PersistentEntity implements Serializable {
 		return " SELECT count(?s) " + " WHERE { ?s rdf:type <" + classURI + "> }";
 	}
 
-	public String getQueryforSearchResultPage(String namepart, int offset, int limit) {
-		return " SELECT ?s ?p ?o FROM <" + graphs + "> WHERE { ?s ?p ?o . " + " FILTER regex(str(?s), '" + namepart + "') }"
+	public String getQueryforSearchResultPage(String namepart, int offset, int limit) { // FILTER regex(LCASE(str(?s)), LCASE(STR('Hola')))
+		return " SELECT ?s ?p ?o FROM <" + graphs + "> WHERE { ?s ?p ?o . " + " FILTER regex(LCASE(str(?s)), LCASE(STR('" + namepart + "'))) }"
 				+ " LIMIT " + limit + " OFFSET " + offset;
 	}
 
