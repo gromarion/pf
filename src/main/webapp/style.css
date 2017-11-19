@@ -19,6 +19,10 @@ h1 > a {
   font-size: 15px;
 }
 
+.warning-icon {
+	font-size: 5rem;
+}
+
 .margin-top-75 {
 	margin-top: 75px;
 }

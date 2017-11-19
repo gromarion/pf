@@ -1,8 +1,31 @@
 <wicket:extend xmlns:wicket="http://www.w3.org/1999/xhtml">
+	<div class="row margin-top-75 justify-content-center align-items-center">
+		<div class="container">
+  		<div class="row justify-content-center align-items-center">
+    		<div class="container">
+      		<div class="row justify-content-center align-items-center">
+						<h1>
+							<wicket:message key="somethingWentWrong">Something went wrong</wicket:message>
+						</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row justify-content-center align-items-center">
+			<div class="container">
+	  		<div class="row justify-content-center align-items-center">
+	    		<div class="container">
+	      		<div class="row justify-content-center align-items-center">
+	      			<h1 class="warning-icon">
+								<span class="fa fa-warning"/>
+							</h1>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div class="input-append margin-top-75">
 		<div wicket:id="search"/>
 	</div>
-	<h1>
-		<wicket:message key="somethingWentWrong">Something went wrong :(</wicket:message>
-	</h1>
 </wicket:extend>
