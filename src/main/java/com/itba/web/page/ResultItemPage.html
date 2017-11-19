@@ -53,7 +53,7 @@
 		<span wicket:id="comments">Comments</span>
 	</div>
 
-	<div wicket:id="feedbackPanel"></div>
+	<div wicket:id="feedbackPanel"/>
 	<table class="table table-striped">
 		<thead>
 			<tr>
@@ -68,12 +68,19 @@
 		</thead>
 		<tbody>
 			<tr wicket:id="resultItemList">
-				<td><a href="#" target="_blank" wicket:id="predicate">Some
-						Predicate</a></td>
-				<td><span wicket:id="object">Some Object</span></td>
-				<td><a wicket:id="errorPageLink" class="btn btn-link" href="#">
+				<td>
+					<a href="#" target="_blank" wicket:id="predicate">Some
+						Predicate
+					</a>
+				</td>
+				<td>
+					<span wicket:id="object">Some Object</span>
+				</td>
+				<td>
+					<a wicket:id="errorPageLink" class="btn btn-link" href="#">
 						<i class="fa fa-pencil" aria-hidden="true"/>
-				</a></td>
+					</a>
+				</td>
 			</tr>
 		</tbody>
 	</table>
