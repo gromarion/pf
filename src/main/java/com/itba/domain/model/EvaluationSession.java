@@ -36,4 +36,8 @@ public class EvaluationSession extends PersistentEntity {
 	public User getUser() {
 		return this.user;
 	}
+	
+	public Set<EvaluatedResource> getEvaluatedResources() {
+		return this.evaluatedResources;
+	}
 }

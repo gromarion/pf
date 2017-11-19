@@ -32,6 +32,18 @@
 												</label>
 												<input type="text" id="endpoint" placeholder="Introduzca la URL del endpoint" wicket:id="endpoint" class="form-control"/>
 											</div>
+											<div class="form-group">
+												<label for="graph">
+													<wicket:message key="graph">Graph</wicket:message>
+												</label>
+												<input wicket:id="graph" class="form-control" type="text" placeholder="Indique el grafo" id="graph"/>
+											</div>
+											<div class="form-group">
+												<label for="params">
+													<wicket:message key="params">Params</wicket:message>
+												</label>
+												<input wicket:id="params" class="form-control" type="text" placeholder="Defina los parámetros" id="params"/>
+											</div>
 											<button wicket:id="submit" type="submit" class="btn btn-primary">
 												<wicket:message key="submit">Submit</wicket:message>
 											</button>
@@ -44,7 +56,6 @@
 							</div>
 						</div>
 					</div>
-				</div>
 			</div>
 		</div>
 </wicket:extend>

@@ -23,20 +23,24 @@ public class CreateEndpointPage extends AnonimousPage {
 	protected void onInitialize() {
 		super.onInitialize();
 
-		Form<Campaign> form              = new Form<Campaign>("createEndpointForm",
+		Form<Campaign> form = new Form<Campaign>("createEndpointForm",
 				new CompoundPropertyModel<Campaign>(new EntityModel<Campaign>(Campaign.class)));
 		
-		final TextField<String> name     = new TextField<String>("name", Model.of(""));
+		final TextField<String> name = new TextField<String>("name", Model.of(""));
 		final TextField<String> endpoint = new TextField<String>("endpoint", Model.of(""));
+		final TextField<String> graph = new TextField<String>("graph", Model.of(""));
+		final TextField<String> params = new TextField<String>("params", Model.of(""));
 		
 		form.add(name);
 		form.add(endpoint);
+		form.add(graph);
+		form.add(params);
 		form.add(new Button("submit", new ResourceModel("submit")) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onSubmit() {
-				Campaign newCampaign = new Campaign(name.getValue(), endpoint.getValue());
+				Campaign newCampaign = new Campaign(name.getValue(), endpoint.getValue(), graph.getValue(), params.getValue());
 				campaigns.save(newCampaign);
 				setResponsePage(HomePage.class);
 			}

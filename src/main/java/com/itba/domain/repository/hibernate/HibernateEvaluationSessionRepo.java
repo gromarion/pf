@@ -17,24 +17,23 @@ import com.itba.domain.repository.EvaluationSessionRepo;
 @Repository
 public class HibernateEvaluationSessionRepo extends AbstractHibernateRepo implements EvaluationSessionRepo {
 
-//    private static final DateTimeFormatter FMT = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss");
+	// private static final DateTimeFormatter FMT =
+	// DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss");
 
-    @Autowired
-    public HibernateEvaluationSessionRepo(SessionFactory sessionFactory) {
-        super(sessionFactory);
-    }
+	@Autowired
+	public HibernateEvaluationSessionRepo(SessionFactory sessionFactory) {
+		super(sessionFactory);
+	}
 
-    @Override
-    public Optional<EvaluationSession> getForCampaignAndUser(final Campaign campaign, final User user) {
-        Query query = getSession().createQuery(
-                "SELECT e FROM EvaluationSession e " +
-                        " WHERE e.user = " + user.getId()
-                        + " AND e.campaign = " + campaign.getId()
-        		);
+	@Override
+	public Optional<EvaluationSession> getForCampaignAndUser(final Campaign campaign, final User user) {
+		Query query = getSession().createQuery("SELECT e FROM EvaluationSession e " + " WHERE e.user = " + user.getId()
+				+ " AND e.campaign = " + campaign.getId());
 
-        List<EvaluationSession> result = query.list();
-        if(result.isEmpty()) return Optional.absent();
-        Preconditions.checkState(result.size() == 1, "Inconsistent state: duplicated session");
-        return Optional.of(result.get(0));
-    }
+		List<EvaluationSession> result = query.list();
+		if (result.isEmpty())
+			return Optional.absent();
+		Preconditions.checkState(result.size() == 1, "Inconsistent state: duplicated session");
+		return Optional.of(result.get(0));
+	}
 }

@@ -34,7 +34,7 @@ public class WicketSession extends WebSession {
     public boolean signIn(String username, String password, Campaign campaign, UserRepo users, EvaluationSessionRepo evaluationSessions) {
 		User user = users.getByUsername(username);
 
-		if (user != null && user.checkPassword(password)) {
+		if (user != null && user.checkPassword(password) && !user.isDeleted()) {
 			this.user = new EntityModel<User>(User.class, user);
 			Optional<EvaluationSession> session = evaluationSessions.getForCampaignAndUser(campaign, user);
 	    	

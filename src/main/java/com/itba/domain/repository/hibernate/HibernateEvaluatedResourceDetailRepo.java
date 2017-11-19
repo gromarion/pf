@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.itba.domain.model.Campaign;
 import com.itba.domain.model.Error;
 import com.itba.domain.model.EvaluatedResource;
 import com.itba.domain.model.EvaluatedResourceDetail;
@@ -45,7 +46,19 @@ public class HibernateEvaluatedResourceDetailRepo extends AbstractHibernateRepo
 	@Override
 	public Long getQtyByError(final Error error) {
 		Query query = getSession()
-				.createQuery("SELECT count(*) FROM EvaluatedResourceDetail d " + " WHERE d.error = " + error.getId());
+				.createQuery("SELECT count(*) FROM EvaluatedResourceDetail d "
+						+ " WHERE d.error = " + error.getId());
+
+		return (Long) query.uniqueResult();
+	}
+	
+	@Override
+	public Long getQtyByErrorAndCampaign(final Error error, final Campaign campaign) {
+		Query query = getSession()
+				.createQuery("SELECT count(*) FROM EvaluatedResourceDetail d "
+						+ " WHERE d.error = " + error.getId()
+						+ " AND d.resource.session.campaign = " + campaign.getId()
+						);
 
 		return (Long) query.uniqueResult();
 	}

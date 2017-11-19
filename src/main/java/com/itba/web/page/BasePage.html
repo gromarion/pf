@@ -14,18 +14,24 @@
 				<wicket:message key="home">Home</wicket:message>
 			</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon"/>
       </button>
 			<div class="collapse navbar-collapse" id="navbarCollapse">
 				<ul class="navbar-nav ml-auto">
+					<li>
+						<a href="#" wicket:id="reportsLink"><i class="glyphicon glyphicon-stats"></i> <wicket:message key="reports">Check reports</wicket:message></a>
+					</li>
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" id="actionsMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<wicket:message key="actions">Actions</wicket:message>
 						</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="#" wicket:id="automaticCheckLink"><wicket:message key="automaticChecksOnEndpoint">Make automatic checks on Endpoint</wicket:message></a>
-							<a class="dropdown-item" href="#" wicket:id="manualCheckLink"><wicket:message key="manualChecks">Start with manual checks</wicket:message></a>
-							<a class="dropdown-item" href="#" wicket:id="reportsLink"><wicket:message key="reports">Check reports</wicket:message></a>
+							<a class="dropdown-item" href="#" wicket:id="automaticCheckLink">
+								<wicket:message key="automaticChecksOnEndpoint">Make automatic checks on Endpoint</wicket:message>
+							</a>
+							<a class="dropdown-item" href="#" wicket:id="manualCheckLink">
+								<wicket:message key="manualChecks">Start with manual checks</wicket:message>
+							</a>
 						</div>
 					</li>
 					<li class="nav-item dropdown">
@@ -33,16 +39,28 @@
 							<span wicket:id="user">user</span>
 						</a>
 						<div class="dropdown-menu" aria-labelledby="userMenuButton">
-							<a class="dropdown-item" href="#" wicket:id="errorsByUserPage"><wicket:message key="errorsByUserPageLink">My Evaluated Resources</wicket:message></a>
-							<a class="dropdown-item" href="#" wicket:id="editUserProfile"><wicket:message key="editUserProfile">Edit profile</wicket:message></a>
-							<a class="dropdown-item" href="#" wicket:id="logout"><wicket:message key="logout">Log out</wicket:message></a>
+							<a class="dropdown-item" href="#" wicket:id="errorsByUserPage">
+								<wicket:message key="errorsByUserPageLink">My Evaluated Resources</wicket:message>
+							</a>
+							<a class="dropdown-item" href="#" wicket:id="editUserProfile">
+								<wicket:message key="editUserProfile">Edit profile</wicket:message>
+							</a>
+							<a href="#" wicket:id="adminEndpointsLink">
+								<wicket:message key="adminEndpoints">Admin endpoints</wicket:message>
+							</a>
+							<a href="#" wicket:id="adminUsers">
+								<wicket:message key="adminUsers">Admin Users</wicket:message>
+							</a>
+							<a class="dropdown-item" href="#" wicket:id="logout">
+								<wicket:message key="logout">Log out</wicket:message>
+							</a>
 						</div>
 					</li>
 				</ul>
 			</div>
 		</nav>
 		<div class="container h-100">
-		    <wicket:child />
+		    <wicket:child/>
 		</div>
 		<script type="text/javascript" src="jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="tether.min.js"></script>

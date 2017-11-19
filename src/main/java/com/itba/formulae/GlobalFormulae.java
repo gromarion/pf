@@ -27,6 +27,6 @@ public class GlobalFormulae {
 		double erroredResources = evaluatedResourceRepo.getErroredForSession(session).size();
 		int totalResources = evaluatedResourceRepo.getAllForSession(session).size();
 
-		return (1 - (erroredResources / totalResources) + endpointQualityFormulae.getScore().getScore()) / 2;
+		return (1 - (erroredResources / totalResources) + endpointQualityFormulae.getScore(session.getCampaign()).getScore()) / 2;
 	}
 }

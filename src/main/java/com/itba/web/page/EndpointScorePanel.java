@@ -13,7 +13,6 @@ import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
 import com.itba.domain.model.EndpointStats;
 import com.itba.domain.model.Error;
-import com.itba.domain.model.EvaluatedResource;
 import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.formulae.EndpointQualityFormulae.EndpointScore;
 import com.itba.web.charts.DonutChartWithLabels;
@@ -30,6 +29,9 @@ public class EndpointScorePanel extends Panel {
 
 	private EndpointScore endpointScore;
 	private EvaluatedResourceRepo evaluatedResourceRepo;
+	private final Label endpointURLLabel = new Label("endpointURL", "");
+	private final Label endpointScoreLabel = new Label("endpointScore", "");
+
 
 	public EndpointScorePanel(String id, EndpointScore endpointScore, EvaluatedResourceRepo evaluatedResourceRepo) {
 		super(id);
@@ -41,10 +43,18 @@ public class EndpointScorePanel extends Panel {
 		this.endpointScore = endpointScore;
 		this.evaluatedResourceRepo = evaluatedResourceRepo;
 
-		add(new Label("endpointURL", endpointScore.getEndpointURL()));
-		add(new Label("endpointScore", endpointScore.getScoreString()));
+		endpointURLLabel.setDefaultModelObject(endpointScore.getEndpointURL());
+		endpointScoreLabel.setDefaultModelObject(endpointScore.getScoreString());
+		add(endpointURLLabel);
+		add(endpointScoreLabel);
 	}
 
+	public void setEndpointScore(EndpointScore endpointScore) {
+		this.endpointScore = endpointScore;
+		endpointURLLabel.setDefaultModelObject(endpointScore.getEndpointURL());
+		endpointScoreLabel.setDefaultModelObject(endpointScore.getScoreString());
+	}
+	
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
@@ -77,9 +87,8 @@ public class EndpointScorePanel extends Panel {
 					errorColors.get(id));
 		}
 
-		List<EvaluatedResource> resources = evaluatedResourceRepo.getAll();
-		int totalResources = resources.size();
-		int erroredResources = evaluatedResourceRepo.getErrored().size();
+		int totalResources = evaluatedResourceRepo.getAllByCampaign(endpointScore.getCampaign()).size();
+		int erroredResources = evaluatedResourceRepo.getErroredByCampaign(endpointScore.getCampaign()).size();
 		int correctResources = totalResources - erroredResources;
 
 		response.render(JavaScriptHeaderItem

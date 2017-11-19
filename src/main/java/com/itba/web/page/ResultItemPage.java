@@ -187,7 +187,7 @@ public class ResultItemPage extends BasePage {
 				resourceModel.getObject().setCorrect(!resourceModel.getObject().isCorrect());
 				PageParameters parameters = new PageParameters();
 				parameters.add("selection", resource);
-				parameters.add("comesFromMyResources", comesFromMyResources);
+				parameters.add("comesFromMyResources", Strings.nullToEmpty(comesFromMyResources));
 				setResponsePage(ResultItemPage.class, parameters);
 			}
 
