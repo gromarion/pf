@@ -19,6 +19,7 @@ import com.itba.domain.repository.CampaignRepo;
 import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.formulae.EndpointQualityFormulae;
 import com.itba.formulae.EndpointQualityFormulae.EndpointScore;
+import com.itba.web.WicketSession;
 
 @SuppressWarnings("serial")
 @AuthorizeInstantiation({User.EVALUATOR_ROLE, User.ADMIN_ROLE})
@@ -36,7 +37,7 @@ public class ReportsPage extends BasePage {
 	@Override
 	protected void onInitialize() {
 		super.onInitialize();
-        selectedCampaignModel.setObject(campaigns.getAll().get(0));
+        selectedCampaignModel.setObject(WicketSession.get().getEvaluationSession().get().getCampaign());
 		DropDownChoice<Campaign> campaignDropDownChoice = new DropDownChoice<Campaign>("campaigns",
 				selectedCampaignModel, new LoadableDetachableModel<List<Campaign>>() {
 					@Override
