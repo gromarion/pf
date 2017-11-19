@@ -18,8 +18,8 @@
       </button>
 			<div class="collapse navbar-collapse" id="navbarCollapse">
 				<ul class="navbar-nav ml-auto">
-					<li>
-						<a href="#" wicket:id="reportsLink"><i class="glyphicon glyphicon-stats"></i> <wicket:message key="reports">Check reports</wicket:message></a>
+					<li class="nav-item">
+						<a class="nav-link" href="#" wicket:id="reportsLink"><i class="glyphicon glyphicon-stats"></i> <wicket:message key="reports">Check reports</wicket:message></a>
 					</li>
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" id="actionsMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -40,15 +40,15 @@
 						</a>
 						<div class="dropdown-menu" aria-labelledby="userMenuButton">
 							<a class="dropdown-item" href="#" wicket:id="errorsByUserPage">
-								<wicket:message key="errorsByUserPageLink">My Evaluated Resources</wicket:message>
+								<span wicket:id="errorsByUserPageLabel">Evaluations</span>
 							</a>
 							<a class="dropdown-item" href="#" wicket:id="editUserProfile">
 								<wicket:message key="editUserProfile">Edit profile</wicket:message>
-							</a>
-							<a href="#" wicket:id="adminEndpointsLink">
+							</a class="dropdown-item">
+							<a class="dropdown-item" href="#" wicket:id="adminEndpointsLink">
 								<wicket:message key="adminEndpoints">Admin endpoints</wicket:message>
 							</a>
-							<a href="#" wicket:id="adminUsers">
+							<a class="dropdown-item" href="#" wicket:id="adminUsers">
 								<wicket:message key="adminUsers">Admin Users</wicket:message>
 							</a>
 							<a class="dropdown-item" href="#" wicket:id="logout">
