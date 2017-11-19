@@ -56,11 +56,17 @@ public class SearchResultPage extends BasePage {
 			for (int i = 0; i < choices.length(); i++) {
 				choicesList.add((String) ((JSONObject)(((JSONObject) choices.get(i)).get("s"))).get("value"));
 			}
+			
+			if(choicesList.isEmpty()) {
+				setResponsePage(ResourceNotFound.class);
+			}
+			
 		} catch (JSONException | IOException e) {
 			setResponsePage(ErrorPage.class);
 		}
 		
 		add(new ResourceSearchPanel("search"));
+		
 		add(new ListView<String>("searchResultList", choicesList) {
 			@Override
             protected void populateItem(ListItem<String> listItem) {
