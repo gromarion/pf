@@ -42,7 +42,7 @@ public class CreateEndpointPage extends AnonimousPage {
 			public void onSubmit() {
 				Campaign newCampaign = new Campaign(name.getValue(), endpoint.getValue(), graph.getValue(), params.getValue());
 				campaigns.save(newCampaign);
-				setResponsePage(HomePage.class);
+				setResponsePage(LoginPage.class);
 			}
 		});
 		

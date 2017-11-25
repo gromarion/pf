@@ -79,7 +79,7 @@ public class BasePage extends WebPage {
 
 		add(adminEndpointsLink.setVisible(currentUser.hasRole(User.ADMIN_ROLE)));
 		editUserProfile.setVisible(!guest);
-		adminUsers.setVisible(!guest);
+		adminUsers.setVisible(currentUser.hasRole(User.ADMIN_ROLE));
 		add(editUserProfile);
 		add(adminUsers);
 		add(logout);

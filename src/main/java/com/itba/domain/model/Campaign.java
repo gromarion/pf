@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.google.common.base.Strings;
 import com.itba.domain.PersistentEntity;
 
 @Entity
@@ -94,7 +95,8 @@ public class Campaign extends PersistentEntity implements Serializable {
 		retVal += endpoint;
 		retVal += "?format=json&query=";
 		try {
-			retVal += URLEncoder.encode(sparqlQuery, "UTF-8").replace("#", "%23") + params;
+			retVal += URLEncoder.encode(sparqlQuery, "UTF-8").replace("#", "%23");
+			if (!Strings.nullToEmpty(params).isEmpty()) retVal += params;
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
