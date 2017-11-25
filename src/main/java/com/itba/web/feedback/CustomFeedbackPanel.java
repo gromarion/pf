@@ -25,8 +25,11 @@ public class CustomFeedbackPanel extends FeedbackPanel {
             case FeedbackMessage.INFO:
                 css = "alert alert-info";
                 break;
+            case FeedbackMessage.WARNING:
+            	css = "alert alert-warning";
+            	break;
             case FeedbackMessage.ERROR:
-                css = "alert alert-error";
+                css = "alert alert-danger";
                 break;
             default:
                 css = "alert";

@@ -1,14 +1,42 @@
 body, p, li, a {
-	font-family: Helvetica, Arial, Sans-Serif;font-size: 13pt;
+	font-family: Helvetica, Arial, Sans-Serif;
+	font-size: 13pt;
 }
 
 h1 > a {
 	font-size: 38.5px;
 }
 
-body {
-	margin: 0;
-  padding-top: 70px !important;
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  line-height: 60px; /* Vertically center the text there */
+  background-color: #f5f5f5;
+  text-align: center;
+  font-size: 15px;
+}
+
+.warning-icon {
+	font-size: 5rem;
+}
+
+.margin-top-75 {
+	margin-top: 75px;
+}
+
+.margin-top-200 {
+	margin-top: 200px;
+}
+
+.canvas {
+	position: absolute;
+}
+
+.margin-bottom-25 {
+	padding-bottom: 25px;
 }
 
 #hd {
@@ -31,7 +59,7 @@ body {
 	z-index : 0;
 }
 
-#logo,#bd {
+#logo, #bd {
 	width : 650px;
 	margin: 0 auto;
 	padding: 25px 50px 0 50px;
@@ -50,9 +78,15 @@ body {
 	margin-right : 5px;
 }
 
-body { margin-top : 0; padding-top : 0;}
+body {
+	margin-top : 0;
+	padding-top : 0;
+}
 
-#logo, #logo h1 { margin-top : 0; padding-top : 0;}
+#logo, #logo h1 {
+	margin-top : 0;
+	padding-top : 0;
+}
 
 #bd {
 	position : absolute;
@@ -69,18 +103,6 @@ body { margin-top : 0; padding-top : 0;}
 	-moz-box-shadow: 0px 0px 10px #888;
 	-webkit-box-shadow: 0px 0px 10px #888;
 	box-shadow: 0px 0px 10px #888;
-}
-
-h2 {
-	padding : 0; margin:0;
-	font-size:36pt;
-	color:#FF5500;
-}
-
-h3 {
-	padding : 0; margin:0;
-	font-size:24pt;
-	color:#092E67;
 }
 
 .paginator {
@@ -110,8 +132,20 @@ a, a :visited, a :hover {
 	margin-bottom: 10px;
 }
 
+.search-button {
+	margin: 0 5px 0 5px;
+}
+
+.guest-login {
+	margin: 5px 0 5px 0;
+}
+
 .bold {
 	font-weight: bold;
+}
+
+.title {
+	margin-bottom: 25px;
 }
 
 .donut-chart {

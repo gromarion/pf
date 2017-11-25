@@ -1,6 +1,5 @@
 package com.itba.web.page;
 
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
@@ -15,7 +14,7 @@ import com.itba.domain.model.Campaign;
 import com.itba.domain.repository.CampaignRepo;
 
 @SuppressWarnings("serial")
-public class CreateEndpointPage extends WebPage {
+public class CreateEndpointPage extends AnonimousPage {
 
 	@SpringBean
     private CampaignRepo campaigns;

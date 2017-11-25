@@ -1,6 +1,5 @@
 package com.itba.web.page;
 
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
@@ -14,11 +13,10 @@ import com.itba.domain.repository.UserRepo;
 import com.itba.web.feedback.CustomFeedbackPanel;
 
 @SuppressWarnings("serial")
-public class RegisterUserPage extends WebPage {
+public class RegisterUserPage extends AnonimousPage {
 
 	@SpringBean
     private UserRepo users;
-
     private String fullName;
     private String username;
     private String password;

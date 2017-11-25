@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.apache.wicket.ajax.json.JSONException;
 import org.apache.wicket.ajax.json.JSONObject;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
@@ -22,20 +21,19 @@ import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.web.WicketSession;
 
 @SuppressWarnings("serial")
-@AuthorizeInstantiation({User.EVALUATOR_ROLE, User.ADMIN_ROLE})
 public class ResourceSearchPanel extends Panel {
 	@SpringBean
-	CampaignRepo campaignRepo;
-	
+	private CampaignRepo campaignRepo;
 	@SpringBean
-	EndpointStatsRepo endpointStatsRepo;
+	private EndpointStatsRepo endpointStatsRepo;
 
 	public ResourceSearchPanel(String id) {
 		super(id);
+		setVisible(!WicketSession.get().getUser().hasRole(User.GUEST_ROLE));
 		Form<Void> searchForm = new Form<>("search-form");
 		final TextField<String> searchTextField = new TextField<String>("textField", Model.of(""));
 		searchTextField.setOutputMarkupId(true);
-		
+
 		Button submit = new Button("submit") {
 			@Override
 			public void onSubmit() {
@@ -51,14 +49,15 @@ public class ResourceSearchPanel extends Panel {
 		searchForm.add(new Link<Void>("fetchRandom") {
 			@Override
 			public void onClick() {
-				final Campaign campaign = campaignRepo.get(Campaign.class, WicketSession.get().getEvaluationSession().get().getCampaign().getId());
+				final Campaign campaign = campaignRepo.get(Campaign.class,
+						WicketSession.get().getEvaluationSession().get().getCampaign().getId());
 				PageParameters parameters = new PageParameters();
 				JSONObject ans;
 				try {
 					ans = SparqlRequestHandler.requestRandomResource(campaign, endpointStatsRepo);
 					String resourceURL = (String) ((JSONObject) ans.get("s")).get("value");
 					parameters.add("selection", resourceURL);
-					
+
 					setResponsePage(ResultItemPage.class, parameters);
 				} catch (JSONException | IOException e) {
 					setResponsePage(ErrorPage.class);

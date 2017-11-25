@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -51,30 +49,24 @@ import com.itba.web.tooltip.Tooltip.Position;
 
 import lib.Score;
 import lib.StringUtils;
+import utils.URLHelper;
 
 @SuppressWarnings("serial")
 public class ResultItemPage extends BasePage {
 
-	private static final String URL_PATTERN = "(?i)\\b((?:https?://|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:\'\".,<>???“”‘’]))";
-
 	@SpringBean
 	private ManualErrorsFormulae manualErrorsFormulae;
-
 	@SpringBean
 	private EvaluationSessionRepo sessionRepo;
 	
 	@SpringBean
 	private CampaignRepo campaignRepo;
-
 	@SpringBean
 	private ErrorRepo errorRepo;
-
 	@SpringBean
 	private EvaluatedResourceRepo evaluatedResourceRepo;
-
 	@SpringBean
 	private EvaluatedResourceDetailRepo evaluatedResourceDetailRepo;
-
 	@SpringBean
 	private EndpointStatsRepo endpointStatsRepo;
 
@@ -162,10 +154,10 @@ public class ResultItemPage extends BasePage {
 					final List<ResultItem> resultItem = listItem.getModelObject();
 					String predicateURL = resultItem.get(0).value;
 					if (previouslyEvaluatedDetails.contains(predicateURL + resultItem.get(1))) {
-						listItem.add(new AttributeModifier("class", "danger"));
+						listItem.add(new AttributeModifier("class", "table-danger"));
 					}
 					listItem.add(new ExternalLink("predicate", predicateURL, predicateURL));
-					Label objectLabel = new Label("object", transformURLs(resultItem.get(1).toString()));
+					Label objectLabel = new Label("object", URLHelper.transformURLs(resultItem.get(1).toString()));
 					objectLabel.setEscapeModelStrings(false);
 					listItem.add(objectLabel);
 					listItem.add(new AjaxLink<Void>("errorPageLink") {
@@ -257,13 +249,6 @@ public class ResultItemPage extends BasePage {
 
 		add(backButton);
 		add(customFeedbackPanel);
-	}
-
-	private String transformURLs(String object) {
-		Pattern patt = Pattern.compile(URL_PATTERN);
-		Matcher matcher = patt.matcher(object);
-
-		return matcher.replaceAll("<a href=\"$1\" target=\"_blank\">$1</a>");
 	}
 
 	@Override

@@ -176,7 +176,7 @@ public class ErrorsByUserPage extends BasePage {
 				evaluatedResource
 						.add(new Label("resourceTimestamp", evaluatedResource.getModelObject().getFormattedDate()));
 				if (evaluatedResource.getModelObject().isCorrect()) {
-					evaluatedResource.add(new AttributeModifier("class", "success"));
+					evaluatedResource.add(new AttributeModifier("class", "table-success"));
 				}
 				try {
 					evaluatedResource.add(new Label("resourceScore", manualErrorsFormulae
@@ -218,7 +218,8 @@ public class ErrorsByUserPage extends BasePage {
 			}
 		};
 
-		add(new Label("titleLabel", userModel.getObject().hasRole("ADMIN") ? getString("adminTitleLabel") : getString("titleLabel")));
+		add(new Label("titleLabel",
+				userModel.getObject().hasRole("ADMIN") ? getString("adminTitleLabel") : getString("titleLabel")));
 		add(new Label("currentPage", page + 1));
 		previousPageLink.setVisible(page > 0);
 		add(previousPageLink);

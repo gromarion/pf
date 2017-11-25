@@ -2,7 +2,7 @@
 	
 	<div class="row">
     	<div class="col-md-12 col-md-offset-3">
-			<div class="input-append">
+			<div class="input-append margin-top-75">
 				<div wicket:id="search" />
 			</div>
 		</div>
@@ -31,13 +31,17 @@
 
 	<div class="container-fluid">
 		<div class="row">
-			<button wicket:id="resourceOkButton" class="btn btn-success">
-				<span wicket:id="resourceOkLabel">Is resource OK?</span>
-			</button>
-			<button class="btn btn-primary" href="#" data-toggle="modal"
-				data-target="#editCommentModal">
-				<wicket:message key="editCommentLabel">Edit comment</wicket:message>
-			</button>
+			<div class="col-3">
+				<button wicket:id="resourceOkButton" class="btn btn-success">
+					<span wicket:id="resourceOkLabel">Is resource OK?</span>
+				</button>
+			</div>
+			<div class="col-3">
+				<button class="btn btn-primary" href="#" data-toggle="modal"
+					data-target="#editCommentModal">
+					<wicket:message key="editCommentLabel">Edit comment</wicket:message>
+				</button>
+			</div>
 		</div>
 	</div>
 
@@ -49,23 +53,34 @@
 		<span wicket:id="comments">Comments</span>
 	</div>
 
-	<div wicket:id="feedbackPanel"></div>
+	<div wicket:id="feedbackPanel"/>
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th><wicket:message key="predicate">Predicate</wicket:message></th>
-				<th><wicket:message key="object">Object</wicket:message></th>
-				<th></th>
+				<th>
+					<wicket:message key="predicate">Predicate</wicket:message>
+				</th>
+				<th>
+					<wicket:message key="object">Object</wicket:message>
+				</th>
+				<th/>
 			</tr>
 		</thead>
 		<tbody>
 			<tr wicket:id="resultItemList">
-				<td><a href="#" target="_blank" wicket:id="predicate">Some
-						Predicate</a></td>
-				<td><span wicket:id="object">Some Object</span></td>
-				<td><a wicket:id="errorPageLink" class="btn btn-link" href="#">
-						<i class="icon-pencil" />
-				</a></td>
+				<td>
+					<a href="#" target="_blank" wicket:id="predicate">Some
+						Predicate
+					</a>
+				</td>
+				<td>
+					<span wicket:id="object">Some Object</span>
+				</td>
+				<td>
+					<a wicket:id="errorPageLink" class="btn btn-link" href="#">
+						<i class="fa fa-pencil" aria-hidden="true"/>
+					</a>
+				</td>
 			</tr>
 		</tbody>
 	</table>

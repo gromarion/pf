@@ -60,3 +60,4 @@ scenes/test
 # Logs
 
 *.log
+setup.properties

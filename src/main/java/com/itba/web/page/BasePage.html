@@ -3,76 +3,72 @@
 	<head>
 	    <meta charset="utf-8" />
 	    <title>Data Quality Assesment</title>
-	    <link rel="stylesheet" href="style.css" type="text/css" media="screen" title="Stylesheet" />
-	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 	    <link rel="icon" type="image/svg" href="../favicon.png">
-	    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-		<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-	    <script type="text/javascript">
-	    	$('#myModal').on('shown.bs.modal', function () {
-	    	  $('#myInput').focus()
-	    	});
-	    	$(function () {
-	   			$('[data-toggle="tooltip"]').tooltip()
-	    	});
-	    </script>
-	    <style>
-	                div.wicket-aa {
-	                    font-family: "Lucida Grande","Lucida Sans Unicode",Tahoma,Verdana;
-	                    font-size: 12px;
-	                    background-color: white;
-	                    border-width: 1px;
-	                    border-color: #cccccc;
-	                    border-style: solid;
-	                    padding: 2px;
-	                    margin: 1px 0 0 0;
-	                    text-align:left;
-	                }
-	                div.wicket-aa ul { list-style:none; padding: 2px; margin:0; }
-	                div.wicket-aa ul li.selected { background-color: #FFFF00; padding: 2px; margin:0; }
-	            </style>
+	    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+	    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+	    <link rel="stylesheet" href="style.css">
 	</head>
 	<body>
-		<nav class="navbar navbar-default navbar-fixed-top">
-			<div class="container">
-				<ul class="nav navbar-nav">
-					<li>
-						<a wicket:id="home" class="home-link"><wicket:message key="home">Home</wicket:message></a>
+		<nav class="navbar fixed-top navbar-expand navbar-light bg-light">
+			<a wicket:id="home" class="navbar-brand">
+				<wicket:message key="home">Home</wicket:message>
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"/>
+      </button>
+			<div class="collapse navbar-collapse" id="navbarCollapse">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="#" wicket:id="reportsLink">
+							<i class="fa fa-bar-chart"/>
+							<wicket:message key="reports">Check reports</wicket:message>
+						</a>
 					</li>
-				</ul>
-				<ul class="nav navbar-nav navbar-right">
-					<li>
-						<a href="#" wicket:id="reportsLink"><i class="glyphicon glyphicon-stats"></i> <wicket:message key="reports">Check reports</wicket:message></a>
-					</li>
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" id="actionsMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<wicket:message key="actions">Actions</wicket:message>
-							<span class="caret"></span>
 						</a>
-						<ul class="dropdown-menu">
-							<li><a href="#" wicket:id="automaticCheckLink"><wicket:message key="automaticChecksOnEndpoint">Make automatic checks on Endpoint</wicket:message></a></li>
-							<li><a href="#" wicket:id="manualCheckLink"><wicket:message key="manualChecks">Start with manual checks</wicket:message></a></li>
-						</ul>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" href="#" wicket:id="automaticCheckLink">
+								<wicket:message key="automaticChecksOnEndpoint">Make automatic checks on Endpoint</wicket:message>
+							</a>
+							<a class="dropdown-item" href="#" wicket:id="manualCheckLink">
+								<wicket:message key="manualChecks">Start with manual checks</wicket:message>
+							</a>
+						</div>
 					</li>
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" id="userMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<span wicket:id="user">user</span>
-							<span class="caret"></span>
 						</a>
-						<ul class="dropdown-menu">
-							<li><a href="#" wicket:id="errorsByUserPage"><span wicket:id="errorsByUserPageLabel">Evaluations</span></a></li>
-							<li><a href="#" wicket:id="editUserProfile"><wicket:message key="editUserProfile">Edit profile</wicket:message></a></li>
-							<li><a href="#" wicket:id="adminEndpointsLink"><wicket:message key="adminEndpoints">Admin endpoints</wicket:message></a></li>
-							<li><a href="#" wicket:id="adminUsers"><wicket:message key="adminUsers">Admin Users</wicket:message></a></li>
-							<li><a href="#" wicket:id="logout"><wicket:message key="logout">Log out</wicket:message></a></li>
-						</ul>
+						<div class="dropdown-menu" aria-labelledby="userMenuButton">
+							<a class="dropdown-item" href="#" wicket:id="errorsByUserPage">
+								<span wicket:id="errorsByUserPageLabel">Evaluations</span>
+							</a>
+							<a class="dropdown-item" href="#" wicket:id="editUserProfile">
+								<wicket:message key="editUserProfile">Edit profile</wicket:message>
+							</a class="dropdown-item">
+							<a class="dropdown-item" href="#" wicket:id="adminEndpointsLink">
+								<wicket:message key="adminEndpoints">Admin endpoints</wicket:message>
+							</a>
+							<a class="dropdown-item" href="#" wicket:id="adminUsers">
+								<wicket:message key="adminUsers">Admin Users</wicket:message>
+							</a>
+							<a class="dropdown-item" href="#" wicket:id="logout">
+								<wicket:message key="logout">Log out</wicket:message>
+							</a>
+						</div>
 					</li>
 				</ul>
 			</div>
 		</nav>
-		<div class="container">
-		    <wicket:child />
+		<div class="container h-100">
+		    <wicket:child/>
 		</div>
+		<script type="text/javascript" src="jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="tether.min.js"></script>
+    <script type="text/javascript" src="popper.js"></script>
+    <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="components.js"></script>
 	</body>
 </html>
