@@ -23,6 +23,10 @@ h1 > a {
 	font-size: 5rem;
 }
 
+.margin-top-50 {
+	margin-top: 50px;
+}
+
 .margin-top-75 {
 	margin-top: 75px;
 }
