@@ -12,7 +12,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.itba.domain.EntityModel;
 import com.itba.domain.model.User;
 import com.itba.domain.repository.EvaluationSessionRepo;
 import com.itba.domain.repository.UserRepo;
@@ -26,8 +25,6 @@ public class AdminUsersPage extends BasePage {
 	private UserRepo userRepo;
 	@SpringBean
 	private EvaluationSessionRepo evaluationSessionRepo;
-
-	private final IModel<User> userModel = new EntityModel<User>(User.class);
 
 	public AdminUsersPage() {
 		add(new CustomFeedbackPanel("feedbackPanel"));
@@ -53,12 +50,9 @@ public class AdminUsersPage extends BasePage {
 						userRepo.deleteUser(user.getModelObject().getId());
 						setResponsePage(AdminUsersPage.class);
 					}
-
 				};
 				user.add(deleteLink);
 			}
-
 		});
-
 	}
 }

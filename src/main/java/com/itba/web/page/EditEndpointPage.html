@@ -1,59 +1,62 @@
 <wicket:extend xmlns:wicket="http://www.w3.org/1999/xhtml">
-	<div class="row">
-		<div class="container">
-			<h2>
-				<wicket:message key="title">New endpoint</wicket:message>
-			</h2>
-			<div>
-				<span><wicket:message key="description">Description</wicket:message></span>
+  <div class="container h-100 margin-top-75">
+    <div class="row justify-content-center align-items-center resource-search-panel">
+      <h2>
+        <wicket:message key="title">Edit endpoints</wicket:message>
+      </h2>
+      <div>
+				<span>
+					<wicket:message key="description">Description</wicket:message>
+					<a href="https://www.w3.org/wiki/SparqlEndpoints" target="_blank">link.</a>
+				</span>
 			</div>
-			<br />
-			<div>
-				<a href="https://www.w3.org/wiki/SparqlEndpoints" target="_blank">Lista de endpoints</a>
+    </div>
+    <div class="row justify-content-center align-items-center margin-top-75">
+      <div class="container">
+        <div class="row justify-content-center align-items-center">
+          <div class="container">
+            <div class="row justify-content-center align-items-center">
+              <div class="col-5">
+								<form wicket:id="editEndpointForm" method="post">
+									<div class="form-group">
+										<label for="name">
+											<wicket:message key="name">Name</wicket:message>
+										</label>
+										<input type="text" wicket:id="name" id="name" placeholder="Nombre del endpoint" class="form-control"/>
+									</div>
+									<div class="form-group">
+										<label for="endpoint">
+											<wicket:message key="endpoint">Endpoint</wicket:message>
+										</label>
+										<input type="text" wicket:id="endpoint" id="endpoint" placeholder="URL del endpoint" class="form-control"/>
+									</div>
+									<div class="form-group">
+										<label for="graph">
+											<wicket:message key="graph">Graph</wicket:message>
+										</label>
+										<input type="text" wicket:id="graph" id="graph" placeholder="Especifique el grafo" class="form-control"/>
+									</div>
+									<div class="form-group">
+										<label for="params">
+											<wicket:message key="params">Params</wicket:message>
+										</label>
+										<input type="text" wicket:id="params" id="params" placeholder="Defina parámetros extra" class="form-control"/>
+									</div>
+									<div class="form-group">
+										<button wicket:id="submit" type="submit" class="btn btn-primary">
+											<wicket:message key="submit">Submit</wicket:message>
+										</button>
+										<button wicket:id="back" class="btn">
+											<wicket:message key="back">Back</wicket:message>
+										</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
-			<br />
-			<form wicket:id="editEndpointForm" method="post"
-				class="form-horizontal">
-				<div class="control-group">
-					<label class="control-label"> <wicket:message key="name">Name</wicket:message>
-					</label>
-					<div class="controls">
-						<input type="text" wicket:id="name" />
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label"> <wicket:message
-							key="endpoint">Endpoint</wicket:message>
-					</label>
-					<div class="controls">
-						<input type="text" wicket:id="endpoint" />
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label"> <wicket:message key="graph">Graph</wicket:message>
-					</label>
-					<div class="controls">
-						<input type="text" wicket:id="graph" />
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label"> <wicket:message key="params">Params</wicket:message>
-					</label>
-					<div class="controls">
-						<input type="text" wicket:id="params" />
-					</div>
-				</div>
-				<div class="control-group">
-					<div class="controls">
-						<button wicket:id="submit" type="submit" class="btn btn-primary">
-							<wicket:message key="submit">Submit</wicket:message>
-						</button>
-						<button wicket:id="back" class="btn">
-							<wicket:message key="back">Back</wicket:message>
-						</button>
-					</div>
-				</div>
-			</form>
 		</div>
 	</div>
 </wicket:extend>
+
