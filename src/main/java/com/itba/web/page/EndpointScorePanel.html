@@ -2,7 +2,8 @@
 	<body>
 		<wicket:panel>
 			<h2 class="margin-top-75">
-				<span><wicket:message key="endpointAvailability">Endpoint availability for </wicket:message> "<span wicket:id="endpointURL">http://some.endpoint.com/sparql</span>"</span>
+				<span>
+					<wicket:message key="endpointAvailability">Endpoint availability for </wicket:message> "<span wicket:id="endpointURL">http://some.endpoint.com/sparql</span>"</span>
 			</h2>
 			<h2>
 				<wicket:message key="score"/> '<span wicket:id="endpointScore">Score</span>'
@@ -29,25 +30,37 @@
 			</h2>
 			<h3>
 				<wicket:message key="totalResources">Total evaluated resources</wicket:message>
-				<span id="totalResources"></span>
+				<span id="totalResources"/>
 			</h3>
 			<h3>
 				<wicket:message key="erroredResources">Total errored resources</wicket:message>
-				<span id="erroredResources"></span>
+				<span id="erroredResources"/>
 			</h3>
 			<h3>
 				<wicket:message key="correctResources">Total correct resources</wicket:message>
-				<span id="correctResources"></span>
+				<span id="correctResources"/>
 			</h3>
 			<svg id="Tipodedatoincorrectamenteextraído" width="24%" height="150"/>
 			<svg id="Valordelobjetoextraídodeformaincompleta" width="24%" height="150"/>
 			<svg id="Objetosemánticamenteincorrecto" width="24%" height="150"/>
 			<svg id="Enlaceexternoincorrecto" width="24%" height="150"/>
 			<ul class="legend">
-			    <li><span class="incorrectly_extracted_data_type"/><wicket:message key="incorrectlyExtractedDataType"/></li>
-			    <li><span class="incorrectly_extracted_value"/><wicket:message key="incorrectlyExtractedValue"/></li>
-			    <li><span class="object_semantically_incorrect"/><wicket:message key="objectSemanticallyIncorrect"/></li>
-			    <li><span class="incorrect_link"/><wicket:message key="incorrectLink"/></li>
+		    <li>
+		    	<span class="incorrectly_extracted_data_type"/>
+		    	<wicket:message key="incorrectlyExtractedDataType"/>
+		    </li>
+		    <li>
+		    	<span class="incorrectly_extracted_value"/>
+		    	<wicket:message key="incorrectlyExtractedValue"/>
+		    </li>
+		    <li>
+		    	<span class="object_semantically_incorrect"/>
+		    	<wicket:message key="objectSemanticallyIncorrect"/>
+		    </li>
+		    <li>
+		    	<span class="incorrect_link"/>
+		    	<wicket:message key="incorrectLink"/>
+		    </li>
 			</ul>
 		</wicket:panel>
 	</body>

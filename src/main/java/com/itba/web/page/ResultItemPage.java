@@ -10,7 +10,6 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.json.JSONException;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ExternalLink;
@@ -19,7 +18,6 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -38,14 +36,13 @@ import com.itba.domain.repository.ErrorRepo;
 import com.itba.domain.repository.EvaluatedResourceDetailRepo;
 import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.domain.repository.EvaluationSessionRepo;
+import com.itba.domain.repository.UserRepo;
 import com.itba.formulae.ManualErrorsFormulae;
 import com.itba.sparql.JsonSparqlResult;
 import com.itba.sparql.ResultItem;
 import com.itba.web.WicketSession;
 import com.itba.web.feedback.CustomFeedbackPanel;
 import com.itba.web.modal.EditResourceCommentModal;
-import com.itba.web.tooltip.Tooltip;
-import com.itba.web.tooltip.Tooltip.Position;
 
 import lib.Score;
 import lib.StringUtils;
@@ -58,7 +55,6 @@ public class ResultItemPage extends BasePage {
 	private ManualErrorsFormulae manualErrorsFormulae;
 	@SpringBean
 	private EvaluationSessionRepo sessionRepo;
-	
 	@SpringBean
 	private CampaignRepo campaignRepo;
 	@SpringBean
@@ -69,6 +65,8 @@ public class ResultItemPage extends BasePage {
 	private EvaluatedResourceDetailRepo evaluatedResourceDetailRepo;
 	@SpringBean
 	private EndpointStatsRepo endpointStatsRepo;
+	@SpringBean
+	private UserRepo userRepo;
 
 	private final IModel<EvaluatedResource> resourceModel = new EntityModel<EvaluatedResource>(EvaluatedResource.class);
 
@@ -77,8 +75,7 @@ public class ResultItemPage extends BasePage {
 		final String resource = parameters.get("selection").toString();
 		final String search = parameters.get("search").toString();
 		
-		final IModel<String> resourceOkLabelMessage = Model.of();
-		final Label resourceOkLabel = new Label("resourceOkLabel", resourceOkLabelMessage);
+		boolean guest = userRepo.getByUsername(getAppSession().getUsername()).hasRole("GUEST");
 		final Label errorNameHeaderLabel = new Label("errorNameHeaderLabel", getString("errorNameHeaderLabel"));
 		final Label errorScoreHeaderLabel = new Label("errorScoreHeaderLabel", getString("errorScoreHeaderLabel"));
 		final Label commentsTitleLabel = new Label("commentsTitleLabel", getString("comments"));
@@ -191,40 +188,7 @@ public class ResultItemPage extends BasePage {
 			setResponsePage(ErrorPage.class);
 		}
 
-		Link<Void> resourceOkButton = new Link<Void>("resourceOkButton") {
-			@Override
-			public void onClick() {
-				if (resourceModel.getObject() == null) {
-					resourceModel.setObject(
-							new EvaluatedResource(WicketSession.get().getEvaluationSession().get(), resource));
-					evaluatedResourceRepo.save(resourceModel.getObject());
-				}
-				resourceModel.getObject().setCorrect(!resourceModel.getObject().isCorrect());
-				PageParameters parameters = new PageParameters();
-				parameters.add("selection", resource);
-				parameters.add("comesFromMyResources", Strings.nullToEmpty(comesFromMyResources));
-				setResponsePage(ResultItemPage.class, parameters);
-			}
-
-			@Override
-			protected void onComponentTag(final ComponentTag tag) {
-				super.onComponentTag(tag);
-				if (resourceModel.getObject() != null) {
-					if (resourceModel.getObject().isCorrect()) {
-						tag.put("class", "btn btn-danger");
-						resourceOkLabelMessage.setObject("Quitar de recursos correctos");
-					} else {
-						tag.put("class", "btn btn-success");
-						resourceOkLabelMessage.setObject("Agregar a recursos correctos");
-					}
-				} else {
-					tag.put("class", "btn btn-success");
-					resourceOkLabelMessage.setObject("Agregar a recursos correctos");
-				}
-			}
-		};
-
-		Tooltip.addToComponent(resourceOkButton, Position.TOP, "Un tooltip sobre este botón");
+		
 		
 		Link<Void> backButton = new Link<Void>("back") {
 			@Override
@@ -240,15 +204,15 @@ public class ResultItemPage extends BasePage {
 			}
 		};
 
-		resourceOkButton.add(resourceOkLabel);
-		add(resourceOkButton.setVisible(resourceModel.getObject() == null
-				|| (resourceModel.getObject() != null && !resourceModel.getObject().hasDetails())));
 		add(new ResourceSearchPanel("search"));
 		String resourceName = resource.substring(resource.lastIndexOf('/') + 1);
 		add(new ExternalLink("resourceName", resource, resourceName.replace('_', ' ')));
 
 		add(backButton);
 		add(customFeedbackPanel);
+		ResultItemActionsPanel actionsPanel = new ResultItemActionsPanel("actionsPanel", parameters);
+		actionsPanel.setVisible(!guest);
+		add(actionsPanel);
 	}
 
 	@Override
