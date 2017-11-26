@@ -9,20 +9,25 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 import com.itba.domain.EntityModel;
 import com.itba.domain.model.EvaluatedResource;
+import com.itba.domain.model.EvaluationSession;
 import com.itba.domain.repository.EvaluatedResourceRepo;
+import com.itba.domain.repository.EvaluationSessionRepo;
 import com.itba.web.WicketSession;
 import com.itba.web.tooltip.Tooltip;
 import com.itba.web.tooltip.Tooltip.Position;
 
 @SuppressWarnings("serial")
 public class ResultItemActionsPanel extends Panel {
-	
+
 	@SpringBean
 	private EvaluatedResourceRepo evaluatedResourceRepo;
-	
+	@SpringBean
+	private EvaluationSessionRepo sessionRepo;
+
 	private final IModel<EvaluatedResource> resourceModel = new EntityModel<EvaluatedResource>(EvaluatedResource.class);
 
 	public ResultItemActionsPanel(String id, PageParameters parameters) {
@@ -31,7 +36,15 @@ public class ResultItemActionsPanel extends Panel {
 		final String resource = parameters.get("selection").toString();
 		final IModel<String> resourceOkLabelMessage = Model.of();
 		final Label resourceOkLabel = new Label("resourceOkLabel", resourceOkLabelMessage);
-		
+
+		Optional<EvaluationSession> resourceSession = Optional.absent();
+		if (!parameters.get("resourceSessionId").isNull()) {
+			resourceSession = Optional.of(sessionRepo.get(parameters.get("resourceSessionId").toInt()));
+		}
+		resourceModel.setObject(evaluatedResourceRepo.getResourceForSession(
+				resourceSession.isPresent() ? resourceSession.get() : WicketSession.get().getEvaluationSession().get(),
+				resource).orNull());
+
 		Link<Void> resourceOkButton = new Link<Void>("resourceOkButton") {
 			@Override
 			public void onClick() {
@@ -69,5 +82,11 @@ public class ResultItemActionsPanel extends Panel {
 		resourceOkButton.add(resourceOkLabel);
 		add(resourceOkButton.setVisible(resourceModel.getObject() == null
 				|| (resourceModel.getObject() != null && !resourceModel.getObject().hasDetails())));
+	}
+	
+	@Override
+	protected void onDetach() {
+		super.onDetach();
+		resourceModel.detach();
 	}
 }
