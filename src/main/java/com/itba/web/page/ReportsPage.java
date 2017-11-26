@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -15,7 +14,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.itba.domain.EntityModel;
 import com.itba.domain.model.Campaign;
-import com.itba.domain.model.User;
 import com.itba.domain.repository.CampaignRepo;
 import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.domain.repository.EvaluatedResourceRepo;
@@ -24,7 +22,6 @@ import com.itba.formulae.EndpointQualityFormulae.EndpointScore;
 import com.itba.web.WicketSession;
 
 @SuppressWarnings("serial")
-@AuthorizeInstantiation({User.EVALUATOR_ROLE, User.ADMIN_ROLE})
 public class ReportsPage extends BasePage {
 	
 	@SpringBean

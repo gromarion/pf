@@ -15,7 +15,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.itba.domain.SparqlRequestHandler;
 import com.itba.domain.model.Campaign;
-import com.itba.domain.model.User;
 import com.itba.domain.repository.CampaignRepo;
 import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.web.WicketSession;
@@ -29,7 +28,6 @@ public class ResourceSearchPanel extends Panel {
 
 	public ResourceSearchPanel(String id) {
 		super(id);
-		setVisible(!WicketSession.get().getUser().hasRole(User.GUEST_ROLE));
 		Form<Void> searchForm = new Form<>("search-form");
 		final TextField<String> searchTextField = new TextField<String>("textField", Model.of(""));
 		searchTextField.setOutputMarkupId(true);
