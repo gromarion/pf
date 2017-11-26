@@ -1,10 +1,7 @@
 package com.itba.web.page;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -17,7 +14,6 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -28,7 +24,6 @@ import com.itba.domain.EntityModel;
 import com.itba.domain.SparqlRequestHandler;
 import com.itba.domain.model.Campaign;
 import com.itba.domain.model.EvaluatedResource;
-import com.itba.domain.model.EvaluatedResourceDetail;
 import com.itba.domain.model.EvaluationSession;
 import com.itba.domain.repository.CampaignRepo;
 import com.itba.domain.repository.EndpointStatsRepo;
@@ -45,7 +40,6 @@ import com.itba.web.feedback.CustomFeedbackPanel;
 import com.itba.web.modal.EditResourceCommentModal;
 
 import lib.Score;
-import lib.StringUtils;
 import utils.URLHelper;
 
 @SuppressWarnings("serial")
@@ -74,68 +68,33 @@ public class ResultItemPage extends BasePage {
 		final String comesFromMyResources = parameters.get("comesFromMyResources").toString();
 		final String resource = parameters.get("selection").toString();
 		final String search = parameters.get("search").toString();
-		
+
 		boolean guest = userRepo.getByUsername(getAppSession().getUsername()).hasRole("GUEST");
-		final Label errorNameHeaderLabel = new Label("errorNameHeaderLabel", getString("errorNameHeaderLabel"));
-		final Label errorScoreHeaderLabel = new Label("errorScoreHeaderLabel", getString("errorScoreHeaderLabel"));
 		final Label commentsTitleLabel = new Label("commentsTitleLabel", getString("comments"));
 		final WebMarkupContainer commentsContainer = new WebMarkupContainer("commentsContainer");
-		
+
 		Optional<EvaluationSession> resourceSession = Optional.absent();
 		if (!parameters.get("resourceSessionId").isNull()) {
 			resourceSession = Optional.of(sessionRepo.get(parameters.get("resourceSessionId").toInt()));
 		}
-		
-		resourceModel.setObject(evaluatedResourceRepo
-				.getResourceForSession(resourceSession.isPresent() ? resourceSession.get() :
-						WicketSession.get().getEvaluationSession().get(), resource).orNull());
-		
-		final Campaign campaign = resourceModel.getObject() == null ?
-				WicketSession.get().getEvaluationSession().get().getCampaign() : 
-				resourceModel.getObject().getSession().getCampaign();
 
-		final LoadableDetachableModel<Map<String, Double>> scoreImpactModel = new LoadableDetachableModel<Map<String, Double>>() {
-			@Override
-			protected Map<String, Double> load() {
-				Map<String, Double> scoreImpact = new HashMap<>();
-				try {
-					if (resourceModel.getObject() != null) {
-						for (EvaluatedResourceDetail detail : resourceModel.getObject().getDetails()) {
-							String key = detail.getError().getName();
-							if (!scoreImpact.containsKey(key))
-								scoreImpact.put(key, new Double(0));
-							scoreImpact.put(key, scoreImpact.get(key)
-									+ manualErrorsFormulae.computeIndividual(resource, detail.getError().getId()));
-						}
-					}
-				} catch (Exception e) {
-					// TODO: reset & log somehow...
-					scoreImpact.clear();
-				}
-				return scoreImpact;
-			}
-		};
+		resourceModel.setObject(evaluatedResourceRepo.getResourceForSession(
+				resourceSession.isPresent() ? resourceSession.get() : WicketSession.get().getEvaluationSession().get(),
+				resource).orNull());
 
-		ListView<String> detailsList = new ListView<String>("detailsList", new ArrayList<String>(scoreImpactModel.getObject().keySet())) {
-			@Override
-			protected void populateItem(ListItem<String> listItem) {
-				Label errorNameLabel = new Label("errorNameLabel", listItem.getModelObject());
-				Label errorScoreLabel = new Label("errorScoreLabel", "-" + StringUtils.formatDouble(scoreImpactModel.getObject().get(listItem.getModelObject()), 3));
-				listItem.add(errorNameLabel);
-				listItem.add(errorScoreLabel);
-			}
-		};
-		
-		boolean hasComments = resourceModel.getObject() != null && !Strings.isNullOrEmpty(resourceModel.getObject().getComments());
+		final Campaign campaign = resourceModel.getObject() == null
+				? WicketSession.get().getEvaluationSession().get().getCampaign()
+				: resourceModel.getObject().getSession().getCampaign();
+
+		boolean hasComments = resourceModel.getObject() != null
+				&& !Strings.isNullOrEmpty(resourceModel.getObject().getComments());
 		final Label commentsLabel = new Label("comments", hasComments ? resourceModel.getObject().getComments() : "");
 
 		commentsContainer.add(commentsLabel);
-		add(detailsList.setVisible(!scoreImpactModel.getObject().isEmpty()));
-		add(errorNameHeaderLabel.setVisible(!scoreImpactModel.getObject().isEmpty()));
-		add(errorScoreHeaderLabel.setVisible(!scoreImpactModel.getObject().isEmpty()));
 		add(commentsTitleLabel.setVisible(hasComments));
 		add(commentsContainer.setVisible(hasComments));
-		add(new EditResourceCommentModal("editCommentModal", "Editar comentario", resource, comesFromMyResources, resourceModel));
+		add(new EditResourceCommentModal("editCommentModal", "Editar comentario", resource, comesFromMyResources,
+				resourceModel));
 
 		final List<String> previouslyEvaluatedDetails = resourceModel.getObject() == null
 				? Lists.<String>newLinkedList()
@@ -188,8 +147,6 @@ public class ResultItemPage extends BasePage {
 			setResponsePage(ErrorPage.class);
 		}
 
-		
-		
 		Link<Void> backButton = new Link<Void>("back") {
 			@Override
 			public void onClick() {
@@ -213,6 +170,9 @@ public class ResultItemPage extends BasePage {
 		ResultItemActionsPanel actionsPanel = new ResultItemActionsPanel("actionsPanel", parameters);
 		actionsPanel.setVisible(!guest);
 		add(actionsPanel);
+		int sessionId = parameters.get("resourceSessionId").isNull() ? -1 : parameters.get("resourceSessionId").toInt(); 
+		ErrorsTablePanel errorsTablePanel = new ErrorsTablePanel("errorsTablePanel", resource, sessionId);
+		add(errorsTablePanel);
 	}
 
 	@Override

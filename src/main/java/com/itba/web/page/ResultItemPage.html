@@ -2,6 +2,7 @@
 	<div class="row">
     	<div class="col-md-12 col-md-offset-3">
 			<div class="input-append margin-top-75">
+				<div wicket:id="feedbackPanel"/>
 				<div wicket:id="search" />
 			</div>
 		</div>
@@ -12,22 +13,9 @@
 	<h1>
 		<a href="#" wicket:id="resourceName" target="_blank">Resource Name</a>
 	</h1>
-	<div wicket:id="scorePanel" />
-	<table class="table table-striped">
-		<thead>
-			<tr>
-				<th><span wicket:id="errorNameHeaderLabel">Error Header</span></th>
-				<th><span wicket:id="errorScoreHeaderLabel">Score Header</span></th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr wicket:id="detailsList">
-				<td><span wicket:id="errorNameLabel">Some Error</span></td>
-				<td><span wicket:id="errorScoreLabel">Some Score</span></td>
-			</tr>
-		</tbody>
-	</table>
 
+	<div wicket:id="scorePanel"/>
+	<div wicket:id="errorsTablePanel"/>
 	<div wicket:id="actionsPanel"/>
 
 	<h3>
@@ -38,7 +26,6 @@
 		<span wicket:id="comments">Comments</span>
 	</div>
 
-	<div wicket:id="feedbackPanel"/>
 	<table class="table table-striped">
 		<thead>
 			<tr>
