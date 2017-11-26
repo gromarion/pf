@@ -12,6 +12,19 @@
 			</h2>
 			<div id="endpoint-availability-chart" style="width: 1024px;height: 320px;"/>
 			<h2 class="text-center">
+				<wicket:message key="otherEndpointInfo">Other Endpoint Facts</wicket:message>
+			</h2>
+			<h3>
+				<wicket:message key="SPARQLServerStatus">SPARQL Server Status:</wicket:message>
+				<span wicket:id="SPARQLServerNormal" class="green">Normal</span>
+				<span wicket:id="SPARQLServerDown" class="red">Down</span>
+			</h3>
+			<h3>
+				<wicket:message key="hasLicense">SPARQL Server Status:</wicket:message>
+				<span wicket:id="hasLicense" class="green">Yes</span>
+				<span wicket:id="doesntHaveLicense" class="red">No</span>
+			</h3>
+			<h2 class="text-center">
 				<wicket:message key="errorDistribution"/>
 			</h2>
 			<h3>

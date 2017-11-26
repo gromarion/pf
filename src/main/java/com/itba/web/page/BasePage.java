@@ -91,16 +91,7 @@ public class BasePage extends WebPage {
 			user.setVisible(false);
 		}
 
-		BookmarkablePageLink<RegisterUserPage> automaticCheck = new BookmarkablePageLink<>("automaticCheckLink",
-				AutomaticCheckPage.class);
-		BookmarkablePageLink<RegisterUserPage> manualCheck = new BookmarkablePageLink<>("manualCheckLink",
-				HomePage.class);
 		add(new BookmarkablePageLink<RegisterUserPage>("reportsLink", ReportsPage.class));
-		
-		automaticCheck.setVisible(!guest);
-		manualCheck.setVisible(!guest);
-		add(automaticCheck);
-		add(manualCheck);
 	}
 
 	protected WicketSession getAppSession() {

@@ -17,6 +17,7 @@ import com.itba.domain.EntityModel;
 import com.itba.domain.model.Campaign;
 import com.itba.domain.model.User;
 import com.itba.domain.repository.CampaignRepo;
+import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.formulae.EndpointQualityFormulae;
 import com.itba.formulae.EndpointQualityFormulae.EndpointScore;
@@ -26,6 +27,8 @@ import com.itba.web.WicketSession;
 @AuthorizeInstantiation({User.EVALUATOR_ROLE, User.ADMIN_ROLE})
 public class ReportsPage extends BasePage {
 	
+	@SpringBean
+	private EndpointStatsRepo endpointStatsRepo;
 	@SpringBean
 	private EndpointQualityFormulae endpointQualityFormulae;
 	@SpringBean
@@ -56,6 +59,7 @@ public class ReportsPage extends BasePage {
 			add(notFoundLabel.setOutputMarkupId(true));
 			add(campaignDropDownChoice);
 			add(endpointScorePanel.setOutputMarkupId(true));
+			
 	        OnChangeAjaxBehavior onChangeAjaxBehavior = new OnChangeAjaxBehavior() {
 	            @Override
 	            protected void onUpdate(AjaxRequestTarget target) {

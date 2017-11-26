@@ -1,5 +1,6 @@
 package com.itba.web.page;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,11 +11,16 @@ import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.itba.domain.SparqlRequestHandler;
+import com.itba.domain.model.Campaign;
 import com.itba.domain.model.EndpointStats;
 import com.itba.domain.model.Error;
+import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.formulae.EndpointQualityFormulae.EndpointScore;
+import com.itba.web.WicketSession;
 import com.itba.web.charts.DonutChartWithLabels;
 import com.itba.web.charts.GaugeChart;
 
@@ -29,6 +35,8 @@ public class EndpointScorePanel extends Panel {
 
 	private EndpointScore endpointScore;
 	private EvaluatedResourceRepo evaluatedResourceRepo;
+	@SpringBean
+	private EndpointStatsRepo endpointStatsRepo;
 	private final Label endpointURLLabel = new Label("endpointURL", "");
 	private final Label endpointScoreLabel = new Label("endpointScore", "");
 
@@ -42,6 +50,34 @@ public class EndpointScorePanel extends Panel {
 		errorColors.put("Enlaceexternoincorrecto", "#6DA398");
 		this.endpointScore = endpointScore;
 		this.evaluatedResourceRepo = evaluatedResourceRepo;
+		
+		Campaign campaign = WicketSession.get().getEvaluationSession().get().getCampaign();
+		boolean hasLicense;
+		boolean isAvailable;
+		try {
+			hasLicense = SparqlRequestHandler.hasLicense(campaign, endpointStatsRepo);
+		} catch (IOException e) {
+			hasLicense = false;
+		}
+		try {
+			SparqlRequestHandler.requestSuggestions("", campaign, endpointStatsRepo, 0, 1);
+			isAvailable = true;
+		} catch (IOException e) {
+			isAvailable = false;
+		}
+		Label hasLicenseLabel = new Label("hasLicense", getString("yesLicense"));
+		Label doesntHaveLiceseLabel = new Label("doesntHaveLicense", getString("noLicense"));
+		Label serverNormalLabel = new Label("SPARQLServerNormal", getString("endpointUp"));
+		Label serverDownLabel = new Label("SPARQLServerDown", getString("endpointDown"));
+		hasLicenseLabel.setVisible(hasLicense);
+		doesntHaveLiceseLabel.setVisible(!hasLicense);
+		add(hasLicenseLabel);
+		add(doesntHaveLiceseLabel);
+		
+		serverNormalLabel.setVisible(isAvailable);
+		serverDownLabel.setVisible(!isAvailable);
+		add(serverNormalLabel);
+		add(serverDownLabel);
 
 		endpointURLLabel.setDefaultModelObject(endpointScore.getEndpointURL());
 		endpointScoreLabel.setDefaultModelObject(endpointScore.getScoreString());
