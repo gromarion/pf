@@ -15,6 +15,7 @@ import com.itba.domain.SparqlRequestHandler;
 import com.itba.domain.model.Error;
 import com.itba.domain.model.EvaluatedResource;
 import com.itba.domain.model.EvaluatedResourceDetail;
+import com.itba.domain.model.EvaluationSession;
 import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.sparql.JsonSparqlResult;
@@ -42,11 +43,11 @@ public class ManualErrorsFormulae {
 	public ManualErrorsFormulae() {
 	}
 	
-	public double computeIndividual(String resource, int errorId) throws JSONException, IOException {
-		Optional<EvaluatedResource> evaluatedResource = evaluatedResource(resource);
+	public double computeIndividual(EvaluatedResource resource, int errorId) throws JSONException, IOException {
+		Optional<EvaluatedResource> evaluatedResource = evaluatedResource(resource.getResource(), Optional.of(resource.getSession()));
     	List<List<ResultItem>> properties = new JsonSparqlResult(
     			SparqlRequestHandler.requestResource(
-    					resource, WicketSession.get().getEvaluationSession().get().getCampaign(), endpointStatsRepo).toString()).data;
+    					resource.getResource(), resource.getSession().getCampaign(), endpointStatsRepo).toString()).data;
 
         Map<Integer, Double> errors = new HashMap<>();        
     	errors.put(errorId, computeError(evaluatedResource.get(), errorId, properties));
@@ -55,11 +56,13 @@ public class ManualErrorsFormulae {
 	
 	// Esto por ahora es un switch case porque no en todos los casos es un tipo
 	// de fórmula erroredOverTotal.
-	public Score compute(String resource) throws JSONException, IOException {
-    	Optional<EvaluatedResource> evaluatedResource = evaluatedResource(resource);
+	public Score compute(String resource, Optional<EvaluationSession> session) throws JSONException, IOException {
+    	Optional<EvaluatedResource> evaluatedResource = evaluatedResource(resource, session);
     	List<List<ResultItem>> properties = new JsonSparqlResult(
     			SparqlRequestHandler.requestResource(
-    					resource, WicketSession.get().getEvaluationSession().get().getCampaign(), endpointStatsRepo).toString()).data;
+    					resource,
+    					session.isPresent() ? session.get().getCampaign() : WicketSession.get().getEvaluationSession().get().getCampaign(),
+    					endpointStatsRepo).toString()).data;
 
         Map<Integer, Double> errors = new HashMap<>();
         Map<String, Integer> errorsAmount = new HashMap<>();
@@ -146,9 +149,11 @@ public class ManualErrorsFormulae {
 		return ((double) numerator) / denominator;
 	}
 
-	private Optional<EvaluatedResource> evaluatedResource(String resource) {
+	private Optional<EvaluatedResource> evaluatedResource(String resource, Optional<EvaluationSession> session) {
 		String escapedResource = resource.replaceAll("'", "''");
-		return evaluatedResourceRepo.getResourceForSession(WicketSession.get().getEvaluationSession().get(), escapedResource);
+		return evaluatedResourceRepo.getResourceForSession(
+				session.isPresent() ? session.get() : WicketSession.get().getEvaluationSession().get(),
+				escapedResource);
 	}
 	
 	private double getWeightForError(int errorId) {

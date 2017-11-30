@@ -32,6 +32,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.resource.FileResourceStream;
 import org.apache.wicket.util.resource.IResourceStream;
 
+import com.google.common.base.Optional;
 import com.itba.domain.EntityModel;
 import com.itba.domain.model.Error;
 import com.itba.domain.model.EvaluatedResource;
@@ -180,7 +181,8 @@ public class ErrorsByUserPage extends BasePage {
 				}
 				try {
 					evaluatedResource.add(new Label("resourceScore", manualErrorsFormulae
-							.compute(evaluatedResource.getModelObject().getResource()).scoreString()));
+							.compute(evaluatedResource.getModelObject().getResource(),
+									Optional.of(evaluatedResource.getModelObject().getSession())).scoreString()));
 				} catch (JSONException | IOException e) {
 					e.printStackTrace();
 					setResponsePage(ErrorPage.class);

@@ -136,7 +136,7 @@ public class ResultItemPage extends BasePage {
 
 		Score score;
 		try {
-			score = manualErrorsFormulae.compute(resource);
+			score = manualErrorsFormulae.compute(resource, resourceSession);
 			ResourceScorePanel resourceScorePanel = new ResourceScorePanel("scorePanel", score);
 			resourceScorePanel.add(new Label("resourceScore", score.toString()));
 			if (score.getScore() < 0 || score.getErrors() == 0) {

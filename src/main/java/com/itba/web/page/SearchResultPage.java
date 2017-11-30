@@ -17,8 +17,10 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.google.common.base.Optional;
 import com.itba.domain.SparqlRequestHandler;
 import com.itba.domain.model.Campaign;
+import com.itba.domain.model.EvaluationSession;
 import com.itba.domain.repository.CampaignRepo;
 import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.domain.repository.EvaluatedResourceRepo;
@@ -87,7 +89,7 @@ public class SearchResultPage extends BasePage {
 				listItem.add(resultLink);
 				Score resourceScore;
 				try {
-					resourceScore = manualErrorsFormulae.compute(resource);
+					resourceScore = manualErrorsFormulae.compute(resource, Optional.<EvaluationSession>absent());
 					listItem.add(new Label("resourceScore", resourceScore.scoreString()));
 					listItem.add(new Label("resourceErrors", resourceScore.errorsString()));
 				} catch (JSONException | IOException e) {

@@ -57,7 +57,7 @@ public class ErrorsTablePanel extends Panel {
 							if (!scoreImpact.containsKey(key))
 								scoreImpact.put(key, new Double(0));
 							scoreImpact.put(key, scoreImpact.get(key)
-									+ manualErrorsFormulae.computeIndividual(resource, detail.getError().getId()));
+									+ manualErrorsFormulae.computeIndividual(resourceModel.getObject(), detail.getError().getId()));
 						}
 					}
 				} catch (Exception e) {
