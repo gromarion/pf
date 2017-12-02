@@ -176,13 +176,17 @@ public class ErrorsByUserPage extends BasePage {
 			protected void populateItem(final ListItem<EvaluatedResource> evaluatedResource) {
 				evaluatedResource
 						.add(new Label("resourceTimestamp", evaluatedResource.getModelObject().getFormattedDate()));
+				evaluatedResource.add(new Label("evaluatorUsername",
+						evaluatedResource.getModelObject().getSession().getUser().getUsername()));
 				if (evaluatedResource.getModelObject().isCorrect()) {
 					evaluatedResource.add(new AttributeModifier("class", "table-success"));
 				}
 				try {
-					evaluatedResource.add(new Label("resourceScore", manualErrorsFormulae
-							.compute(evaluatedResource.getModelObject().getResource(),
-									Optional.of(evaluatedResource.getModelObject().getSession())).scoreString()));
+					evaluatedResource.add(new Label("resourceScore",
+							manualErrorsFormulae
+									.compute(evaluatedResource.getModelObject().getResource(),
+											Optional.of(evaluatedResource.getModelObject().getSession()))
+									.scoreString()));
 				} catch (JSONException | IOException e) {
 					e.printStackTrace();
 					setResponsePage(ErrorPage.class);
