@@ -1,7 +1,6 @@
 package com.itba.web.page;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +24,6 @@ import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.formulae.EndpointQualityFormulae.EndpointScore;
 import com.itba.formulae.GlobalFormulae;
 import com.itba.web.WicketSession;
-import com.itba.web.charts.GaugeChart;
 
 @SuppressWarnings("serial")
 public class EndpointScorePanel extends Panel {
@@ -104,8 +102,6 @@ public class EndpointScorePanel extends Panel {
 			return;
 		}
 
-		GaugeChart errorTypeChart = new GaugeChart();
-
 		Map<String, Integer> statusCodesAmount = new HashMap<>();
 		for (EndpointStats stats : endpointStats) {
 			if (statusCodesAmount.containsKey(stats.getStatusCode())) {
@@ -115,31 +111,18 @@ public class EndpointScorePanel extends Panel {
 			}
 		}
 
-		for (Error e : errorTypeStats.keySet()) {
-			String id = e.getName().replaceAll(" ", "");
-			errorTypeChart.appendData(id, errorTypeStats.get(e), errorColors.get(id), errorColors.get(id),
-					errorColors.get(id));
-		}
-
 		int totalResources = evaluatedResourceRepo.getAllByCampaign(endpointScore.getCampaign()).size();
 		int erroredResources = evaluatedResourceRepo.getErroredByCampaign(endpointScore.getCampaign()).size();
 		int correctResources = totalResources - erroredResources;
 
 		response.render(JavaScriptHeaderItem
-				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/d3.min.js")));
-		response.render(JavaScriptHeaderItem
-				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/donut-chart.js")));
-		response.render(JavaScriptHeaderItem
-				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/gauge-chart.js")));
-		response.render(JavaScriptHeaderItem
 				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/count-up.js")));
 		response.render(JavaScriptHeaderItem
 				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/reports-panel.js")));
-		response.render(errorTypeChart.getRender());
 		double incorrectData = errorTypeStats.get(errorTypeStats.keySet().stream().filter(e -> e.getId() == 1).collect(Collectors.toList()).get(0));
 		double incompleteData = errorTypeStats.get(errorTypeStats.keySet().stream().filter(e -> e.getId() == 2).collect(Collectors.toList()).get(0));
 		double semanticallyIncorrect = errorTypeStats.get(errorTypeStats.keySet().stream().filter(e -> e.getId() == 3).collect(Collectors.toList()).get(0));
 		double externalLink = errorTypeStats.get(errorTypeStats.keySet().stream().filter(e -> e.getId() == 4).collect(Collectors.toList()).get(0));
-		response.render(OnDomReadyHeaderItem.forScript("initializeReportsPanel(" + endpointScore.getScoreString() + ", " + totalResources + ", " + globalFormulae.getAverageDocumentQuality() + ", " + incorrectData + ", " + incompleteData + ", " + semanticallyIncorrect + ", " + externalLink + ");"));
+		response.render(OnDomReadyHeaderItem.forScript("initializeReportsPanel(" + endpointScore.getScoreString() + ", " + endpointScore.getSuccessfulRequestsRatio() + ", " + totalResources + ", " + globalFormulae.getAverageDocumentQuality() + ", " + incorrectData + ", " + incompleteData + ", " + semanticallyIncorrect + ", " + externalLink + ");"));
 	}
 }

@@ -26,7 +26,7 @@ function animate(id, start, end) {
 	}
 }
 
-function initialize(
+function initializeReportsPanel(
 		globalGradeParam,
 		endpointAvailabilityParam,
 		totalResourcesParam,
@@ -50,35 +50,35 @@ function initialize(
 function startAnimation() {
 	if ($('#global-grade').visible(true) && !globalGradeVisible) {
 		globalGradeVisible = true;
-	  animate('global-grade', 0.0, 93.2);
+	  animate('global-grade', 0.0, globalGradeValue);
 	}
 	if ($('#endpoint-availability').visible(true) && !endpointAvailabilityVisible) {
 		endpointAvailabilityVisible = true;
-	  animate('endpoint-availability', 0.0, 89.1);
+	  animate('endpoint-availability', 0.0, endpointAvailabilityValue);
 	}
 	if ($('#total-resources').visible(true) && !totalResourcesVisible) {
 		totalResourcesVisible = true;
-	  animate('total-resources', 0, 246);
+	  animate('total-resources', 0, totalResourcesValue);
 	}
 	if ($('#average-quality').visible(true) && !averageQualityVisible) {
 		averageQualityVisible = true;
-	  animate('average-quality', 0, 81.27);
+	  animate('average-quality', 0, averageQualityValue);
 	}
 	if ($('#incorrect-data').visible(true) && !incorrectDataVisible) {
 		incorrectDataVisible = true;
-	  animate('incorrect-data', 0, 52.17);
+	  animate('incorrect-data', 0, incorrectDataValue);
 	}
 	if ($('#incomplete-data').visible(true) && !incompleteDataVisible) {
 		incompleteDataVisible = true;
-	  animate('incomplete-data', 0, 26.09);
+	  animate('incomplete-data', 0, incompleteDataValue);
 	}
 	if ($('#semantically-incorrect').visible(true) && !semanticallyIncorrectVisible) {
 		semanticallyIncorrectVisible = true;
-	  animate('semantically-incorrect', 0, 13.04);
+	  animate('semantically-incorrect', 0, semanticallyIncorrectValue);
 	}
 	if ($('#external-link').visible(true) && !externalLinkVisible) {
 		externalLinkVisible = true;
-	  animate('external-link', 0, 8.7);
+	  animate('external-link', 0, externalLinkValue);
 	}
 }
 

@@ -102,9 +102,9 @@ public class EndpointQualityFormulae {
 
 		public String getScoreString() {
 			if (score < 0.001) {
-				return "1";
+				return "100";
 			} else {
-				return score + "";				
+				return score * 100 + "";				
 			}
 		}
 

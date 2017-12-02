@@ -27,7 +27,7 @@ public class GlobalFormulae {
 		int totalResources = evaluatedResourceRepo.getAllByCampaign(session.getCampaign()).size();
 		
 		try {
-			return ((sumScore / totalResources) + endpointQualityFormulae.getScore(session.getCampaign()).getScore()) / 2;			
+			return 100 * ((sumScore / totalResources) + endpointQualityFormulae.getScore(session.getCampaign()).getScore()) / 2;			
 		} catch (IOException e) {
 			e.printStackTrace();
 			return 0;
