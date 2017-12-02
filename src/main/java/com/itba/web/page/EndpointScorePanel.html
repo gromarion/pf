@@ -1,71 +1,177 @@
 <html>
 	<body>
 		<wicket:panel>
-			<h2 class="margin-top-75">
-				<span>
-					<wicket:message key="endpointAvailability">Endpoint availability for </wicket:message> "<span wicket:id="endpointURL">http://some.endpoint.com/sparql</span>"</span>
-			</h2>
-			<h2>
-				<wicket:message key="score"/> '<span wicket:id="endpointScore">Score</span>'
-			</h2>
-			<h2 class="text-center">
-				<wicket:message key="httpCodeDistribution"/>
-			</h2>
-			
-			<div id="endpoint-availability-chart" style="width: 1024px;height: 320px;"/>
-			
-			<h2 class="text-center">
-				<wicket:message key="otherEndpointInfo">Other Endpoint Facts</wicket:message>
-			</h2>
-			<h3>
-				<wicket:message key="SPARQLServerStatus">SPARQL Server Status:</wicket:message>
-				<span wicket:id="SPARQLServerNormal" class="green">Normal</span>
-				<span wicket:id="SPARQLServerDown" class="red">Down</span>
-			</h3>
-			<h3>
-				<wicket:message key="hasLicense">SPARQL Server Status:</wicket:message>
-				<span wicket:id="hasLicense" class="green">Yes</span>
-				<span wicket:id="doesntHaveLicense" class="red">No</span>
-			</h3>
-			<h2 class="text-center">
-				<wicket:message key="errorDistribution"/>
-			</h2>
-			<h3>
-				<wicket:message key="totalResources">Total evaluated resources</wicket:message>
-				<span id="totalResources"/>
-			</h3>
-			<h3>
-				<wicket:message key="erroredResources">Total errored resources</wicket:message>
-				<span id="erroredResources"/>
-			</h3>
-			<h3>
-				<wicket:message key="correctResources">Total correct resources</wicket:message>
-				<span id="correctResources"/>
-			</h3>
-			<svg id="Tipodedatoincorrectamenteextraído" width="24%" height="150"/>
-			<svg id="Valordelobjetoextraídodeformaincompleta" width="24%" height="150"/>
-			<svg id="Objetosemánticamenteincorrecto" width="24%" height="150"/>
-			<svg id="Enlaceexternoincorrecto" width="24%" height="150"/>
-			<ul class="legend">
-		    <li>
-		    	<span class="incorrectly_extracted_data_type"/>
-		    	<wicket:message key="incorrectlyExtractedDataType"/>
-		    </li>
-		    <li>
-		    	<span class="incorrectly_extracted_value"/>
-		    	<wicket:message key="incorrectlyExtractedValue"/>
-		    </li>
-		    <li>
-		    	<span class="object_semantically_incorrect"/>
-		    	<wicket:message key="objectSemanticallyIncorrect"/>
-		    </li>
-		    <li>
-		    	<span class="incorrect_link"/>
-		    	<wicket:message key="incorrectLink"/>
-		    </li>
-			</ul>
+			<div class="container">
+				<h1 class="center-text margin-top-75">CALIFICACION GLOBAL</h1>
+				<table class="grades">
+					<thead>
+						<th>
+							<div class="circular-grade a-grade d-inline-block">
+								<span>A</span>
+							</div>
+						</th>
+						<th>
+							<div class="circular-grade b-grade d-inline-block faded">
+								<span>B</span>
+							</div>
+						</th>
+						<th>
+							<div class="circular-grade c-grade d-inline-block faded">
+								<span>C</span>
+							</div>
+						</th>
+						<th>
+							<div class="circular-grade d-grade d-inline-block faded">
+								<span>D</span>
+							</div>
+						</th>
+						<th>
+							<div class="circular-grade f-grade d-inline-block faded">
+								<span>F</span>
+							</div>
+						</th>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="center-text">
+								<span class="global-grade" id="global-grade">
+									0
+								</span>
+								<span class="global-grade">%</span>
+							</td>
+							<td class="center-text">
+								<span class="global-grade" id="global-grade" style="display: none;">
+									0
+								</span>
+							</td>
+							<td class="center-text">
+								<span class="global-grade" id="global-grade" style="display: none;">
+									0
+								</span>
+							</td>
+							<td class="center-text">
+								<span class="global-grade" id="global-grade" style="display: none;">
+									0
+								</span>
+							</td>
+							<td class="center-text">
+								<span class="global-grade" id="global-grade" style="display: none;">
+									0
+								</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<h1 id="endpoint-quality" class="center-text margin-top-50">CALIDAD DEL ENDPOINT</h1>
+				<div class="row">
+					<div class="card w-100 mx-auto" wicket:id="SPARQLServerNormal">
+						<div class="card-body green-card">
+							<h6 class="card-title center-text">Estado</h6>
+							<br>
+							<h1 class="center-text green">NORMAL</h1>
+						</div>
+					</div>
+					<div class="card w-100 mx-auto" wicket:id="SPARQLServerDown">
+						<div class="card-body red-card">
+							<h6 class="card-title center-text">Estado</h6>
+							<br>
+							<h1 class="center-text red">CAIDO</h1>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="card w-50">
+						<div class="card-body">
+							<h6 class="card-title center-text">Disponibilidad</h6>
+							<br>
+							<h1 class="center-text">
+								<span id="endpoint-availability">0</span>
+								%
+							</h1>
+						</div>
+					</div>
+					<div wicket:id="hasLicense" class="card w-50">
+						<div class="card-body green-card">
+							<h6 class="card-title center-text">Licencia</h6>
+							<br>
+							<h1 class="center-text green">SI</h1>
+						</div>
+					</div>
+					<div wicket:id="doesntHaveLicense" class="card w-50">
+						<div class="card-body red-card">
+							<h6 class="card-title center-text">Licencia</h6>
+							<br>
+							<h1 class="center-text red">NO</h1>
+						</div>
+					</div>
+				</div>
+				<h1 id="documents-quality" class="center-text margin-top-50">CALIDAD DE LOS DOCUMENTOS</h1>
+				<h5 class="center-text">
+					Total de recursos evaluados
+				</h5>
+				<div class="center-text">
+					<span class="total-resources" id="total-resources">
+						0
+					</span>
+				</div>
+				<div class="row">
+					<div class="card w-100">
+						<div class="card-body">
+							<h6 class="card-title center-text">Calidad promedio de los documentos</h6>
+							<br>
+							<h1 class="center-text">
+								<span id="average-quality">0</span>
+								%
+							</h1>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="card w-50">
+						<div class="card-body">
+							<h6 class="card-title center-text">Tipo de dato incorrectamente extraído</h6>
+							<br>
+							<h1 class="center-text">
+								<span id="incorrect-data">0</span>
+								%
+							</h1>
+						</div>
+					</div>
+					<div class="card w-50">
+						<div class="card-body">
+							<h6 class="card-title center-text">Valor del objeto extraído de forma incompleta</h6>
+							<br>
+							<h1 class="center-text">
+								<span id="incomplete-data">0</span>
+								%
+							</h1>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="card w-50">
+						<div class="card-body">
+							<h6 class="card-title center-text">Objeto semánticamente incorrecto</h6>
+							<br>
+							<h1 class="center-text">
+								<span id="semantically-incorrect">0</span>
+								%
+							</h1>
+						</div>
+					</div>
+					<div class="card w-50">
+						<div class="card-body">
+							<h6 class="card-title center-text">Enlace externo incorrecto</h6>
+							<br>
+							<h1 class="center-text">
+								<span id="external-link">0</span>
+								%
+							</h1>
+						</div>
+					</div>
+				</div>
+			</div>
 		</wicket:panel>
 	</body>
 </html>
-	
-	
+		

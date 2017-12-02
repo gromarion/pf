@@ -26,7 +26,7 @@ function animate(id, start, end) {
 	}
 }
 
-function initializeReportsPanel(
+function initialize(
 		globalGradeParam,
 		endpointAvailabilityParam,
 		totalResourcesParam,
@@ -50,38 +50,39 @@ function initializeReportsPanel(
 function startAnimation() {
 	if ($('#global-grade').visible(true) && !globalGradeVisible) {
 		globalGradeVisible = true;
-	  animate('global-grade', 0.0, globalGradeValue);
+	  animate('global-grade', 0.0, 93.2);
 	}
 	if ($('#endpoint-availability').visible(true) && !endpointAvailabilityVisible) {
 		endpointAvailabilityVisible = true;
-	  animate('endpoint-availability', 0.0, endpointAvailabilityValue);
+	  animate('endpoint-availability', 0.0, 89.1);
 	}
 	if ($('#total-resources').visible(true) && !totalResourcesVisible) {
 		totalResourcesVisible = true;
-	  animate('total-resources', 0, totalResourcesValue);
+	  animate('total-resources', 0, 246);
 	}
 	if ($('#average-quality').visible(true) && !averageQualityVisible) {
 		averageQualityVisible = true;
-	  animate('average-quality', 0, averageQualityValue);
+	  animate('average-quality', 0, 81.27);
 	}
 	if ($('#incorrect-data').visible(true) && !incorrectDataVisible) {
 		incorrectDataVisible = true;
-	  animate('incorrect-data', 0, incorrectDataValue);
+	  animate('incorrect-data', 0, 52.17);
 	}
 	if ($('#incomplete-data').visible(true) && !incompleteDataVisible) {
 		incompleteDataVisible = true;
-	  animate('incomplete-data', 0, incompleteDataValue);
+	  animate('incomplete-data', 0, 26.09);
 	}
 	if ($('#semantically-incorrect').visible(true) && !semanticallyIncorrectVisible) {
 		semanticallyIncorrectVisible = true;
-	  animate('semantically-incorrect', 0, semanticallyIncorrectValue);
+	  animate('semantically-incorrect', 0, 13.04);
 	}
 	if ($('#external-link').visible(true) && !externalLinkVisible) {
 		externalLinkVisible = true;
-	  animate('external-link', 0, externalLinkValue);
+	  animate('external-link', 0, 8.7);
 	}
 }
 
 $( window ).scroll(function() {
+	console.log("scroll");
 	startAnimation();
 });

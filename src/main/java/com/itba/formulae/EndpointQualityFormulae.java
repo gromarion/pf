@@ -102,9 +102,9 @@ public class EndpointQualityFormulae {
 
 		public String getScoreString() {
 			if (score < 0.001) {
-				return StringUtils.letterQualification(1) + " - 1";
+				return "1";
 			} else {
-				return StringUtils.letterQualification(score) + " - " + StringUtils.formatDouble(score, 3);				
+				return score + "";				
 			}
 		}
 
