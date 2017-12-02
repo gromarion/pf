@@ -4,31 +4,165 @@
 		<link rel="stylesheet" href="../../../../../webapp/bootstrap/css/bootstrap.min.css">
 	</head>
 	<body>
-		<div class="center-text">
-			<div class="circular-grade a-grade d-inline-block">
-				<span>A</span>
+		<div class="container">
+			<h1 class="center-text margin-top-75">CALIFICACION GLOBAL</h1>
+			<table class="grades">
+				<thead>
+					<th>
+						<div class="circular-grade a-grade d-inline-block">
+							<span>A</span>
+						</div>
+					</th>
+					<th>
+						<div class="circular-grade b-grade d-inline-block faded">
+							<span>B</span>
+						</div>
+					</th>
+					<th>
+						<div class="circular-grade c-grade d-inline-block faded">
+							<span>C</span>
+						</div>
+					</th>
+					<th>
+						<div class="circular-grade d-grade d-inline-block faded">
+							<span>D</span>
+						</div>
+					</th>
+					<th>
+						<div class="circular-grade f-grade d-inline-block faded">
+							<span>F</span>
+						</div>
+					</th>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="center-text">
+							<span class="global-grade" id="global-grade">
+								0
+							</span>
+							<span class="global-grade">%</span>
+						</td>
+						<td class="center-text">
+							<span class="global-grade" id="global-grade" style="display: none;">
+								0
+							</span>
+						</td>
+						<td class="center-text">
+							<span class="global-grade" id="global-grade" style="display: none;">
+								0
+							</span>
+						</td>
+						<td class="center-text">
+							<span class="global-grade" id="global-grade" style="display: none;">
+								0
+							</span>
+						</td>
+						<td class="center-text">
+							<span class="global-grade" id="global-grade" style="display: none;">
+								0
+							</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<h1 id="endpoint-quality" class="center-text margin-top-50">CALIDAD DEL ENDPOINT</h1>
+			<div class="row">
+				<div class="card w-100 mx-auto">
+					<div class="card-body green-card">
+						<h6 class="card-title center-text">Estado</h6>
+						<br>
+						<h1 class="center-text green">NORMAL</h1>
+					</div>
+				</div>
 			</div>
-			<div class="circular-grade b-grade d-inline-block faded-grade">
-				<span>B</span>
+			<div class="row">
+				<div class="card w-50">
+					<div class="card-body">
+						<h6 class="card-title center-text">Disponibilidad</h6>
+						<br>
+						<h1 class="center-text">
+							<span id="endpoint-availability">0</span>
+							%
+						</h1>
+					</div>
+				</div>
+				<div class="card w-50">
+					<div class="card-body green-card">
+						<h6 class="card-title center-text">Licencia</h6>
+						<br>
+						<h1 class="center-text green">SI</h1>
+					</div>
+				</div>
 			</div>
-			<div class="circular-grade c-grade d-inline-block faded-grade">
-				<span>C</span>
+			<h1 id="documents-quality" class="center-text margin-top-50">CALIDAD DE LOS DOCUMENTOS</h1>
+			<h5 class="center-text">
+				Total de recursos evaluados
+			</h5>
+			<div class="center-text">
+				<span class="total-resources" id="total-resources">
+					0
+				</span>
 			</div>
-			<div class="circular-grade d-grade d-inline-block faded-grade">
-				<span>D</span>
+			<div class="row">
+				<div class="card w-100">
+					<div class="card-body">
+						<h6 class="card-title center-text">Calidad promedio de los documentos</h6>
+						<br>
+						<h1 class="center-text">
+							<span id="average-quality">0</span>
+							%
+						</h1>
+					</div>
+				</div>
 			</div>
-			<div class="circular-grade f-grade d-inline-block faded-grade">
-				<span>F</span>
+			<div class="row">
+				<div class="card w-50">
+					<div class="card-body">
+						<h6 class="card-title center-text">Tipo de dato incorrectamente extraído</h6>
+						<br>
+						<h1 class="center-text">
+							<span id="incorrect-data">0</span>
+							%
+						</h1>
+					</div>
+				</div>
+				<div class="card w-50">
+					<div class="card-body">
+						<h6 class="card-title center-text">Valor del objeto extraído de forma incompleta</h6>
+						<br>
+						<h1 class="center-text">
+							<span id="incomplete-data">0</span>
+							%
+						</h1>
+					</div>
+				</div>
 			</div>
+			<div class="row">
+				<div class="card w-50">
+					<div class="card-body">
+						<h6 class="card-title center-text">Objeto semánticamente incorrecto</h6>
+						<br>
+						<h1 class="center-text">
+							<span id="semantically-incorrect">0</span>
+							%
+						</h1>
+					</div>
+				</div>
+				<div class="card w-50">
+					<div class="card-body">
+						<h6 class="card-title center-text">Enlace externo incorrecto</h6>
+						<br>
+						<h1 class="center-text">
+							<span id="external-link">0</span>
+							%
+						</h1>
+					</div>
+				</div>
+			</div>
+			<script type="text/javascript" src="../../../../../webapp/jquery-3.2.1.min.js"></script>
+			<script type="text/javascript" src="../../../../../webapp/jquery.visible.min.js"></script>
+			<script type="text/javascript" src="js/count-up.js"></script>
+			<script type="text/javascript" src="../../../../../webapp/reports-panel.js"></script>
 		</div>
-		<div class="center-text">
-			<span class="global-grade" id="global-grade">
-				93
-			</span>
-			<span class="global-grade">%</span>
-		</div>
-		<script type="text/javascript" src="../../../../../webapp/jquery-3.2.1.min.js"></script>
-		<script type="text/javascript" src="js/count-up.js"></script>
-		<script type="text/javascript" src="../../../../../webapp/reports-panel.js"></script>
 	</body>
 </html>
