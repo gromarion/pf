@@ -1,5 +1,7 @@
 package com.itba.web.page;
 
+import java.math.BigDecimal;
+
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
@@ -16,13 +18,18 @@ import com.itba.domain.model.EvaluatedResource;
 import com.itba.domain.model.EvaluationSession;
 import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.domain.repository.EvaluationSessionRepo;
+import com.itba.formulae.ManualErrorsFormulae;
 import com.itba.web.WicketSession;
 import com.itba.web.tooltip.Tooltip;
 import com.itba.web.tooltip.Tooltip.Position;
 
+import lib.Score;
+
 @SuppressWarnings("serial")
 public class ResultItemActionsPanel extends Panel {
 
+	@SpringBean
+	private ManualErrorsFormulae manualErrorsFormulae;
 	@SpringBean
 	private EvaluatedResourceRepo evaluatedResourceRepo;
 	@SpringBean
@@ -54,6 +61,14 @@ public class ResultItemActionsPanel extends Panel {
 					evaluatedResourceRepo.save(resourceModel.getObject());
 				}
 				resourceModel.getObject().setCorrect(!resourceModel.getObject().isCorrect());
+				
+				try {
+					Score score = manualErrorsFormulae.compute(resource, Optional.of(resourceModel.getObject().getSession()));
+					resourceModel.getObject().setScore(new BigDecimal(score.getScore()));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
 				PageParameters parameters = new PageParameters();
 				parameters.add("selection", resource);
 				parameters.add("comesFromMyResources", Strings.nullToEmpty(comesFromMyResources));

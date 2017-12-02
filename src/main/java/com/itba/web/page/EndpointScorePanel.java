@@ -21,7 +21,6 @@ import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.formulae.EndpointQualityFormulae.EndpointScore;
 import com.itba.web.WicketSession;
-import com.itba.web.charts.DonutChartWithLabels;
 import com.itba.web.charts.GaugeChart;
 
 @SuppressWarnings("serial")
@@ -102,7 +101,11 @@ public class EndpointScorePanel extends Panel {
 			return;
 		}
 
-		DonutChartWithLabels endpointStatsChart = new DonutChartWithLabels("endpoint-availability-chart");
+//		DonutChartWithLabels endpointStatsChart = new DonutChartWithLabels("endpoint-availability-chart");
+		
+		// TODO: este es el ratio de responses exitosos
+		endpointScore.getSuccessfulRequestsRatio();
+		
 		GaugeChart errorTypeChart = new GaugeChart();
 
 		Map<String, Integer> statusCodesAmount = new HashMap<>();
@@ -114,9 +117,9 @@ public class EndpointScorePanel extends Panel {
 			}
 		}
 
-		for (String statusCode : statusCodesAmount.keySet()) {
-			endpointStatsChart.appendData(statusCode, statusCodesAmount.get(statusCode));
-		}
+//		for (String statusCode : statusCodesAmount.keySet()) {
+//			endpointStatsChart.appendData(statusCode, statusCodesAmount.get(statusCode));
+//		}
 		for (Error e : errorTypeStats.keySet()) {
 			String id = e.getName().replaceAll(" ", "");
 			errorTypeChart.appendData(id, errorTypeStats.get(e), errorColors.get(id), errorColors.get(id),
@@ -135,7 +138,7 @@ public class EndpointScorePanel extends Panel {
 				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/gauge-chart.js")));
 		response.render(JavaScriptHeaderItem
 				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/count-up.js")));
-		response.render(endpointStatsChart.getRender());
+//		response.render(endpointStatsChart.getRender());
 		response.render(errorTypeChart.getRender());
 		response.render(OnDomReadyHeaderItem.forScript(
 				"(new CountUp('" + TOTAL_RESOURCES_ID + "', 0, " + totalResources + ", 0, " + DURATION + ")).start();"));

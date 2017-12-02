@@ -1,5 +1,6 @@
 package com.itba.web.page;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -28,15 +29,19 @@ import com.itba.domain.model.EvaluationSession;
 import com.itba.domain.repository.ErrorRepo;
 import com.itba.domain.repository.EvaluatedResourceDetailRepo;
 import com.itba.domain.repository.EvaluatedResourceRepo;
+import com.itba.formulae.ManualErrorsFormulae;
 import com.itba.web.WicketSession;
 import com.itba.web.feedback.CustomFeedbackPanel;
 
+import lib.Score;
 import lib.StringUtils;
 import utils.URLHelper;
 
 @SuppressWarnings("serial")
 public class ErrorSelectionPage extends BasePage {
 	
+	@SpringBean
+	private ManualErrorsFormulae manualErrorsFormulae;
 	@SpringBean
 	private ErrorRepo errorRepo;
 	@SpringBean
@@ -138,6 +143,13 @@ public class ErrorSelectionPage extends BasePage {
 				}
 				
 				evaluatedResource.get().setCorrect(false);
+				
+				try {
+					Score score = manualErrorsFormulae.compute(resource, Optional.of(evaluatedResource.get().getSession()));
+					evaluatedResource.get().setScore(new BigDecimal(score.getScore()));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 				
 				EvaluatedResourceDetail detail = new EvaluatedResourceDetail(evaluatedResource.get(), errorModel.getObject(), predicate, object);
 				detail.setComment(comments.getValue());

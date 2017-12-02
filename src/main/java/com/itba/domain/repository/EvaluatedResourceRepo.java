@@ -1,8 +1,7 @@
 package com.itba.domain.repository;
 
+import java.math.BigDecimal;
 import java.util.List;
-
-import org.apache.wicket.MarkupContainer;
 
 import com.google.common.base.Optional;
 import com.itba.domain.model.Campaign;
@@ -36,5 +35,7 @@ public interface EvaluatedResourceRepo extends HibernateRepo {
 	List<String> getErroredByCampaign(Campaign c);
 
 	List<String> getCorrectByCampaign(Campaign c);
+
+	BigDecimal getSumScoreByCampaign(Campaign c);
 }
 

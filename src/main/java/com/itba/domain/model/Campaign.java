@@ -117,17 +117,17 @@ public class Campaign extends PersistentEntity implements Serializable {
 		return " SELECT ?s ?p ?o " + " FROM <"+graphs+"> WHERE { ?s ?p ?o } LIMIT 1 OFFSET " + offset;
 	}
 
-	public String getQueryforRandomClassResource(String classURI, long maxRand) {
-		int offset = new Random().nextInt((int) maxRand);
-		return " SELECT ?s " + " WHERE { ?s rdf:type <" + classURI + "> } LIMIT 1 OFFSET " + offset;
-	}
-
-	public String getQueryforClassCount(String classURI) {
-		return " SELECT count(?s) " + " WHERE { ?s rdf:type <" + classURI + "> }";
-	}
+//	public String getQueryforRandomClassResource(String classURI, long maxRand) {
+//		int offset = new Random().nextInt((int) maxRand);
+//		return " SELECT ?s " + " WHERE { ?s rdf:type <" + classURI + "> } LIMIT 1 OFFSET " + offset;
+//	}
+//
+//	public String getQueryforClassCount(String classURI) {
+//		return " SELECT count(?s) " + " WHERE { ?s rdf:type <" + classURI + "> }";
+//	}
 
 	public String getQueryforSearchResultPage(String namepart, int offset, int limit) { // FILTER regex(LCASE(str(?s)), LCASE(STR('Hola')))
-		return " SELECT ?s ?p ?o FROM <" + graphs + "> WHERE { ?s ?p ?o . " + " FILTER regex(LCASE(str(?s)), LCASE(STR('" + namepart + "'))) }"
+		return " SELECT ?s ?p ?o FROM <" + graphs + "> WHERE { ?s ?p ?o . " + " FILTER regex(str(?s), '" + namepart + "') }"
 				+ " LIMIT " + limit + " OFFSET " + offset;
 	}
 

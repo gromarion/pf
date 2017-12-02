@@ -1,5 +1,6 @@
 package com.itba.domain.repository.hibernate;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -106,6 +107,12 @@ public class HibernateEvaluatedResourceRepo extends AbstractHibernateRepo implem
 	public List<EvaluatedResource> getAllByCampaign(Campaign c) {
 		return getSession().createQuery("SELECT e FROM EvaluatedResource e"
 				+ " WHERE e.resource.session.campaign = " + c.getId()).list();
+	}
+	
+	@Override
+	public BigDecimal getSumScoreByCampaign(Campaign c) {
+		return (BigDecimal) getSession().createQuery("SELECT SUM(e.score) FROM EvaluatedResource e"
+				+ " WHERE e.resource.session.campaign = " + c.getId()).list().get(0);
 	}
 	
 	@SuppressWarnings("unchecked")

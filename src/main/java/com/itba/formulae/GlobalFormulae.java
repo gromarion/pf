@@ -2,7 +2,6 @@ package com.itba.formulae;
 
 import java.io.IOException;
 
-import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +12,7 @@ import com.itba.web.WicketSession;
 @Service
 public class GlobalFormulae {
 
-	@SpringBean
+	@Autowired
 	private EndpointQualityFormulae endpointQualityFormulae;
 
 	@Autowired
@@ -24,9 +23,9 @@ public class GlobalFormulae {
 
 	public double getGlobalScore() throws IOException {
 		EvaluationSession session = WicketSession.get().getEvaluationSession().get();
-		double erroredResources = evaluatedResourceRepo.getErroredForSession(session).size();
-		int totalResources = evaluatedResourceRepo.getAllForSession(session).size();
-
-		return (1 - (erroredResources / totalResources) + endpointQualityFormulae.getScore(session.getCampaign()).getScore()) / 2;
+		double sumScore = evaluatedResourceRepo.getSumScoreByCampaign(session.getCampaign()).doubleValue();
+		int totalResources = evaluatedResourceRepo.getAllByCampaign(session.getCampaign()).size();
+		
+		return ((sumScore / totalResources) + endpointQualityFormulae.getScore(session.getCampaign()).getScore()) / 2;
 	}
 }

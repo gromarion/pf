@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -50,6 +51,8 @@ import com.itba.web.WicketSession;
 import com.itba.web.feedback.CustomFeedbackPanel;
 import com.itba.web.tooltip.Tooltip;
 import com.itba.web.tooltip.Tooltip.Position;
+
+import lib.StringUtils;
 
 @SuppressWarnings("serial")
 @AuthorizeInstantiation({ User.EVALUATOR_ROLE, User.ADMIN_ROLE })
@@ -185,11 +188,14 @@ public class ErrorsByUserPage extends BasePage {
 					evaluatedResource.add(new AttributeModifier("class", "table-success"));
 				}
 				try {
-					evaluatedResource.add(new Label("resourceScore",
-							manualErrorsFormulae
-									.compute(evaluatedResource.getModelObject().getResource(),
-											Optional.of(evaluatedResource.getModelObject().getSession()))
-									.scoreString()));
+					BigDecimal score = evaluatedResource.getModelObject().getScore();
+					// XXX: patch para dar el primer valor a los scores de la DB
+					if (score == null) {
+						score = new BigDecimal(manualErrorsFormulae.compute(evaluatedResource.getModelObject().getResource(),
+								Optional.of(evaluatedResource.getModelObject().getSession())).getScore());
+						evaluatedResource.getModelObject().setScore(score);
+					}
+					evaluatedResource.add(new Label("resourceScore", StringUtils.formatDouble(score.setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue(), 3)));
 				} catch (JSONException | IOException e) {
 					e.printStackTrace();
 					setResponsePage(ErrorPage.class);

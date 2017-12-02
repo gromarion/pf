@@ -1,0 +1,1 @@
+ALTER TABLE evaluated_resource ADD score numeric(19, 3) default null;
