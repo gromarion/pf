@@ -2,6 +2,7 @@ package com.itba.formulae;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,6 +90,10 @@ public class EndpointQualityFormulae {
 		public List<EndpointStats> getEndpointStats() {
 			// TODO: cambiarlo para que devuelva un pama de endpoint -> EndpointStats??
 			return endpointStatsRepo.getAllForEndpoint(campaign.getEndpoint());
+		}
+		
+		public BigDecimal getSuccessfulRequestsRatio() {
+			return endpointStatsRepo.getSuccessfulRequestsRatio(campaign.getEndpoint());
 		}
 		
 		public double getScore() {

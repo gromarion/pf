@@ -1,5 +1,6 @@
 package com.itba.domain.model;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -32,6 +33,9 @@ public class EvaluatedResource extends PersistentEntity {
     
     @Column(name = "timestamp")
     private long timestamp;
+    
+    @Column(name = "score")
+    private BigDecimal score;
 
     @OneToMany(mappedBy = "resource")
     private Set<EvaluatedResourceDetail> details;
@@ -91,6 +95,14 @@ public class EvaluatedResource extends PersistentEntity {
 		return details.size() > 0;
 	}
 	
+	public BigDecimal getScore() {
+		return score;
+	}
+
+	public void setScore(BigDecimal score) {
+		this.score = score;
+	}
+
 	public List<String> getAsCsvLines(Character separator) {
 		List<String> lines = Lists.newArrayList();
 		StringBuilder prefixBuilder = new StringBuilder();

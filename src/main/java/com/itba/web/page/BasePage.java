@@ -18,11 +18,11 @@ public class BasePage extends WebPage {
 
 	public BasePage() {
 		WicketSession session = getAppSession();
-		boolean guest = userRepo.getByUsername(session.getUsername()).hasRole("GUEST");
-
 		if (!session.isSignedIn()) {
 			redirectToInterceptPage(new LoginPage());
 		}
+		boolean guest = userRepo.getByUsername(session.getUsername()).hasRole("GUEST");
+
 
 		User currentUser = userRepo.getByUsername(session.getUsername());
 		
