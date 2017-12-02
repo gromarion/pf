@@ -98,6 +98,9 @@ public class ErrorsByUserPage extends BasePage {
 					return result.getResult();
 				} else {
 					PaginatedResult<EvaluatedResource> result = getResult(parameters);
+					if(result.getResult().isEmpty()) {
+						setResponsePage(EvaluationsNotFound.class);
+					}
 					hasNextPage = result.hasNextPage();
 					return result.getResult();
 				}
