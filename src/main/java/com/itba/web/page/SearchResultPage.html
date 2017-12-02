@@ -2,37 +2,21 @@
 	<div class="input-append margin-top-75">
 		<div wicket:id="search"/>
 	</div>
-	<h3>
-        <wicket:message key="searchTitle">Results for</wicket:message> "<span wicket:id="searchWord"></span>"
-    </h3>
-    <table class="table table-striped">
-        <tbody>
-        <tr>
-        	<th>
-                <wicket:message key="resourceURL">Resource URL</wicket:message>
-            </th>
-        	<th>
-                <wicket:message key="resourceScore">Score</wicket:message>
-            </th>
-        	<th>
-                <wicket:message key="resourceErrors">Errors amount</wicket:message>
-            </th>
-        </tr>
-        <tr wicket:id="searchResultList">
-            <td>
-                <a wicket:id="resultLink" href="#">
-                    <span wicket:id="linkText">Resource link</span>
-                </a>
-            </td>
-            <td>
-                <span wicket:id="resourceScore">12345</span>
-            </td>
-            <td>
-                <span wicket:id="resourceErrors">4</span>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="container margin-top-75">
+    	<div class="row">
+	    	<div class="col-8">
+			    <div class="list-group" wicket:id="searchResultList">
+					<a wicket:id="resultLink" href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+						<div class="d-flex w-100 justify-content-between">
+							<h5 wicket:id="resourceTitle" class="mb-1">List group item heading</h5>
+					    </div>
+					    <p wicket:id="linkText" class="mb-1">Link</p>
+				    </a>
+			    </div>
+			</div>
+	    </div>
+    </div>
+    
     <div class="paginator">
     	<a wicket:id="previousPageLink" href="#" class="btn btn-primary">
             <wicket:message key="previousPage">Previous</wicket:message>
