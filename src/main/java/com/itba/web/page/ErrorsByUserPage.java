@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -102,6 +101,9 @@ public class ErrorsByUserPage extends BasePage {
 					return result.getResult();
 				} else {
 					PaginatedResult<EvaluatedResource> result = getResult(parameters);
+					if(result.getResult().isEmpty()) {
+						setResponsePage(EvaluationsNotFound.class);
+					}
 					hasNextPage = result.hasNextPage();
 					return result.getResult();
 				}
@@ -180,6 +182,8 @@ public class ErrorsByUserPage extends BasePage {
 			protected void populateItem(final ListItem<EvaluatedResource> evaluatedResource) {
 				evaluatedResource
 						.add(new Label("resourceTimestamp", evaluatedResource.getModelObject().getFormattedDate()));
+				evaluatedResource.add(new Label("evaluatorUsername",
+						evaluatedResource.getModelObject().getSession().getUser().getUsername()));
 				if (evaluatedResource.getModelObject().isCorrect()) {
 					evaluatedResource.add(new AttributeModifier("class", "table-success"));
 				}
