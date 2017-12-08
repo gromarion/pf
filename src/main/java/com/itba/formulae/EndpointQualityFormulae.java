@@ -25,7 +25,6 @@ public class EndpointQualityFormulae {
 	private EndpointStatsRepo endpointStatsRepo;
 	@Autowired
 	private EvaluatedResourceDetailRepo evaluatedResourceDetailRepo;
-	
 	@Autowired
 	private ErrorRepo errorRepo;
 
