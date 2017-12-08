@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
-import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.model.IModel;
@@ -50,10 +50,10 @@ public class ReportsPage extends BasePage {
 		try {
 			EndpointScore endpointScore = endpointQualityFormulae.getScore(selectedCampaignModel.getObject());
 			final EndpointScorePanel endpointScorePanel = new EndpointScorePanel("endpointScorePanel", endpointScore, evaluatedResourceRepo);
-			final Label notFoundLabel = new Label("notFound", getString("notFoundText"));
+			final WebMarkupContainer notFound = new WebMarkupContainer("notFound");
 			endpointScorePanel.setVisible(!endpointScore.getEndpointStats().isEmpty());
-			notFoundLabel.setVisible(endpointScore.getEndpointStats().isEmpty());
-			add(notFoundLabel.setOutputMarkupId(true));
+			notFound.setVisible(endpointScore.getEndpointStats().isEmpty());
+			add(notFound.setOutputMarkupId(true));
 			add(campaignDropDownChoice);
 			add(endpointScorePanel.setOutputMarkupId(true));
 			
@@ -62,14 +62,14 @@ public class ReportsPage extends BasePage {
 	            protected void onUpdate(AjaxRequestTarget target) {
 	            	try {
 						EndpointScore endpointScoreUpdate = endpointQualityFormulae.getScore(selectedCampaignModel.getObject());
-						notFoundLabel.setVisible(endpointScoreUpdate.getEndpointStats().isEmpty());
+						notFound.setVisible(endpointScoreUpdate.getEndpointStats().isEmpty());
 						endpointScorePanel.setVisible(!endpointScoreUpdate.getEndpointStats().isEmpty());
 						endpointScorePanel.setEndpointScore(endpointScoreUpdate);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
 	            	target.add(endpointScorePanel);
-	            	target.add(notFoundLabel);
+	            	target.add(notFound);
 	            }
 	        };
 	        campaignDropDownChoice.add(onChangeAjaxBehavior);

@@ -14,18 +14,22 @@ public class GlobalFormulae {
 
 	@Autowired
 	private EndpointQualityFormulae endpointQualityFormulae;
-
 	@Autowired
 	private EvaluatedResourceRepo evaluatedResourceRepo;
 
 	public GlobalFormulae() {
 	}
 
-	public double getGlobalScore() throws IOException {
+	public double getAverageDocumentQuality() {
 		EvaluationSession session = WicketSession.get().getEvaluationSession().get();
 		double sumScore = evaluatedResourceRepo.getSumScoreByCampaign(session.getCampaign()).doubleValue();
 		int totalResources = evaluatedResourceRepo.getAllByCampaign(session.getCampaign()).size();
 		
-		return ((sumScore / totalResources) + endpointQualityFormulae.getScore(session.getCampaign()).getScore()) / 2;
+		try {
+			return 100 * ((sumScore / totalResources) + endpointQualityFormulae.getScore(session.getCampaign()).getScore()) / 2;			
+		} catch (IOException e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 }

@@ -1,13 +1,17 @@
 package com.itba.web.page;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
@@ -20,25 +24,23 @@ import com.itba.domain.model.Error;
 import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.formulae.EndpointQualityFormulae.EndpointScore;
+import com.itba.formulae.GlobalFormulae;
 import com.itba.web.WicketSession;
-import com.itba.web.charts.GaugeChart;
+
+import lib.StringUtils;
 
 @SuppressWarnings("serial")
 public class EndpointScorePanel extends Panel {
-	private static final double DURATION = 2.5;
-	private static final String TOTAL_RESOURCES_ID = "totalResources";
-	private static final String ERRORED_RESOURCES_ID = "erroredResources";
-	private static final String CORRECT_RESOURCES_ID = "correctResources";
-
 	private final Map<String, String> errorColors;
+	private final Label endpointURLLabel = new Label("endpointURL", "");
+	private final Label endpointScoreLabel = new Label("endpointScore", "");
 
 	private EndpointScore endpointScore;
 	private EvaluatedResourceRepo evaluatedResourceRepo;
 	@SpringBean
 	private EndpointStatsRepo endpointStatsRepo;
-	private final Label endpointURLLabel = new Label("endpointURL", "");
-	private final Label endpointScoreLabel = new Label("endpointScore", "");
-
+	@SpringBean
+	private GlobalFormulae globalFormulae;
 
 	public EndpointScorePanel(String id, EndpointScore endpointScore, EvaluatedResourceRepo evaluatedResourceRepo) {
 		super(id);
@@ -49,7 +51,7 @@ public class EndpointScorePanel extends Panel {
 		errorColors.put("Enlaceexternoincorrecto", "#6DA398");
 		this.endpointScore = endpointScore;
 		this.evaluatedResourceRepo = evaluatedResourceRepo;
-		
+
 		Campaign campaign = WicketSession.get().getEvaluationSession().get().getCampaign();
 		boolean hasLicense;
 		boolean isAvailable;
@@ -64,24 +66,41 @@ public class EndpointScorePanel extends Panel {
 		} catch (IOException e) {
 			isAvailable = false;
 		}
-		Label hasLicenseLabel = new Label("hasLicense", getString("yesLicense"));
-		Label doesntHaveLiceseLabel = new Label("doesntHaveLicense", getString("noLicense"));
-		Label serverNormalLabel = new Label("SPARQLServerNormal", getString("endpointUp"));
-		Label serverDownLabel = new Label("SPARQLServerDown", getString("endpointDown"));
-		hasLicenseLabel.setVisible(hasLicense);
-		doesntHaveLiceseLabel.setVisible(!hasLicense);
-		add(hasLicenseLabel);
-		add(doesntHaveLiceseLabel);
-		
-		serverNormalLabel.setVisible(isAvailable);
-		serverDownLabel.setVisible(!isAvailable);
-		add(serverNormalLabel);
-		add(serverDownLabel);
+		WebMarkupContainer hasLicenseContainer = new WebMarkupContainer("hasLicense");
+		WebMarkupContainer doesntHaveLicenseContainer = new WebMarkupContainer("doesntHaveLicense");
+		WebMarkupContainer serverNormalContainer = new WebMarkupContainer("SPARQLServerNormal");
+		WebMarkupContainer serverDownContainer = new WebMarkupContainer("SPARQLServerDown");
+		hasLicenseContainer.setVisible(hasLicense);
+		doesntHaveLicenseContainer.setVisible(!hasLicense);
+		add(hasLicenseContainer);
+		add(doesntHaveLicenseContainer);
+
+		serverNormalContainer.setVisible(isAvailable);
+		serverDownContainer.setVisible(!isAvailable);
+		add(serverNormalContainer);
+		add(serverDownContainer);
+
+		char globalGradeLetter = StringUtils.letterQualification(endpointScore.getScore());
+
+		List<Character> grades = Arrays.asList('a', 'b', 'c', 'd', 'f');
+		for (Character grade : grades) {
+			WebMarkupContainer gradeContainer = new WebMarkupContainer(grade + "-global-grade");
+			Label gradeLabel = new Label(grade + "-global-grade-value", endpointScore.getScoreString());
+			Label gradePercentageLabel = new Label(grade + "-global-grade-percentage", "%");
+			if (Character.toUpperCase(grade) != globalGradeLetter) {
+				gradeLabel.setVisible(false);
+				gradePercentageLabel.setVisible(false);
+				gradeContainer
+						.add(new AttributeModifier("class", grade + "-grade circular-grade d-inline-block faded"));
+			} else {
+				gradeContainer.add(new AttributeModifier("class", "circular-grade b-grade d-inline-block"));
+			}
+			add(gradeLabel);
+			add(gradePercentageLabel);
+			add(gradeContainer);
+		}
 
 		endpointURLLabel.setDefaultModelObject(endpointScore.getEndpointURL());
-		endpointScoreLabel.setDefaultModelObject(endpointScore.getScoreString());
-		add(endpointURLLabel);
-		add(endpointScoreLabel);
 	}
 
 	public void setEndpointScore(EndpointScore endpointScore) {
@@ -89,7 +108,7 @@ public class EndpointScorePanel extends Panel {
 		endpointURLLabel.setDefaultModelObject(endpointScore.getEndpointURL());
 		endpointScoreLabel.setDefaultModelObject(endpointScore.getScoreString());
 	}
-	
+
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
@@ -101,13 +120,6 @@ public class EndpointScorePanel extends Panel {
 			return;
 		}
 
-//		DonutChartWithLabels endpointStatsChart = new DonutChartWithLabels("endpoint-availability-chart");
-		
-		// TODO: este es el ratio de responses exitosos
-		endpointScore.getSuccessfulRequestsRatio();
-		
-		GaugeChart errorTypeChart = new GaugeChart();
-
 		Map<String, Integer> statusCodesAmount = new HashMap<>();
 		for (EndpointStats stats : endpointStats) {
 			if (statusCodesAmount.containsKey(stats.getStatusCode())) {
@@ -117,34 +129,24 @@ public class EndpointScorePanel extends Panel {
 			}
 		}
 
-//		for (String statusCode : statusCodesAmount.keySet()) {
-//			endpointStatsChart.appendData(statusCode, statusCodesAmount.get(statusCode));
-//		}
-		for (Error e : errorTypeStats.keySet()) {
-			String id = e.getName().replaceAll(" ", "");
-			errorTypeChart.appendData(id, errorTypeStats.get(e), errorColors.get(id), errorColors.get(id),
-					errorColors.get(id));
-		}
-
 		int totalResources = evaluatedResourceRepo.getAllByCampaign(endpointScore.getCampaign()).size();
-		int erroredResources = evaluatedResourceRepo.getErroredByCampaign(endpointScore.getCampaign()).size();
-		int correctResources = totalResources - erroredResources;
 
-		response.render(JavaScriptHeaderItem
-				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/d3.min.js")));
-		response.render(JavaScriptHeaderItem
-				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/donut-chart.js")));
-		response.render(JavaScriptHeaderItem
-				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/gauge-chart.js")));
 		response.render(JavaScriptHeaderItem
 				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/count-up.js")));
-//		response.render(endpointStatsChart.getRender());
-		response.render(errorTypeChart.getRender());
-		response.render(OnDomReadyHeaderItem.forScript(
-				"(new CountUp('" + TOTAL_RESOURCES_ID + "', 0, " + totalResources + ", 0, " + DURATION + ")).start();"));
-		response.render(OnDomReadyHeaderItem.forScript(
-				"(new CountUp('" + ERRORED_RESOURCES_ID + "', 0, " + erroredResources + ", 0, " + DURATION + ")).start();"));
-		response.render(OnDomReadyHeaderItem.forScript(
-				"(new CountUp('" + CORRECT_RESOURCES_ID + "', 0, " + correctResources + ", 0, " + DURATION + ")).start();"));
+		response.render(JavaScriptHeaderItem
+				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/reports-panel.js")));
+		double incorrectData = errorTypeStats
+				.get(errorTypeStats.keySet().stream().filter(e -> e.getId() == 1).collect(Collectors.toList()).get(0));
+		double incompleteData = errorTypeStats
+				.get(errorTypeStats.keySet().stream().filter(e -> e.getId() == 2).collect(Collectors.toList()).get(0));
+		double semanticallyIncorrect = errorTypeStats
+				.get(errorTypeStats.keySet().stream().filter(e -> e.getId() == 3).collect(Collectors.toList()).get(0));
+		double externalLink = errorTypeStats
+				.get(errorTypeStats.keySet().stream().filter(e -> e.getId() == 4).collect(Collectors.toList()).get(0));
+		response.render(OnDomReadyHeaderItem.forScript("initializeReportsPanel(" + endpointScore.getScoreString()
+				+ ", '" + StringUtils.letterQualification(endpointScore.getScore()) + "', "
+				+ endpointScore.getSuccessfulRequestsRatio() + ", " + totalResources + ", "
+				+ globalFormulae.getAverageDocumentQuality() + ", " + incorrectData + ", " + incompleteData + ", "
+				+ semanticallyIncorrect + ", " + externalLink + ");"));
 	}
 }

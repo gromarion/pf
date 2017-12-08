@@ -1,14 +1,13 @@
 <wicket:extend xmlns:wicket="http://www.w3.org/1999/xhtml">
+	<div wicket:id="notFound" class="alert alert-info">
+		<wicket:message key="notFound">Not found</wicket:message>
+	</div>
 	<div class="row margin-top-75">
-		<!-- <wicket:message key="errorListFilter">Error type</wicket:message> -->
-		<select wicket:id="campaigns"></select>
+		<select wicket:id="campaigns" class="custom-select"></select>
 	</div>
 	<div class="row">
 		<div class="container">
 			<div wicket:id="endpointScorePanel"/>
 		</div>
-	</div>
-	<div class="alert alert-info">
-		<span wicket:id="notFound"/>
 	</div>
 </wicket:extend>
