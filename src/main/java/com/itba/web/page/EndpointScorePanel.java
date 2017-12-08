@@ -1,6 +1,7 @@
 package com.itba.web.page;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -18,9 +19,9 @@ import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.itba.domain.SparqlRequestHandler;
-import com.itba.domain.model.Campaign;
 import com.itba.domain.model.EndpointStats;
 import com.itba.domain.model.Error;
+import com.itba.domain.model.EvaluationSession;
 import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.formulae.EndpointQualityFormulae.EndpointScore;
@@ -41,8 +42,7 @@ public class EndpointScorePanel extends Panel {
 	@SpringBean
 	private GlobalFormulae globalFormulae;
 
-	public EndpointScorePanel(String id, EndpointScore endpointScore, EvaluatedResourceRepo evaluatedResourceRepo,
-			Campaign campaign) {
+	public EndpointScorePanel(String id, EndpointScore endpointScore, EvaluatedResourceRepo evaluatedResourceRepo) {
 		super(id);
 		this.errorColors = new HashMap<>();
 		errorColors.put("Tipodedatoincorrectamenteextraído", "#FF7777");
@@ -55,12 +55,12 @@ public class EndpointScorePanel extends Panel {
 		boolean hasLicense;
 		boolean isAvailable;
 		try {
-			hasLicense = SparqlRequestHandler.hasLicense(campaign, endpointStatsRepo);
+			hasLicense = SparqlRequestHandler.hasLicense(endpointScore.getCampaign(), endpointStatsRepo);
 		} catch (IOException e) {
 			hasLicense = false;
 		}
 		try {
-			SparqlRequestHandler.requestSuggestions("", campaign, endpointStatsRepo, 0, 1);
+			SparqlRequestHandler.requestSuggestions("", endpointScore.getCampaign(), endpointStatsRepo, 0, 1);
 			isAvailable = true;
 		} catch (IOException e) {
 			isAvailable = false;
@@ -76,7 +76,7 @@ public class EndpointScorePanel extends Panel {
 		add(hasLicenseContainer);
 		add(doesntHaveLicenseContainer);
 
-		boolean anyEndpointStats = !campaign.getSessions().isEmpty();
+		boolean anyEndpointStats = !endpointScore.getCampaign().getSessions().isEmpty();
 		serverNormalContainer.setVisible(isAvailable);
 		serverDownContainer.setVisible(!isAvailable);
 		globalGradePanel.setVisible(anyEndpointStats);
