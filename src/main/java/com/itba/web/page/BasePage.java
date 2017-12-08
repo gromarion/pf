@@ -21,9 +21,8 @@ public class BasePage extends WebPage {
 		if (!session.isSignedIn()) {
 			redirectToInterceptPage(new LoginPage());
 		}
+		
 		boolean guest = userRepo.getByUsername(session.getUsername()).hasRole("GUEST");
-
-
 		User currentUser = userRepo.getByUsername(session.getUsername());
 		
 		add(new Link<Void>("home") {

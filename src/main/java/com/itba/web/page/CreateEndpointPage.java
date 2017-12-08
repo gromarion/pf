@@ -36,20 +36,18 @@ public class CreateEndpointPage extends AnonimousPage {
 		form.add(graph);
 		form.add(params);
 		form.add(new Button("submit", new ResourceModel("submit")) {
-			private static final long serialVersionUID = 1L;
-
 			@Override
 			public void onSubmit() {
 				Campaign newCampaign = new Campaign(name.getValue(), endpoint.getValue(), graph.getValue(), params.getValue());
 				campaigns.save(newCampaign);
-				setResponsePage(LoginPage.class);
+				setResponsePage(AdminEndpointsPage.class);
 			}
 		});
 		
 		Link<Void> backButton = new Link<Void>("back") {
 			@Override
 			public void onClick() {
-				setResponsePage(LoginPage.class);
+				setResponsePage(AdminEndpointsPage.class);
 			}
 		};
 		form.add(backButton);

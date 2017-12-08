@@ -1,12 +1,20 @@
 <wicket:extend xmlns:wicket="http://www.w3.org/1999/xhtml">
 	<div class="container h-100 margin-top-75">
-    <div class="row justify-content-center align-items-center resource-search-panel">
+		<div
+			class="row justify-content-center align-items-center resource-search-panel">
 			<h2>
 				<wicket:message key="title">Admin Endpoints</wicket:message>
 			</h2>
 		</div>
 	</div>
-	<table class="table table-striped margin-top-50">
+
+	<div class="form-group">
+		<button class="btn btn-primary"
+			wicket:id="createEndpointLink"><wicket:message
+				key="createNewEndpoint">Create new endpoint</wicket:message></button>
+	</div>
+
+	<table class="table table-striped">
 		<thead>
 			<tr>
 				<th><wicket:message key="name">Name</wicket:message></th>
@@ -18,25 +26,15 @@
 		</thead>
 		<tbody>
 			<tr wicket:id="campaignsList">
-				<td>
-					<span wicket:id="nameLabel">Some name</span>
-				</td>
-				<td>
-					<span wicket:id="endpointLabel">Some endpoint</span>
-				</td>
-				<td>
-					<span wicket:id="graphLabel">Some graph</span>
-				</td>
-				<td>
-					<a wicket:id="deleteButton" title="Eliminar" class="btn btn-link" href="#">
-						<i class="fa fa-remove"/>
-					</a>
-				</td>
-				<td>
-					<a wicket:id="editButton" title="Editar" class="btn btn-link" href="#">
-						<i class="fa fa-pencil"/>
-					</a>
-				</td>
+				<td><span wicket:id="nameLabel">Some name</span></td>
+				<td><span wicket:id="endpointLabel">Some endpoint</span></td>
+				<td><span wicket:id="graphLabel">Some graph</span></td>
+				<td><a wicket:id="deleteButton" title="Eliminar"
+					class="btn btn-link" href="#"> <i class="fa fa-remove" />
+				</a></td>
+				<td><a wicket:id="editButton" title="Editar"
+					class="btn btn-link" href="#"> <i class="fa fa-pencil" />
+				</a></td>
 			</tr>
 		</tbody>
 	</table>
