@@ -3,9 +3,11 @@ package com.itba.domain.model;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -37,8 +39,8 @@ public class EvaluatedResource extends PersistentEntity {
     @Column(name = "score")
     private BigDecimal score;
 
-    @OneToMany(mappedBy = "resource")
-    private Set<EvaluatedResourceDetail> details;
+    @OneToMany(mappedBy = "resource", cascade = CascadeType.ALL)
+    private Set<EvaluatedResourceDetail> details = new HashSet<>();
 
     EvaluatedResource() {}
 

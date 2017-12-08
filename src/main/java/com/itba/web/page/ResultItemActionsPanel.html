@@ -1,21 +1,22 @@
-<html>
-	<body>
-		<wicket:panel>
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-3">
-						<button wicket:id="resourceOkButton" class="btn btn-success">
-							<span wicket:id="resourceOkLabel">Is resource OK?</span>
-						</button>
-					</div>
-					<div class="col-3">
-						<button class="btn btn-primary" href="#" data-toggle="modal"
-							data-target="#editCommentModal">
-							<wicket:message key="editCommentLabel">Edit comment</wicket:message>
-						</button>
-					</div>
-				</div>
+<wicket:panel>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-3">
+				<button wicket:id="relatedEvaluationsButton" class="btn btn-info">
+					<span wicket:message key="relatedEvaluationsLabel">Evaluaciones Relacionadas</span>
+				</button>
 			</div>
-		</wicket:panel>
-	</body>
-</html>
+			<div class="col-3">
+				<button wicket:id="resourceOkButton" class="btn btn-success">
+					<span wicket:id="resourceOkLabel">Is resource OK?</span>
+				</button>
+			</div>
+			<div class="col-3">
+				<button class="btn btn-primary" href="#" data-toggle="modal"
+					data-target="#editCommentModal">
+					<wicket:message key="editCommentLabel">Edit comment</wicket:message>
+				</button>
+			</div>
+		</div>
+	</div>
+</wicket:panel>

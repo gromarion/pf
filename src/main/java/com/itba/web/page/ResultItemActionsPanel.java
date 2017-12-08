@@ -92,11 +92,25 @@ public class ResultItemActionsPanel extends Panel {
 				}
 			}
 		};
+		
+		Link<Void> relatedEvaluationsButton = new Link<Void>("relatedEvaluationsButton") {
+			@Override
+			public void onClick() {
+				PageParameters parameters = new PageParameters();
+				if (resourceModel.getObject() != null) {
+					parameters.add("resourceId", resourceModel.getObject().getId());
+				} else {
+					parameters.add("resource", resource);
+				}
+				setResponsePage(RelatedEvaluationsPage.class, parameters);
+			}
+		};
 
 		Tooltip.addToComponent(resourceOkButton, Position.TOP, "Un tooltip sobre este botón");
 		resourceOkButton.add(resourceOkLabel);
 		add(resourceOkButton.setVisible(resourceModel.getObject() == null
 				|| (resourceModel.getObject() != null && !resourceModel.getObject().hasDetails())));
+		add(relatedEvaluationsButton);
 	}
 	
 	@Override

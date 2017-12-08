@@ -144,16 +144,17 @@ public class ErrorSelectionPage extends BasePage {
 				
 				evaluatedResource.get().setCorrect(false);
 				
+				EvaluatedResourceDetail detail = new EvaluatedResourceDetail(evaluatedResource.get(), errorModel.getObject(), predicate, object);
+				detail.setComment(comments.getValue());
+				evaluatedResource.get().getDetails().add(detail);
+//				evaluatedResourceDetailRepo.save(detail);
+				
 				try {
 					Score score = manualErrorsFormulae.compute(resource, Optional.of(evaluatedResource.get().getSession()));
 					evaluatedResource.get().setScore(new BigDecimal(score.getScore()));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				
-				EvaluatedResourceDetail detail = new EvaluatedResourceDetail(evaluatedResource.get(), errorModel.getObject(), predicate, object);
-				detail.setComment(comments.getValue());
-				evaluatedResourceDetailRepo.save(detail);
 				
 				PageParameters parameters = new PageParameters();
                 parameters.add("predicate", predicate);

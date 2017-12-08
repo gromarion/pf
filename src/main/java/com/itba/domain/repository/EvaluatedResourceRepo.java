@@ -3,6 +3,8 @@ package com.itba.domain.repository;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.apache.wicket.model.IModel;
+
 import com.google.common.base.Optional;
 import com.itba.domain.model.Campaign;
 import com.itba.domain.model.EvaluatedResource;
@@ -37,5 +39,9 @@ public interface EvaluatedResourceRepo extends HibernateRepo {
 	List<String> getCorrectByCampaign(Campaign c);
 
 	BigDecimal getSumScoreByCampaign(Campaign c);
+
+	EvaluatedResource get(int evaluatedResourceId);
+
+	List<EvaluatedResource> getAllRelated(String resource, IModel<EvaluationSession> sessionModel);
 }
 
