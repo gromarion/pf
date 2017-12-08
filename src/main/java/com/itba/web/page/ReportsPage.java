@@ -32,7 +32,6 @@ public class ReportsPage extends BasePage {
 	private EvaluatedResourceRepo evaluatedResourceRepo;
 	@SpringBean
 	private CampaignRepo campaigns;
-	
 	private IModel<Campaign> selectedCampaignModel = new EntityModel<Campaign>(Campaign.class);
 	
 	@Override
@@ -53,7 +52,9 @@ public class ReportsPage extends BasePage {
 			final WebMarkupContainer notFound = new WebMarkupContainer("notFound");
 			endpointScorePanel.setVisible(!endpointScore.getEndpointStats().isEmpty());
 			notFound.setVisible(endpointScore.getEndpointStats().isEmpty());
-			add(notFound.setOutputMarkupId(true));
+			notFound.setOutputMarkupId(true);
+			notFound.setOutputMarkupPlaceholderTag(true);
+			add(notFound);
 			add(campaignDropDownChoice);
 			add(endpointScorePanel.setOutputMarkupId(true));
 			

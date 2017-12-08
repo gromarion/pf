@@ -35,7 +35,7 @@ public class RequestHandler {
 			for (String value : entry.getValue()) {
 				if (value.contains("HTTP/1.1")) {
 					registerResponseCode(endpointURL, entry.getValue(), endpointStatsRepo);
-				}				
+				}
 			}
 		}
 

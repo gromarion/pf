@@ -47,6 +47,15 @@ function initializeReportsPanel(
 	semanticallyIncorrectValue = semanticallyIncorrectParam;
 	externalLinkValue = externalLinkParam;
 
+	var globalGradeVisible = false;
+	var endpointAvailabilityVisible = false;
+	var totalResourcesVisible = false;
+	var averageQualityVisible = false;
+	var incorrectDataVisible = false;
+	var incompleteDataVisible = false;
+	var semanticallyIncorrectVisible = false;
+	var externalLinkVisible = false;
+
 	startAnimation();
 }
 
