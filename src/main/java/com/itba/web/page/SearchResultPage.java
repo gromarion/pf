@@ -1,8 +1,11 @@
 package com.itba.web.page;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -46,9 +49,9 @@ public class SearchResultPage extends BasePage {
 		
 		final List<String> correctResources = evaluatedResourceRepo.getCorrectForSession(WicketSession.get().getEvaluationSession().get());
 		
-		final String search      = formatSearch(parameters.get("search").toString());
-		final int offset         = fetchOffset(parameters);
-		Campaign campaign        = WicketSession.get().getEvaluationSession().get().getCampaign();
+		final String search = formatSearch(parameters.get("search").toString());
+		final int offset = fetchOffset(parameters);
+		Campaign campaign = WicketSession.get().getEvaluationSession().get().getCampaign();
 		JSONArray choices;
 		List<String> choicesList = new ArrayList<>();
 		try {
@@ -64,6 +67,7 @@ public class SearchResultPage extends BasePage {
 			}
 			
 		} catch (JSONException | IOException e) {
+			e.printStackTrace(System.out);
 			setResponsePage(ErrorPage.class);
 		}
 		
@@ -84,17 +88,10 @@ public class SearchResultPage extends BasePage {
                     }
                 };
                 String resource = stringModel.getObject();
-
+                resultLink.add(new Label("resourceTitle", getResourceFromUrl(resource)));
                 resultLink.add(new Label("linkText", resource));
 				listItem.add(resultLink);
-				Score resourceScore;
-				try {
-					resourceScore = manualErrorsFormulae.compute(resource, Optional.<EvaluationSession>absent());
-					listItem.add(new Label("resourceScore", resourceScore.scoreString()));
-					listItem.add(new Label("resourceErrors", resourceScore.errorsString()));
-				} catch (JSONException | IOException e) {
-					setResponsePage(ErrorPage.class);
-				}
+				
 				if (correctResources.contains(stringModel.getObject())) {
 					listItem.add(new AttributeModifier("class", "success"));
 				}
@@ -122,7 +119,6 @@ public class SearchResultPage extends BasePage {
         add(new Label("currentPage", offset + 1));
         add(previousPageLink);
         add(nextPageLink);
-		add(new Label("searchWord", search));
 	}
 	
 	private int fetchOffset(PageParameters parameters) {
@@ -133,5 +129,9 @@ public class SearchResultPage extends BasePage {
 	
 	private String formatSearch(String search) {
 		return search.replaceAll(" ", "_");
+	}
+	
+	public static String getResourceFromUrl(final String url){
+	    return url.replaceFirst(".*/([^/?]+).*", "$1");
 	}
 }

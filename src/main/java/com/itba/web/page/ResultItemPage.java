@@ -130,6 +130,7 @@ public class ResultItemPage extends BasePage {
 				}
 			});
 		} catch (JSONException | IOException e) {
+			e.printStackTrace(System.out);
 			setResponsePage(ErrorPage.class);
 		}
 		final CustomFeedbackPanel customFeedbackPanel = new CustomFeedbackPanel("feedbackPanel");
@@ -145,6 +146,7 @@ public class ResultItemPage extends BasePage {
 			}
 			add(resourceScorePanel);
 		} catch (JSONException | IOException e) {
+			e.printStackTrace(System.out);
 			setResponsePage(ErrorPage.class);
 		}
 

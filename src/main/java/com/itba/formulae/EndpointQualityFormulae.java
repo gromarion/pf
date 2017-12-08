@@ -18,14 +18,11 @@ import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.domain.repository.ErrorRepo;
 import com.itba.domain.repository.EvaluatedResourceDetailRepo;
 
-import lib.StringUtils;
-
 @Service
 public class EndpointQualityFormulae {
 
 	@Autowired
 	private EndpointStatsRepo endpointStatsRepo;
-	
 	@Autowired
 	private EvaluatedResourceDetailRepo evaluatedResourceDetailRepo;
 	
@@ -102,9 +99,9 @@ public class EndpointQualityFormulae {
 
 		public String getScoreString() {
 			if (score < 0.001) {
-				return StringUtils.letterQualification(1) + " - 1";
+				return "100";
 			} else {
-				return StringUtils.letterQualification(score) + " - " + StringUtils.formatDouble(score, 3);				
+				return score * 100 + "";				
 			}
 		}
 

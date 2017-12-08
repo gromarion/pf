@@ -1,5 +1,6 @@
 package lib;
 
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 public class StringUtils {
@@ -24,13 +25,8 @@ public class StringUtils {
 	}
 	
 	public static String formatDouble(double number, int decimals) {
-		StringBuilder format = new StringBuilder("0.0");
-
-		for (int i = 1; i < decimals; i++) {
-			format.append("0");
-		}
-
-		DecimalFormat df = new DecimalFormat(format.toString());
+		DecimalFormat df = new DecimalFormat("#.###");
+		df.setRoundingMode(RoundingMode.CEILING);
 
         return df.format(number);
 	}

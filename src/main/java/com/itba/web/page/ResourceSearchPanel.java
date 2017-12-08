@@ -2,6 +2,7 @@ package com.itba.web.page;
 
 import java.io.IOException;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.json.JSONException;
 import org.apache.wicket.ajax.json.JSONObject;
 import org.apache.wicket.markup.html.form.Button;
@@ -25,12 +26,15 @@ public class ResourceSearchPanel extends Panel {
 	private CampaignRepo campaignRepo;
 	@SpringBean
 	private EndpointStatsRepo endpointStatsRepo;
+	private String endpointName = firstWord(campaignRepo
+			.get(Campaign.class, WicketSession.get().getEvaluationSession().get().getCampaign().getId()).getName());
 
 	public ResourceSearchPanel(String id) {
 		super(id);
 		Form<Void> searchForm = new Form<>("search-form");
 		final TextField<String> searchTextField = new TextField<String>("textField", Model.of(""));
 		searchTextField.setOutputMarkupId(true);
+		searchTextField.add(new AttributeModifier("placeholder", "Buscar documento en " + endpointName));
 
 		Button submit = new Button("submit") {
 			@Override
@@ -58,10 +62,15 @@ public class ResourceSearchPanel extends Panel {
 
 					setResponsePage(ResultItemPage.class, parameters);
 				} catch (JSONException | IOException e) {
+					e.printStackTrace(System.out);
 					setResponsePage(ErrorPage.class);
 				}
 			}
 		});
 		add(searchForm);
+	}
+
+	private String firstWord(String string) {
+		return (string + " ").split(" ")[0]; // add " " to string to be sure there is something to split
 	}
 }
