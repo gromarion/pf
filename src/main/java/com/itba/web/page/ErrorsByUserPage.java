@@ -91,22 +91,11 @@ public class ErrorsByUserPage extends BasePage {
 		userModel.setObject(userRepo.getByUsername(WicketSession.get().getUsername()));
 		currentSession.setObject(WicketSession.get().getEvaluationSession().get());
 		final int page = fetchPage(parameters);
-
+		
 		final IModel<List<EvaluatedResource>> evaluatedResources = new LoadableDetachableModel<List<EvaluatedResource>>() {
 			@Override
 			protected List<EvaluatedResource> load() {
-				if (userModel.getObject().hasRole(User.ADMIN_ROLE)) {
-					PaginatedResult<EvaluatedResource> result = evaluatedResourceRepo.getAllPaginated(page);
-					hasNextPage = result.hasNextPage();
-					return result.getResult();
-				} else {
-					PaginatedResult<EvaluatedResource> result = getResult(parameters);
-					if(result.getResult().isEmpty()) {
-						setResponsePage(EvaluationsNotFound.class);
-					}
-					hasNextPage = result.hasNextPage();
-					return result.getResult();
-				}
+				return getResult(parameters).getResult();
 			}
 		};
 
@@ -250,17 +239,19 @@ public class ErrorsByUserPage extends BasePage {
 
 	private int fetchPage(PageParameters parameters) {
 		String page = parameters.get("page").toString();
-
 		return page == null ? 0 : Integer.parseInt(page);
 	}
 
 	private PaginatedResult<EvaluatedResource> getResult(PageParameters parameters) {
-		PaginatedResult<EvaluatedResource> result = evaluatedResourceRepo.getAllForSession(currentSession.getObject(),
-				fetchPage(parameters));
+		PaginatedResult<EvaluatedResource> result = userModel.getObject().hasRole(User.ADMIN_ROLE) ?
+				evaluatedResourceRepo.getAllPaginated(fetchPage(parameters)) :
+				evaluatedResourceRepo.getAllForSession(currentSession.getObject(), fetchPage(parameters));
+		
+		hasNextPage = result.hasNextPage();
 		if (Strings.isNotEmpty(parameters.get("errorId").toString())) {
 			int errorId = Integer.parseInt(parameters.get("errorId").toString());
+			errorModel.setObject(errorRepo.get(errorId));
 			Set<EvaluatedResource> filteredEvaluatedResource = new HashSet<>();
-
 			for (EvaluatedResource evaluatedResource : result.getResult()) {
 				for (EvaluatedResourceDetail evaluatedResourceDetail : evaluatedResource.getDetails()) {
 					if (evaluatedResourceDetail.getError().getId() == errorId) {
@@ -270,7 +261,6 @@ public class ErrorsByUserPage extends BasePage {
 			}
 			result.setResult(new ArrayList<EvaluatedResource>(filteredEvaluatedResource));
 		}
-
 		return result;
 	}
 }
