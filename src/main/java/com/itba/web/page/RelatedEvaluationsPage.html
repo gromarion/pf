@@ -1,0 +1,47 @@
+<wicket:extend xmlns:wicket="http://www.w3.org/1999/xhtml">
+	<div class="row margin-top-75">
+		<div wicket:id="feedbackPanel" />
+		<div class="container">
+			<div class="row">
+				<h2>
+					<span wicket:id="titleLabel">Title</span>
+				</h2>
+			</div>
+			<div class="row">
+				<h3>
+					<span wicket:id="resourceNameLabel">Title</span>
+				</h3>
+			</div>
+			<div wicket:id="alertContainer" class="row">
+				<div class="alert alert-warning" role="alert">
+					<span wicket:id="noRelatedLabel"></span>
+				</div>
+			</div>
+			<div wicket:id="tableContainer" class="row margin-top-75">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th><wicket:message key="evaluatorUsernameLabel">Username</wicket:message>
+							</th>
+							<th><wicket:message key="resourceScoreLabel">Resource score</wicket:message>
+							</th>
+							<th><wicket:message key="resourceTimestampLabel">Evaluation date</wicket:message>
+							</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr wicket:id="evaluatedResources">
+							<td><span wicket:id="evaluatorUsername">username</span></td>
+							<td><span wicket:id="resourceScore">1.000</span></td>
+							<td><span wicket:id="resourceTimestamp">1/1/1970
+									00:00</span></td>
+							<td><a wicket:id="resultLink" class="btn btn-link" href="#"><i
+									class="fa fa-eye" /></a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</wicket:extend>

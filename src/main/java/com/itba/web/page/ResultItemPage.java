@@ -65,6 +65,7 @@ public class ResultItemPage extends BasePage {
 	private final IModel<EvaluatedResource> resourceModel = new EntityModel<EvaluatedResource>(EvaluatedResource.class);
 
 	public ResultItemPage(PageParameters parameters) {
+		// TODO: adaptar esto para que puedan pasarlo o no...
 		final String comesFromMyResources = parameters.get("comesFromMyResources").toString();
 		final String resource = parameters.get("selection").toString();
 		final String search = parameters.get("search").toString();
@@ -152,6 +153,7 @@ public class ResultItemPage extends BasePage {
 		Link<Void> backButton = new Link<Void>("back") {
 			@Override
 			public void onClick() {
+				// TODO: agregar un "comesFromRelatedResources". Revisar la implementación de "comesFromMyResources"
 				if (!Strings.isNullOrEmpty(comesFromMyResources)) {
 					setResponsePage(ErrorsByUserPage.class);
 				} else {

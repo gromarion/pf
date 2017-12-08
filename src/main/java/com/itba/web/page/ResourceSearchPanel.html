@@ -1,21 +1,19 @@
-<html>
-	<body>
-		<wicket:panel>
-			<div class="row justify-content-center align-items-center">
-				<form wicket:id="search-form" class="resource-search-panel">
-					<div class="resource-search-input">
-						<input type="text" class="form-control" wicket:id="textField">
-					</div>
-					<div class="row justify-content-center align-items-center">
-						<button wicket:id="submit" type="submit" class="btn btn-primary search-button">
-							<wicket:message key="searchButton">Search document</wicket:message>
-						</button>
-						<button wicket:id="fetchRandom" class="btn btn-secondary search-button">
-							<wicket:message key="fetchRandom">Fetch random resource</wicket:message>
-						</button>
-					</div>
-				</form>
+<wicket:panel>
+	<div class="row justify-content-center align-items-center">
+		<form wicket:id="search-form" class="resource-search-panel">
+			<div class="resource-search-input">
+				<input type="text" class="form-control" wicket:id="textField">
 			</div>
-		</wicket:panel>
-	</body>
-</html>
+			<div class="row justify-content-center align-items-center">
+				<button wicket:id="submit" type="submit"
+					class="btn btn-primary search-button">
+					<wicket:message key="searchButton">Search document</wicket:message>
+				</button>
+				<button wicket:id="fetchRandom"
+					class="btn btn-secondary search-button">
+					<wicket:message key="fetchRandom">Fetch random resource</wicket:message>
+				</button>
+			</div>
+		</form>
+	</div>
+</wicket:panel>

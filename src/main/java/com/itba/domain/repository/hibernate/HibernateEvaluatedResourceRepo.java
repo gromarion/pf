@@ -3,6 +3,7 @@ package com.itba.domain.repository.hibernate;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.apache.wicket.model.IModel;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,11 @@ public class HibernateEvaluatedResourceRepo extends AbstractHibernateRepo implem
 	@Autowired
 	public HibernateEvaluatedResourceRepo(SessionFactory sessionFactory) {
 		super(sessionFactory);
+	}
+	
+	@Override
+	public EvaluatedResource get(int evaluatedResourceId) {
+		return get(EvaluatedResource.class, evaluatedResourceId);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -84,6 +90,14 @@ public class HibernateEvaluatedResourceRepo extends AbstractHibernateRepo implem
 		return new PaginatedResult<EvaluatedResource>(query.list(), page, (long) countQuery.uniqueResult(), LIMIT);
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<EvaluatedResource> getAllRelated(String resource, IModel<EvaluationSession> sessionModel) {
+		String query = "SELECT e FROM EvaluatedResource e WHERE e.resource = '" + resource + "'";
+		if (sessionModel.getObject() != null) query += " AND e.session.id <> " + sessionModel.getObject().getId();
+		return getSession().createQuery(query).list();
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<EvaluatedResource> getAll() {
