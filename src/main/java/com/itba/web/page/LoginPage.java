@@ -100,7 +100,6 @@ public class LoginPage extends AnonimousPage {
 		guestForm.add(new Button("guestLogin"));
 		add(guestForm);
 
-		add(new BookmarkablePageLink<CreateEndpointPage>("createEndpointLink", CreateEndpointPage.class));
 		add(new BookmarkablePageLink<RegisterUserPage>("registerLink", RegisterUserPage.class));
 	}
 }
