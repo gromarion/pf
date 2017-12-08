@@ -8,6 +8,7 @@ var semanticallyIncorrectVisible = false;
 var externalLinkVisible = false;
 
 var globalGradeValue = 0;
+var globalGradeLetterParam = "";
 var endpointAvailabilityValue = 0;
 var totalResourcesValue = 0;
 var averageQualityValue = 0;
@@ -28,6 +29,7 @@ function animate(id, start, end) {
 
 function initializeReportsPanel(
 		globalGradeParam,
+		globalGradeLetterParam,
 		endpointAvailabilityParam,
 		totalResourcesParam,
 		averageQualityParam,
@@ -36,6 +38,7 @@ function initializeReportsPanel(
 		semanticallyIncorrectParam,
 		externalLinkParam) {
 	globalGradeValue = globalGradeParam;
+	globalGradeLetterValue = globalGradeLetterParam;
 	endpointAvailabilityValue = endpointAvailabilityParam;
 	totalResourcesValue = totalResourcesParam;
 	averageQualityValue = averageQualityParam;
@@ -48,10 +51,8 @@ function initializeReportsPanel(
 }
 
 function startAnimation() {
-	if ($('#global-grade').visible(true) && !globalGradeVisible) {
-		globalGradeVisible = true;
-	  animate('global-grade', 0.0, globalGradeValue);
-	}
+	startGlobalGradeAnimation();
+
 	if ($('#endpoint-availability').visible(true) && !endpointAvailabilityVisible) {
 		endpointAvailabilityVisible = true;
 	  animate('endpoint-availability', 0.0, endpointAvailabilityValue);
@@ -79,6 +80,15 @@ function startAnimation() {
 	if ($('#external-link').visible(true) && !externalLinkVisible) {
 		externalLinkVisible = true;
 	  animate('external-link', 0, externalLinkValue);
+	}
+}
+
+function startGlobalGradeAnimation() {
+	let componentId = globalGradeLetterValue.toLowerCase() + '-global-grade';
+
+	if ($('#' + componentId).visible(true) && !globalGradeVisible) {
+		globalGradeVisible = true;
+	  animate(componentId, 0.0, globalGradeValue);
 	}
 }
 

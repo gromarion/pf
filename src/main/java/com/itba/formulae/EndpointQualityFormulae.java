@@ -18,14 +18,11 @@ import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.domain.repository.ErrorRepo;
 import com.itba.domain.repository.EvaluatedResourceDetailRepo;
 
-import lib.StringUtils;
-
 @Service
 public class EndpointQualityFormulae {
 
 	@Autowired
 	private EndpointStatsRepo endpointStatsRepo;
-	
 	@Autowired
 	private EvaluatedResourceDetailRepo evaluatedResourceDetailRepo;
 	

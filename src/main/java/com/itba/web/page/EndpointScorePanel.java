@@ -25,13 +25,10 @@ import com.itba.formulae.EndpointQualityFormulae.EndpointScore;
 import com.itba.formulae.GlobalFormulae;
 import com.itba.web.WicketSession;
 
+import lib.StringUtils;
+
 @SuppressWarnings("serial")
 public class EndpointScorePanel extends Panel {
-	private static final double DURATION = 2.5;
-	private static final String TOTAL_RESOURCES_ID = "totalResources";
-	private static final String ERRORED_RESOURCES_ID = "erroredResources";
-	private static final String CORRECT_RESOURCES_ID = "correctResources";
-
 	private final Map<String, String> errorColors;
 
 	private EndpointScore endpointScore;
@@ -82,7 +79,6 @@ public class EndpointScorePanel extends Panel {
 		add(serverDownContainer);
 
 		endpointURLLabel.setDefaultModelObject(endpointScore.getEndpointURL());
-		// add(endpointURLLabel);
 	}
 
 	public void setEndpointScore(EndpointScore endpointScore) {
@@ -112,17 +108,23 @@ public class EndpointScorePanel extends Panel {
 		}
 
 		int totalResources = evaluatedResourceRepo.getAllByCampaign(endpointScore.getCampaign()).size();
-		int erroredResources = evaluatedResourceRepo.getErroredByCampaign(endpointScore.getCampaign()).size();
-		int correctResources = totalResources - erroredResources;
 
 		response.render(JavaScriptHeaderItem
 				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/count-up.js")));
 		response.render(JavaScriptHeaderItem
 				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/reports-panel.js")));
-		double incorrectData = errorTypeStats.get(errorTypeStats.keySet().stream().filter(e -> e.getId() == 1).collect(Collectors.toList()).get(0));
-		double incompleteData = errorTypeStats.get(errorTypeStats.keySet().stream().filter(e -> e.getId() == 2).collect(Collectors.toList()).get(0));
-		double semanticallyIncorrect = errorTypeStats.get(errorTypeStats.keySet().stream().filter(e -> e.getId() == 3).collect(Collectors.toList()).get(0));
-		double externalLink = errorTypeStats.get(errorTypeStats.keySet().stream().filter(e -> e.getId() == 4).collect(Collectors.toList()).get(0));
-		response.render(OnDomReadyHeaderItem.forScript("initializeReportsPanel(" + endpointScore.getScoreString() + ", " + endpointScore.getSuccessfulRequestsRatio() + ", " + totalResources + ", " + globalFormulae.getAverageDocumentQuality() + ", " + incorrectData + ", " + incompleteData + ", " + semanticallyIncorrect + ", " + externalLink + ");"));
+		double incorrectData = errorTypeStats
+				.get(errorTypeStats.keySet().stream().filter(e -> e.getId() == 1).collect(Collectors.toList()).get(0));
+		double incompleteData = errorTypeStats
+				.get(errorTypeStats.keySet().stream().filter(e -> e.getId() == 2).collect(Collectors.toList()).get(0));
+		double semanticallyIncorrect = errorTypeStats
+				.get(errorTypeStats.keySet().stream().filter(e -> e.getId() == 3).collect(Collectors.toList()).get(0));
+		double externalLink = errorTypeStats
+				.get(errorTypeStats.keySet().stream().filter(e -> e.getId() == 4).collect(Collectors.toList()).get(0));
+		char globalGradeLetter = StringUtils.letterQualification(endpointScore.getScore());
+		response.render(OnDomReadyHeaderItem.forScript("initializeReportsPanel(" + endpointScore.getScoreString() + ", '"
+				+ globalGradeLetter + "', " + endpointScore.getSuccessfulRequestsRatio() + ", " + totalResources + ", "
+				+ globalFormulae.getAverageDocumentQuality() + ", " + incorrectData + ", " + incompleteData + ", "
+				+ semanticallyIncorrect + ", " + externalLink + ");"));
 	}
 }
