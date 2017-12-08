@@ -3,6 +3,9 @@ package com.itba.web.page;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -13,8 +16,10 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.google.common.base.Strings;
 import com.itba.domain.EntityModel;
 import com.itba.domain.model.Campaign;
 import com.itba.domain.model.User;
@@ -38,6 +43,7 @@ public class LoginPage extends AnonimousPage {
 	private String username;
 	private String password;
 	private IModel<Campaign> selectedCampaignModel = new EntityModel<Campaign>(Campaign.class);
+	private final IModel<String> campaignDescriptionModel = Model.of();
 
 	@Override
 	protected void onInitialize() {
@@ -48,6 +54,9 @@ public class LoginPage extends AnonimousPage {
 		add(new CustomFeedbackPanel("feedbackPanel"));
 
 		selectedCampaignModel.setObject(campaigns.getAll().get(0));
+		String campaignDescription = Strings.nullToEmpty(selectedCampaignModel.getObject().getDescription()).isEmpty() ? 
+										"La campaña aún no cuenta con una descripción..." : selectedCampaignModel.getObject().getDescription();
+		campaignDescriptionModel.setObject(campaignDescription);
 		Form<LoginPage> form = new Form<LoginPage>("loginForm", new CompoundPropertyModel<LoginPage>(this)) {
 
 			@Override
@@ -64,6 +73,10 @@ public class LoginPage extends AnonimousPage {
 			}
 		};
 
+        final Label campaignDescriptionLabel = new Label("campaignDescription", campaignDescription);
+        add(campaignDescriptionLabel);
+        campaignDescriptionLabel.setOutputMarkupId(true);
+		
 		DropDownChoice<Campaign> campaignDropDownChoice = new DropDownChoice<Campaign>("campaigns",
 				selectedCampaignModel, new LoadableDetachableModel<List<Campaign>>() {
 					@Override
@@ -71,7 +84,20 @@ public class LoginPage extends AnonimousPage {
 						return campaigns.getAll();
 					}
 				}, new ChoiceRenderer<Campaign>("name"));
-
+		
+		
+		
+        OnChangeAjaxBehavior onChangeAjaxBehavior = new OnChangeAjaxBehavior() {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+        		String campaignDescription = Strings.nullToEmpty(selectedCampaignModel.getObject().getDescription()).isEmpty() ? 
+						"La campaña aún no cuenta con una descripción..." : selectedCampaignModel.getObject().getDescription();
+            	campaignDescriptionLabel.setDefaultModelObject(campaignDescription);
+            	target.add(campaignDescriptionLabel);
+            }
+        };
+        
+        campaignDropDownChoice.add(onChangeAjaxBehavior);
 		form.add(campaignDropDownChoice);
 		form.add(new TextField<String>("username").setRequired(true));
 		form.add(new PasswordTextField("password").setRequired(true));
