@@ -6,27 +6,27 @@
 				<table class="grades">
 					<thead>
 						<th>
-							<div class="circular-grade a-grade d-inline-block">
+							<div wicket:id="a-global-grade" class="circular-grade a-grade d-inline-block">
 								<span>A</span>
 							</div>
 						</th>
 						<th>
-							<div class="circular-grade b-grade d-inline-block">
+							<div wicket:id="b-global-grade" class="circular-grade b-grade d-inline-block">
 								<span>B</span>
 							</div>
 						</th>
 						<th>
-							<div class="circular-grade c-grade d-inline-block">
+							<div wicket:id="c-global-grade" class="circular-grade c-grade d-inline-block">
 								<span>C</span>
 							</div>
 						</th>
 						<th>
-							<div class="circular-grade d-grade d-inline-block">
+							<div wicket:id="d-global-grade" class="circular-grade d-grade d-inline-block">
 								<span>D</span>
 							</div>
 						</th>
 						<th>
-							<div class="circular-grade f-grade d-inline-block">
+							<div wicket:id="f-global-grade" class="circular-grade f-grade d-inline-block">
 								<span>F</span>
 							</div>
 						</th>
@@ -34,30 +34,34 @@
 					<tbody>
 						<tr>
 							<td class="center-text">
-								<span class="global-grade" id="a-global-grade">
+								<span wicket:id="a-global-grade-value" class="global-grade" id="a-global-grade">
 									0
 								</span>
-								<span class="global-grade">%</span>
+								<span wicket:id="a-global-grade-percentage" class="global-grade">%</span>
 							</td>
 							<td class="center-text">
-								<span class="global-grade" id="b-global-grade" style="display: none;">
+								<span wicket:id="b-global-grade-value" class="global-grade" id="b-global-grade">
 									0
 								</span>
+								<span wicket:id="b-global-grade-percentage" class="global-grade">%</span>
 							</td>
 							<td class="center-text">
-								<span class="global-grade" id="c-global-grade" style="display: none;">
+								<span wicket:id="c-global-grade-value" class="global-grade" id="c-global-grade">
 									0
 								</span>
+								<span wicket:id="c-global-grade-percentage" class="global-grade">%</span>
 							</td>
 							<td class="center-text">
-								<span class="global-grade" id="d-global-grade" style="display: none;">
+								<span wicket:id="d-global-grade-value" class="global-grade" id="d-global-grade">
 									0
 								</span>
+								<span wicket:id="d-global-grade-percentage" class="global-grade">%</span>
 							</td>
 							<td class="center-text">
-								<span class="global-grade" id="f-global-grade" style="display: none;">
+								<span wicket:id="f-global-grade-value" class="global-grade" id="f-global-grade">
 									0
 								</span>
+								<span wicket:id="f-global-grade-percentage" class="global-grade">%</span>
 							</td>
 						</tr>
 					</tbody>

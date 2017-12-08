@@ -1,11 +1,13 @@
 package com.itba.web.page;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
@@ -30,6 +32,8 @@ import lib.StringUtils;
 @SuppressWarnings("serial")
 public class EndpointScorePanel extends Panel {
 	private final Map<String, String> errorColors;
+	private final Label endpointURLLabel = new Label("endpointURL", "");
+	private final Label endpointScoreLabel = new Label("endpointScore", "");
 
 	private EndpointScore endpointScore;
 	private EvaluatedResourceRepo evaluatedResourceRepo;
@@ -37,8 +41,6 @@ public class EndpointScorePanel extends Panel {
 	private EndpointStatsRepo endpointStatsRepo;
 	@SpringBean
 	private GlobalFormulae globalFormulae;
-	private final Label endpointURLLabel = new Label("endpointURL", "");
-	private final Label endpointScoreLabel = new Label("endpointScore", "");
 
 	public EndpointScorePanel(String id, EndpointScore endpointScore, EvaluatedResourceRepo evaluatedResourceRepo) {
 		super(id);
@@ -77,6 +79,26 @@ public class EndpointScorePanel extends Panel {
 		serverDownContainer.setVisible(!isAvailable);
 		add(serverNormalContainer);
 		add(serverDownContainer);
+
+		char globalGradeLetter = StringUtils.letterQualification(endpointScore.getScore());
+
+		List<Character> grades = Arrays.asList('a', 'b', 'c', 'd', 'f');
+		for (Character grade : grades) {
+			WebMarkupContainer gradeContainer = new WebMarkupContainer(grade + "-global-grade");
+			Label gradeLabel = new Label(grade + "-global-grade-value", endpointScore.getScoreString());
+			Label gradePercentageLabel = new Label(grade + "-global-grade-percentage", "%");
+			if (Character.toUpperCase(grade) != globalGradeLetter) {
+				gradeLabel.setVisible(false);
+				gradePercentageLabel.setVisible(false);
+				gradeContainer
+						.add(new AttributeModifier("class", grade + "-grade circular-grade d-inline-block faded"));
+			} else {
+				gradeContainer.add(new AttributeModifier("class", "circular-grade b-grade d-inline-block"));
+			}
+			add(gradeLabel);
+			add(gradePercentageLabel);
+			add(gradeContainer);
+		}
 
 		endpointURLLabel.setDefaultModelObject(endpointScore.getEndpointURL());
 	}
@@ -121,9 +143,9 @@ public class EndpointScorePanel extends Panel {
 				.get(errorTypeStats.keySet().stream().filter(e -> e.getId() == 3).collect(Collectors.toList()).get(0));
 		double externalLink = errorTypeStats
 				.get(errorTypeStats.keySet().stream().filter(e -> e.getId() == 4).collect(Collectors.toList()).get(0));
-		char globalGradeLetter = StringUtils.letterQualification(endpointScore.getScore());
-		response.render(OnDomReadyHeaderItem.forScript("initializeReportsPanel(" + endpointScore.getScoreString() + ", '"
-				+ globalGradeLetter + "', " + endpointScore.getSuccessfulRequestsRatio() + ", " + totalResources + ", "
+		response.render(OnDomReadyHeaderItem.forScript("initializeReportsPanel(" + endpointScore.getScoreString()
+				+ ", '" + StringUtils.letterQualification(endpointScore.getScore()) + "', "
+				+ endpointScore.getSuccessfulRequestsRatio() + ", " + totalResources + ", "
 				+ globalFormulae.getAverageDocumentQuality() + ", " + incorrectData + ", " + incompleteData + ", "
 				+ semanticallyIncorrect + ", " + externalLink + ");"));
 	}
