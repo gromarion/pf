@@ -135,7 +135,7 @@ public class EndpointScorePanel extends Panel {
 				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/count-up.js")));
 		response.render(JavaScriptHeaderItem
 				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/reports-panel.js")));
-		double incorrectData = errorTypeStats
+		/**double incorrectData = errorTypeStats
 				.get(errorTypeStats.keySet().stream().filter(e -> e.getId() == 1).collect(Collectors.toList()).get(0));
 		double incompleteData = errorTypeStats
 				.get(errorTypeStats.keySet().stream().filter(e -> e.getId() == 2).collect(Collectors.toList()).get(0));
@@ -147,6 +147,6 @@ public class EndpointScorePanel extends Panel {
 				+ ", '" + StringUtils.letterQualification(endpointScore.getScore()) + "', "
 				+ endpointScore.getSuccessfulRequestsRatio() + ", " + totalResources + ", "
 				+ globalFormulae.getAverageDocumentQuality() + ", " + incorrectData + ", " + incompleteData + ", "
-				+ semanticallyIncorrect + ", " + externalLink + ");"));
+				+ semanticallyIncorrect + ", " + externalLink + ");"));**/
 	}
 }
