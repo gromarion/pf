@@ -20,8 +20,7 @@ public class RequestHandler {
 	public static String sendGet(EndpointStatsRepo endpointStatsRepo, String endpointURL, String url)
 			throws IOException {
 		Cache cache = Cache.getInstance();
-		String cacheKey = endpointURL + url;
-		Object object = cache.get(cacheKey);
+		Object object = cache.get(url);
 		if (object != null) {
 			return object.toString();
 		}
@@ -48,7 +47,7 @@ public class RequestHandler {
 		}
 		in.close();
 		String stringResponse = response.toString();
-		cache.put(cacheKey, stringResponse);
+		cache.put(url, stringResponse);
 		return stringResponse;
 	}
 

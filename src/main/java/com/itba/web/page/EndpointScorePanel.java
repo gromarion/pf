@@ -25,7 +25,6 @@ import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.formulae.EndpointQualityFormulae.EndpointScore;
 import com.itba.formulae.GlobalFormulae;
-import com.itba.web.WicketSession;
 
 import lib.StringUtils;
 
@@ -42,7 +41,8 @@ public class EndpointScorePanel extends Panel {
 	@SpringBean
 	private GlobalFormulae globalFormulae;
 
-	public EndpointScorePanel(String id, EndpointScore endpointScore, EvaluatedResourceRepo evaluatedResourceRepo) {
+	public EndpointScorePanel(String id, EndpointScore endpointScore, EvaluatedResourceRepo evaluatedResourceRepo,
+			Campaign campaign) {
 		super(id);
 		this.errorColors = new HashMap<>();
 		errorColors.put("Tipodedatoincorrectamenteextraído", "#FF7777");
@@ -52,7 +52,6 @@ public class EndpointScorePanel extends Panel {
 		this.endpointScore = endpointScore;
 		this.evaluatedResourceRepo = evaluatedResourceRepo;
 
-		Campaign campaign = WicketSession.get().getEvaluationSession().get().getCampaign();
 		boolean hasLicense;
 		boolean isAvailable;
 		try {
@@ -66,6 +65,8 @@ public class EndpointScorePanel extends Panel {
 		} catch (IOException e) {
 			isAvailable = false;
 		}
+		WebMarkupContainer globalGradePanel = new WebMarkupContainer("global-grade-panel");
+		WebMarkupContainer documentQualityPanel = new WebMarkupContainer("document-quality-panel");
 		WebMarkupContainer hasLicenseContainer = new WebMarkupContainer("hasLicense");
 		WebMarkupContainer doesntHaveLicenseContainer = new WebMarkupContainer("doesntHaveLicense");
 		WebMarkupContainer serverNormalContainer = new WebMarkupContainer("SPARQLServerNormal");
@@ -75,10 +76,16 @@ public class EndpointScorePanel extends Panel {
 		add(hasLicenseContainer);
 		add(doesntHaveLicenseContainer);
 
+		boolean anyEndpointStats = !campaign.getSessions().isEmpty();
 		serverNormalContainer.setVisible(isAvailable);
 		serverDownContainer.setVisible(!isAvailable);
+		globalGradePanel.setVisible(anyEndpointStats);
+		documentQualityPanel.setVisible(anyEndpointStats);
+
 		add(serverNormalContainer);
 		add(serverDownContainer);
+		add(globalGradePanel);
+		add(documentQualityPanel);
 
 		char globalGradeLetter = StringUtils.letterQualification(endpointScore.getScore());
 
@@ -93,11 +100,11 @@ public class EndpointScorePanel extends Panel {
 				gradeContainer
 						.add(new AttributeModifier("class", grade + "-grade circular-grade d-inline-block faded"));
 			} else {
-				gradeContainer.add(new AttributeModifier("class", "circular-grade b-grade d-inline-block"));
+				gradeContainer.add(new AttributeModifier("class", grade + "-grade circular-grade d-inline-block"));
 			}
-			add(gradeLabel);
-			add(gradePercentageLabel);
-			add(gradeContainer);
+			globalGradePanel.add(gradeLabel);
+			globalGradePanel.add(gradePercentageLabel);
+			globalGradePanel.add(gradeContainer);
 		}
 
 		endpointURLLabel.setDefaultModelObject(endpointScore.getEndpointURL());

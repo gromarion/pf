@@ -13,11 +13,11 @@ import com.itba.domain.model.EndpointStats;
 import com.itba.domain.repository.EndpointStatsRepo;
 
 @Repository
-public class HIbernateEndpointStatsRepo extends AbstractHibernateRepo implements EndpointStatsRepo, Serializable {
+public class HibernateEndpointStatsRepo extends AbstractHibernateRepo implements EndpointStatsRepo, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	public HIbernateEndpointStatsRepo(SessionFactory sessionFactory) {
+	public HibernateEndpointStatsRepo(SessionFactory sessionFactory) {
 		super(sessionFactory);
 	}
 
@@ -39,11 +39,15 @@ public class HIbernateEndpointStatsRepo extends AbstractHibernateRepo implements
 	
 	@Override
 	public BigDecimal getSuccessfulRequestsRatio(String endpointURL) {
-		return (BigDecimal.valueOf((Long)getSession().createQuery(
-				"SELECT count(*) FROM EndpointStats e"
-				+ " WHERE e.endpointUrl = '" + endpointURL + "'"
-				+ " AND (e.statusCode LIKE '2%' OR e.statusCode LIKE '3%')").list().get(0)))
-				.divide(BigDecimal.valueOf(getAllForEndpoint(endpointURL).size()), 3, RoundingMode.HALF_EVEN)
+		BigDecimal endpointStatsCount = BigDecimal.valueOf(getAllForEndpoint(endpointURL).size());
+		if (endpointStatsCount.intValue() == 0) {
+			return new BigDecimal(0);
+		}
+		BigDecimal successfullEndpointStatsCount = (BigDecimal.valueOf((Long)getSession().createQuery(
+			"SELECT count(*) FROM EndpointStats e"
+			+ " WHERE e.endpointUrl = '" + endpointURL + "'"
+			+ " AND (e.statusCode LIKE '2%' OR e.statusCode LIKE '3%')").list().get(0)));
+		return successfullEndpointStatsCount.divide(endpointStatsCount, 3, RoundingMode.HALF_EVEN)
 				.multiply(BigDecimal.valueOf(100)).setScale(1, RoundingMode.HALF_EVEN);
 	}
 }
