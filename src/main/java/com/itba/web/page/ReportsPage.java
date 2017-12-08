@@ -59,7 +59,6 @@ public class ReportsPage extends BasePage {
 				final EndpointScorePanel endpointScorePanel = new EndpointScorePanel("endpointScorePanel", endpointScore,
 						evaluatedResourceRepo);
 				final WebMarkupContainer notFound = new WebMarkupContainer("notFound");
-				endpointScorePanel.setVisible(!endpointScore.getEndpointStats().isEmpty());
 				notFound.setVisible(endpointScore.getEndpointStats().isEmpty());
 				add(notFound);
 				add(campaignDropDownChoice);
@@ -67,7 +66,6 @@ public class ReportsPage extends BasePage {
 
 				boolean anyReports = !endpointScoreUpdate.getEndpointStats().isEmpty();
 				notFound.setVisible(!anyReports);
-				endpointScorePanel.setVisible(anyReports);
 				endpointScorePanel.setEndpointScore(endpointScoreUpdate);
 
 				OnChangeAjaxBehavior onChangeAjaxBehavior = new OnChangeAjaxBehavior() {
