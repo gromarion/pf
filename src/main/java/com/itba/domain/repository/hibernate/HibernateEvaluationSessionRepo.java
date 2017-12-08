@@ -36,8 +36,9 @@ public class HibernateEvaluationSessionRepo extends AbstractHibernateRepo implem
 				+ " AND e.campaign = " + campaign.getId());
 
 		List<EvaluationSession> result = query.list();
-		if (result.isEmpty())
+		if (result.isEmpty()) {
 			return Optional.absent();
+		}
 		Preconditions.checkState(result.size() == 1, "Inconsistent state: duplicated session");
 		return Optional.of(result.get(0));
 	}

@@ -25,7 +25,6 @@ import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.formulae.EndpointQualityFormulae.EndpointScore;
 import com.itba.formulae.GlobalFormulae;
-import com.itba.web.WicketSession;
 
 import lib.StringUtils;
 
@@ -42,7 +41,7 @@ public class EndpointScorePanel extends Panel {
 	@SpringBean
 	private GlobalFormulae globalFormulae;
 
-	public EndpointScorePanel(String id, EndpointScore endpointScore, EvaluatedResourceRepo evaluatedResourceRepo) {
+	public EndpointScorePanel(String id, EndpointScore endpointScore, EvaluatedResourceRepo evaluatedResourceRepo, Campaign campaign) {
 		super(id);
 		this.errorColors = new HashMap<>();
 		errorColors.put("Tipodedatoincorrectamenteextraído", "#FF7777");
@@ -52,7 +51,6 @@ public class EndpointScorePanel extends Panel {
 		this.endpointScore = endpointScore;
 		this.evaluatedResourceRepo = evaluatedResourceRepo;
 
-		Campaign campaign = WicketSession.get().getEvaluationSession().get().getCampaign();
 		boolean hasLicense;
 		boolean isAvailable;
 		try {
@@ -77,7 +75,7 @@ public class EndpointScorePanel extends Panel {
 		add(hasLicenseContainer);
 		add(doesntHaveLicenseContainer);
 
-		boolean anyEndpointStats = !endpointScore.getEndpointStats().isEmpty();
+		boolean anyEndpointStats = !campaign.getSessions().isEmpty();
 		serverNormalContainer.setVisible(isAvailable);
 		serverDownContainer.setVisible(!isAvailable);
 		globalGradePanel.setVisible(anyEndpointStats);

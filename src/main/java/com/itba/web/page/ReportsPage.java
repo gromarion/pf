@@ -54,37 +54,32 @@ public class ReportsPage extends BasePage {
 						}
 					}, new ChoiceRenderer<Campaign>("name"));
 
-			try {
-				EndpointScore endpointScore = endpointQualityFormulae.getScore(selectedCampaignModel.getObject());
-				final EndpointScorePanel endpointScorePanel = new EndpointScorePanel("endpointScorePanel", endpointScore,
-						evaluatedResourceRepo);
-				final WebMarkupContainer notFound = new WebMarkupContainer("notFound");
-				notFound.setVisible(endpointScore.getEndpointStats().isEmpty());
-				add(notFound);
-				add(campaignDropDownChoice);
-				add(endpointScorePanel);
+			EndpointScore endpointScore = endpointQualityFormulae.getScore(selectedCampaignModel.getObject());
+			final EndpointScorePanel endpointScorePanel = new EndpointScorePanel("endpointScorePanel", endpointScore,
+					evaluatedResourceRepo, campaign);
+			final WebMarkupContainer notFound = new WebMarkupContainer("notFound");
+			notFound.setVisible(endpointScore.getEndpointStats().isEmpty());
+			add(notFound);
+			add(campaignDropDownChoice);
+			add(endpointScorePanel);
 
-				boolean anyReports = !endpointScoreUpdate.getEndpointStats().isEmpty();
-				notFound.setVisible(!anyReports);
-				endpointScorePanel.setEndpointScore(endpointScoreUpdate);
+			boolean anyReports = !endpointScoreUpdate.getEndpointStats().isEmpty();
+			notFound.setVisible(!anyReports);
+			endpointScorePanel.setEndpointScore(endpointScoreUpdate);
 
-				OnChangeAjaxBehavior onChangeAjaxBehavior = new OnChangeAjaxBehavior() {
-					@Override
-					protected void onUpdate(AjaxRequestTarget target) {
-						PageParameters params = new PageParameters();
-						params.set(CAMPAIGN_ID_PARAM, selectedCampaignModel.getObject().getId());
+			OnChangeAjaxBehavior onChangeAjaxBehavior = new OnChangeAjaxBehavior() {
+				@Override
+				protected void onUpdate(AjaxRequestTarget target) {
+					PageParameters params = new PageParameters();
+					params.set(CAMPAIGN_ID_PARAM, selectedCampaignModel.getObject().getId());
 
-						setResponsePage(new ReportsPage(params));
-					}
-				};
-				campaignDropDownChoice.add(onChangeAjaxBehavior);
-			} catch (IOException e) {
-				setResponsePage(ErrorPage.class);
-				e.printStackTrace();
-			}
-		} catch (IOException e1) {
-			e1.printStackTrace();
-			setResponsePage(new ErrorPage());
+					setResponsePage(ReportsPage.class, params);
+				}
+			};
+			campaignDropDownChoice.add(onChangeAjaxBehavior);
+		} catch (IOException e) {
+			e.printStackTrace();
+			setResponsePage(ErrorPage.class);
 		}
 	}
 }
