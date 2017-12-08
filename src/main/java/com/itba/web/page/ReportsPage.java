@@ -58,7 +58,7 @@ public class ReportsPage extends BasePage {
 			final EndpointScorePanel endpointScorePanel = new EndpointScorePanel("endpointScorePanel", endpointScore,
 					evaluatedResourceRepo, campaign);
 			final WebMarkupContainer notFound = new WebMarkupContainer("notFound");
-			notFound.setVisible(endpointScore.getEndpointStats().isEmpty());
+			notFound.setVisible(campaign.getSessions().isEmpty());
 			add(notFound);
 			add(campaignDropDownChoice);
 			add(endpointScorePanel);

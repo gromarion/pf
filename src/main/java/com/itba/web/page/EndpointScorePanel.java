@@ -41,7 +41,8 @@ public class EndpointScorePanel extends Panel {
 	@SpringBean
 	private GlobalFormulae globalFormulae;
 
-	public EndpointScorePanel(String id, EndpointScore endpointScore, EvaluatedResourceRepo evaluatedResourceRepo, Campaign campaign) {
+	public EndpointScorePanel(String id, EndpointScore endpointScore, EvaluatedResourceRepo evaluatedResourceRepo,
+			Campaign campaign) {
 		super(id);
 		this.errorColors = new HashMap<>();
 		errorColors.put("Tipodedatoincorrectamenteextraído", "#FF7777");
@@ -80,7 +81,7 @@ public class EndpointScorePanel extends Panel {
 		serverDownContainer.setVisible(!isAvailable);
 		globalGradePanel.setVisible(anyEndpointStats);
 		documentQualityPanel.setVisible(anyEndpointStats);
-		
+
 		add(serverNormalContainer);
 		add(serverDownContainer);
 		add(globalGradePanel);
@@ -99,7 +100,7 @@ public class EndpointScorePanel extends Panel {
 				gradeContainer
 						.add(new AttributeModifier("class", grade + "-grade circular-grade d-inline-block faded"));
 			} else {
-				gradeContainer.add(new AttributeModifier("class", "circular-grade b-grade d-inline-block"));
+				gradeContainer.add(new AttributeModifier("class", grade + "-grade circular-grade d-inline-block"));
 			}
 			globalGradePanel.add(gradeLabel);
 			globalGradePanel.add(gradePercentageLabel);
