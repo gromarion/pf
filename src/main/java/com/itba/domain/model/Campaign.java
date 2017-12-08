@@ -31,6 +31,9 @@ public class Campaign extends PersistentEntity implements Serializable {
 	
 	@Column(name = "params")
 	private String params;
+	
+	@Column(name = "description")
+	private String description;
 
 	@OneToMany(mappedBy = "campaign", cascade = CascadeType.ALL)
 	private Set<EvaluationSession> sessions;
@@ -38,11 +41,12 @@ public class Campaign extends PersistentEntity implements Serializable {
 	Campaign() {
 	}
 
-	public Campaign(String name, String endpoint, String graph, String params) {
+	public Campaign(String name, String endpoint, String graph, String params, String description) {
 		this.name = name;
 		this.endpoint = endpoint;
 		this.graphs = graph;
 		this.params = params;
+		this.description = description;
 	}
 
 	public boolean hasEvaluations() {
@@ -58,6 +62,14 @@ public class Campaign extends PersistentEntity implements Serializable {
 		return sessions;
 	}
 	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public String getName() {
 		return name;
 	}

@@ -3,6 +3,7 @@ package com.itba.web.page;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -36,12 +37,14 @@ public class EditEndpointPage extends BasePage {
 		final TextField<String> name = new TextField<String>("name", Model.of(campaignModel.getObject().getName()));
 		final TextField<String> endpoint = new TextField<String>("endpoint", Model.of(campaignModel.getObject().getEndpoint()));
 		final TextField<String> graph = new TextField<String>("graph", Model.of(campaignModel.getObject().getGraphs()));
-		final TextField<String> params = new TextField<String>("params", Model.of(campaignModel.getObject().getParams()));
+		final TextArea<String> params = new TextArea<String>("params", Model.of(campaignModel.getObject().getParams()));
+		final TextArea<String> description = new TextArea<String>("description", Model.of(campaignModel.getObject().getDescription()));
 		
 		form.add(name);
 		form.add(endpoint);
 		form.add(graph);
 		form.add(params);
+		form.add(description);
 		form.add(new Button("submit", new ResourceModel("submit")) {
 			private static final long serialVersionUID = 1L;
 
@@ -51,6 +54,7 @@ public class EditEndpointPage extends BasePage {
 				campaignModel.getObject().setEndpoint(endpoint.getModelObject());
 				campaignModel.getObject().setGraphs(graph.getModelObject());
 				campaignModel.getObject().setParams(params.getModelObject());
+				campaignModel.getObject().setDescription(description.getModelObject());
 				setResponsePage(AdminEndpointsPage.class);
 			}
 		});
