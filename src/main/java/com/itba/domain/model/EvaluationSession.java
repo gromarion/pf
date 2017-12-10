@@ -1,5 +1,6 @@
 package com.itba.domain.model;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -9,16 +10,14 @@ import javax.persistence.Table;
 
 import com.itba.domain.PersistentEntity;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "evaluation_session")
-public class EvaluationSession extends PersistentEntity {
-
+public class EvaluationSession extends PersistentEntity implements Serializable {
     @ManyToOne
     private Campaign campaign;
-
     @ManyToOne
     private User user;
-
     @OneToMany(mappedBy = "session")
     private Set<EvaluatedResource> evaluatedResources;
 

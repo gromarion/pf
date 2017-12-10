@@ -1,5 +1,6 @@
 package com.itba.domain.model;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Set;
 
@@ -11,9 +12,10 @@ import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 
 import com.itba.domain.PersistentEntity;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "users")
-public class User extends PersistentEntity {
+public class User extends PersistentEntity implements Serializable {
 	
 	public static final String ADMIN_ROLE = "ADMIN";
 	public static final String EVALUATOR_ROLE = "EVALUATOR";
