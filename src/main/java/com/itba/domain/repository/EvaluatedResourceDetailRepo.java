@@ -10,12 +10,12 @@ import com.itba.domain.repository.hibernate.HibernateRepo;
 
 public interface EvaluatedResourceDetailRepo extends HibernateRepo {
 
-	List<EvaluatedResourceDetail> getPreviousErrors(String resource, String predicate, String object);
-
 	List<String> getAlreadyEvaluatedForResource(EvaluatedResource resource);
 
 	Long getQtyByErrorAndCampaign(Error error, Campaign campaign);
 
 	Long getQtyByError(Error error);
+
+	List<EvaluatedResourceDetail> getPreviousErrors(EvaluatedResource resource, String predicate, String object);
 
 }

@@ -184,7 +184,7 @@ public class ErrorsByUserPage extends BasePage {
 								Optional.of(evaluatedResource.getModelObject().getSession())).getScore());
 						evaluatedResource.getModelObject().setScore(score);
 					}
-					evaluatedResource.add(new Label("resourceScore", StringUtils.formatDouble(score.setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue(), 3)));
+					evaluatedResource.add(new Label("resourceScore", StringUtils.formatDouble(score.setScale(3, BigDecimal.ROUND_HALF_EVEN).doubleValue(), 3)));
 				} catch (JSONException | IOException e) {
 					e.printStackTrace();
 					setResponsePage(ErrorPage.class);

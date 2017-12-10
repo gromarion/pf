@@ -124,6 +124,7 @@ public class ResultItemPage extends BasePage {
 							parameters.add("predicate", resultItem.get(0));
 							parameters.add("object", resultItem.get(1));
 							parameters.add("resource", resource);
+							if (resourceModel.getObject() != null) parameters.add("sessionId", resourceModel.getObject().getSession().getId());
 							setResponsePage(ErrorSelectionPage.class, parameters);
 						}
 					});

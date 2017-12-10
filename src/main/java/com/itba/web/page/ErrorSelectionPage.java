@@ -29,6 +29,7 @@ import com.itba.domain.model.EvaluationSession;
 import com.itba.domain.repository.ErrorRepo;
 import com.itba.domain.repository.EvaluatedResourceDetailRepo;
 import com.itba.domain.repository.EvaluatedResourceRepo;
+import com.itba.domain.repository.EvaluationSessionRepo;
 import com.itba.formulae.ManualErrorsFormulae;
 import com.itba.web.WicketSession;
 import com.itba.web.feedback.CustomFeedbackPanel;
@@ -45,13 +46,15 @@ public class ErrorSelectionPage extends BasePage {
 	@SpringBean
 	private ErrorRepo errorRepo;
 	@SpringBean
+	private EvaluationSessionRepo evaluationSessionRepo;
+	@SpringBean
 	private EvaluatedResourceRepo evaluatedResourceRepo;
 	@SpringBean
 	private EvaluatedResourceDetailRepo evaluatedResourceDetailRepo;
 
 	private final IModel<Error> errorModel = new EntityModel<Error>(Error.class);
-	private final IModel<EvaluationSession> currentSession = new EntityModel<EvaluationSession>(
-			EvaluationSession.class);
+	private final IModel<EvaluationSession> currentSession = new EntityModel<EvaluationSession>(EvaluationSession.class);
+	private final IModel<EvaluatedResource> evaluatedResource = new EntityModel<EvaluatedResource>(EvaluatedResource.class);
 	private final IModel<String> errorDescription = Model.of();
 	private final IModel<String> errorExample = Model.of();
 	private final IModel<List<Error>> availableErrors = new LoadableDetachableModel<List<Error>>() {
@@ -65,12 +68,17 @@ public class ErrorSelectionPage extends BasePage {
     	if (!((WicketSession) getSession()).isSignedIn()) {
         	setResponsePage(LoginPage.class);
 		}
+    	
+        currentSession.setObject(WicketSession.get().getEvaluationSession().get());
 
     	final String predicate = parameters.get("predicate").toString();
     	final String object = parameters.get("object").toString();
     	final String resource = parameters.get("resource").toString();
+    	if (parameters.getNamedKeys().contains("sessionId")) {
+    		evaluatedResource.setObject(evaluatedResourceRepo.getResourceForSession(evaluationSessionRepo.get(parameters.get("sessionId").toInt()), resource).orNull());
+    	}
     	
-    	SelectedErrorsTablePanel selectedErrorsTablePanel = new SelectedErrorsTablePanel("selectedErrorsTablePanel", predicate, object, resource);
+    	SelectedErrorsTablePanel selectedErrorsTablePanel = new SelectedErrorsTablePanel("selectedErrorsTablePanel", predicate, object, evaluatedResource);
     	
     	add(selectedErrorsTablePanel);
     	IModel<List<EvaluatedResourceDetail>> usedErrorDetails = selectedErrorsTablePanel.getUsedErrorDetails();
@@ -86,7 +94,6 @@ public class ErrorSelectionPage extends BasePage {
     		availableErrors.getObject().remove(errorRepo.get(4));
     	}
     	
-        currentSession.setObject(WicketSession.get().getEvaluationSession().get());
             	
         final TextArea<String> comments = new TextArea<String>("comments", Model.of(""));
         final ExternalLink predicateLink = new ExternalLink("predicateLink", predicate, predicate);
@@ -147,11 +154,10 @@ public class ErrorSelectionPage extends BasePage {
 				EvaluatedResourceDetail detail = new EvaluatedResourceDetail(evaluatedResource.get(), errorModel.getObject(), predicate, object);
 				detail.setComment(comments.getValue());
 				evaluatedResource.get().getDetails().add(detail);
-//				evaluatedResourceDetailRepo.save(detail);
 				
 				try {
 					Score score = manualErrorsFormulae.compute(resource, Optional.of(evaluatedResource.get().getSession()));
-					evaluatedResource.get().setScore(new BigDecimal(score.getScore()));
+					evaluatedResource.get().setScore(new BigDecimal(score.getScore()).setScale(3, BigDecimal.ROUND_HALF_EVEN));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -160,6 +166,7 @@ public class ErrorSelectionPage extends BasePage {
                 parameters.add("predicate", predicate);
                 parameters.add("object", object);
                 parameters.add("resource", resource);
+                parameters.add("sessionId", evaluatedResource.get().getSession().getId());
                 setResponsePage(ErrorSelectionPage.class, parameters);
             }
         };
@@ -187,12 +194,17 @@ public class ErrorSelectionPage extends BasePage {
 		};
 		form.add(backButton);
         
-        add(form.setVisible(availableErrors.getObject().size() > 0));
+		boolean showForm = availableErrors.getObject().size() > 0 &&
+				(evaluatedResource.getObject() == null || (evaluatedResource.getObject().getSession().getUser().equals(WicketSession.get().getUser())));
+		
+        add(form.setVisible(showForm));
     }
 
 	@Override
 	protected void onDetach() {
 		super.onDetach();
 		errorModel.detach();
+		currentSession.detach();
+		evaluatedResource.detach();
 	}
 }

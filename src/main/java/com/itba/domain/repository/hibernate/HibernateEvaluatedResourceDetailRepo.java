@@ -26,9 +26,12 @@ public class HibernateEvaluatedResourceDetailRepo extends AbstractHibernateRepo
 	}
 
 	@Override
-	public List<EvaluatedResourceDetail> getPreviousErrors(String resource, String predicate, String object) {
-		List<EvaluatedResourceDetail> result = find("Select detail from EvaluatedResourceDetail detail "
-				+ " where detail.resource.resource = ? " + " and detail.predicate = ? " + " and detail.object = ? ",
+	public List<EvaluatedResourceDetail> getPreviousErrors(final EvaluatedResource resource, String predicate, String object) {
+		List<EvaluatedResourceDetail> result = find(
+				"select detail from EvaluatedResourceDetail detail "
+				+ " where detail.resource = ? "
+				+ " and detail.predicate = ? "
+				+ " and detail.object = ? ",
 				resource, predicate, object);
 		return result;
 	}
@@ -54,12 +57,14 @@ public class HibernateEvaluatedResourceDetailRepo extends AbstractHibernateRepo
 	
 	@Override
 	public Long getQtyByErrorAndCampaign(final Error error, final Campaign campaign) {
+		// XXX: se hace el GROUP BY para evitar contar varias veces un mismo error en un mismo recurso marcado por distintos usuarios
 		Query query = getSession()
-				.createQuery("SELECT count(*) FROM EvaluatedResourceDetail d "
+				.createQuery("SELECT d.resource.session.campaign.id, d.resource.resource, d.predicate, d.object, d.error.id"
+						+ " FROM EvaluatedResourceDetail d "
 						+ " WHERE d.error = " + error.getId()
 						+ " AND d.resource.session.campaign = " + campaign.getId()
+						+ " GROUP BY d.resource.session.campaign.id, d.resource.resource, d.predicate, d.object, d.error.id"
 						);
-
-		return (Long) query.uniqueResult();
+		return new Long(query.list().size());
 	}
 }
