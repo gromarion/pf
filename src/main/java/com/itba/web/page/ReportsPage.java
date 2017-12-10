@@ -8,6 +8,7 @@ import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -53,6 +54,18 @@ public class ReportsPage extends BasePage {
 							return campaigns.getAll();
 						}
 					}, new ChoiceRenderer<Campaign>("name"));
+			
+			Link<Void> compareToSomeOtherEndpoint = new Link<Void>("compareToSomeOtherEndpoint") {
+				@Override
+				public void onClick() {
+					PageParameters params = new PageParameters();
+					params.set("campaignId", campaign.getId());
+
+					setResponsePage(CompareEndpointsPage.class, params);
+				}
+			};
+			
+			add(compareToSomeOtherEndpoint);
 
 			EndpointScore endpointScore = endpointQualityFormulae.getScore(selectedCampaignModel.getObject());
 			final EndpointScorePanel endpointScorePanel = new EndpointScorePanel("endpointScorePanel", endpointScore,

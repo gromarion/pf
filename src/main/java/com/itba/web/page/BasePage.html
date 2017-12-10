@@ -24,14 +24,18 @@
 							<wicket:message key="reports">Check reports</wicket:message>
 						</a>
 					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#" wicket:id="errorsByUserPage">
+							<i class="fa fa-list"/>
+							<span wicket:id="errorsByUserPageLabel">Evaluations</span>
+						</a>
+					</li>
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" id="userMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<i class="fa fa-user-circle-o"/>
 							<span wicket:id="user">user</span>
 						</a>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenuButton">
-							<a class="dropdown-item" href="#" wicket:id="errorsByUserPage">
-								<span wicket:id="errorsByUserPageLabel">Evaluations</span>
-							</a>
 							<a class="dropdown-item" href="#" wicket:id="editUserProfile">
 								<wicket:message key="editUserProfile">Edit profile</wicket:message>
 							</a class="dropdown-item">

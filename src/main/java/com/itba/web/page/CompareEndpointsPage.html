@@ -1,0 +1,41 @@
+<wicket:extend xmlns:wicket="http://www.w3.org/1999/xhtml">
+	<div class="container h-100">
+		<div class="row margin-top-75 justify-content-center align-items-center">
+			<div class="container">
+				<div class="row justify-content-center align-items-center">
+					<div class="container">
+						<div class="row justify-content-center align-items-center">
+							<div class="col-5">
+								<h1 class="center-text">
+									Comparar Endpoints
+								</h1>
+								<p class="center-text">
+									<span>
+										Elija dos endpoints distintos y compare la calidad de ambos lado a lado.
+									</span>
+								</p>
+								<form wicket:id="compareEndpointsForm" method="post" class="margin-top-75">
+									<div class="form-group">
+										<label for="campaignA">
+											<wicket:message key="campaignA">Campaña 1</wicket:message>
+										</label>
+										<select class="form-control" wicket:id="campaignA" id="campaignA"></select>
+									</div>
+									<div class="form-group">
+										<label for="campaignB">
+											<wicket:message key="campaignB">Campaña 2</wicket:message>
+										</label>
+										<select class="form-control" wicket:id="campaignB" id="campaignB"></select>
+									</div>
+									<button type="submit" class="btn btn-primary">
+										<wicket:message key="submit">Comparar</wicket:message>
+									</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</wicket:extend>

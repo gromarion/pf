@@ -69,30 +69,29 @@
 					</table>
 				</div>
 				<h1 class="center-text margin-top-50">ESTADISTICAS DEL ENDPOINT</h1>
-				<div class="row">
-					<div class="card w-100 mx-auto">
-						<div class="card-body">
-							<h6 class="card-title center-text">Calidad</h6>
-							<br>
-							<h1 class="center-text">
-								<span id="endpoint-quality">0</span>
-								%
-							</h1>
-						</div>
+				<h5 class="center-text">
+					Calidad
+				</h5>
+				<div class="center-text">
+					<span class="total-resources" id="endpoint-quality">
+						0
+					</span>
+					<span class="total-resources">
+						%
+					</span>
+				</div>
+				<div class="card w-100 mx-auto" wicket:id="SPARQLServerNormal">
+					<div class="card-body green-card">
+						<h6 class="card-title center-text">Estado</h6>
+						<br>
+						<h1 class="center-text green">NORMAL</h1>
 					</div>
-					<div class="card w-100 mx-auto" wicket:id="SPARQLServerNormal">
-						<div class="card-body green-card">
-							<h6 class="card-title center-text">Estado</h6>
-							<br>
-							<h1 class="center-text green">NORMAL</h1>
-						</div>
-					</div>
-					<div class="card w-100 mx-auto" wicket:id="SPARQLServerDown">
-						<div class="card-body red-card">
-							<h6 class="card-title center-text">Estado</h6>
-							<br>
-							<h1 class="center-text red">CAIDO</h1>
-						</div>
+				</div>
+				<div class="card w-100 mx-auto" wicket:id="SPARQLServerDown">
+					<div class="card-body red-card">
+						<h6 class="card-title center-text">Estado</h6>
+						<br>
+						<h1 class="center-text red">CAIDO</h1>
 					</div>
 				</div>
 				<div class="row">
