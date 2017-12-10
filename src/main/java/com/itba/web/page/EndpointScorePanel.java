@@ -85,7 +85,8 @@ public class EndpointScorePanel extends Panel {
 		add(globalGradePanel);
 		add(documentQualityPanel);
 
-		char globalGradeLetter = StringUtils.letterQualification(endpointScore.getScore());
+		double globalScore = globalFormulae.getGlobalScore();
+		char globalGradeLetter = StringUtils.letterQualification(globalScore);
 
 		List<Character> grades = Arrays.asList('a', 'b', 'c', 'd', 'f');
 		for (Character grade : grades) {
@@ -140,7 +141,6 @@ public class EndpointScorePanel extends Panel {
 				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/count-up.js")));
 		response.render(JavaScriptHeaderItem
 				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/reports-panel.js")));
-		double globalScore = globalFormulae.getGlobalScore();
 		double incorrectData = errorTypeStats
 				.get(errorTypeStats.keySet().stream().filter(e -> e.getId() == 1).collect(Collectors.toList()).get(0));
 		double incompleteData = errorTypeStats
@@ -149,6 +149,7 @@ public class EndpointScorePanel extends Panel {
 				.get(errorTypeStats.keySet().stream().filter(e -> e.getId() == 3).collect(Collectors.toList()).get(0));
 		double externalLink = errorTypeStats
 				.get(errorTypeStats.keySet().stream().filter(e -> e.getId() == 4).collect(Collectors.toList()).get(0));
+		double globalScore = globalFormulae.getGlobalScore();
 		response.render(OnDomReadyHeaderItem.forScript(
 				"initializeReportsPanel(" + globalScore + ", '" + StringUtils.letterQualification(globalScore) + "', "
 						+ endpointScore.getScoreString() + ", " + endpointScore.getSuccessfulRequestsRatio() + ", "

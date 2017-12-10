@@ -7,13 +7,13 @@ public class StringUtils {
 	
 	private static final String[] HTTP_SCHEMES = {"http","https"};
 	
-	private static final double A_FLOOR = 0.9;
-	private static final double B_FLOOR = 0.8;
-	private static final double B_CEIL = 0.89;
-	private static final double C_FLOOR = 0.7;
-	private static final double C_CEIL = 0.79;
-	private static final double D_FLOOR = 0.6;
-	private static final double D_CEIL = 0.69;
+	private static final double A_FLOOR = 90;
+	private static final double B_FLOOR = 80;
+	private static final double B_CEIL = 89;
+	private static final double C_FLOOR = 70;
+	private static final double C_CEIL = 79;
+	private static final double D_FLOOR = 60;
+	private static final double D_CEIL = 69;
 
 	public static boolean containsURL(String inputStr) {
 		for (int i = 0; i < HTTP_SCHEMES.length; i++) {

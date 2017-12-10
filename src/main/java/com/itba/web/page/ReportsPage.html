@@ -3,8 +3,17 @@
 	<div wicket:id="notFound" class="alert alert-info">
 		<wicket:message key="notFound">Not found</wicket:message>
 	</div>
-	<div class="row">
-		<select wicket:id="campaigns" class="custom-select"></select>
+	<div class="container">
+		<div class="row">
+			<span class="col-6">
+				<select wicket:id="campaigns" class="custom-select"></select>
+			</span>
+			<span class="col-6 pull-right">
+				<button wicket:id="compareToSomeOtherEndpoint" class="btn btn-primary float-right">
+					<wicket:message key="compareToSomeOtherEndpoint">Compare to some other endpoint</wicket:message>
+				</button>
+			</span>
+		</div>
 	</div>
 	<div class="row">
 		<div class="container">
