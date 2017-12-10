@@ -1,5 +1,7 @@
 package com.itba.web.page;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -56,8 +58,11 @@ public class ErrorsTablePanel extends Panel {
 							String key = detail.getError().getName();
 							if (!scoreImpact.containsKey(key))
 								scoreImpact.put(key, new Double(0));
-							scoreImpact.put(key, scoreImpact.get(key)
-									+ manualErrorsFormulae.computeIndividual(resourceModel.getObject(), detail.getError().getId()));
+							scoreImpact.put(key,
+									scoreImpact.get(key)
+									+ new BigDecimal(manualErrorsFormulae.computeIndividual(resourceModel.getObject(), detail.getError().getId()))
+										.setScale(3, RoundingMode.HALF_EVEN).doubleValue()
+							);
 						}
 					}
 				} catch (Exception e) {
