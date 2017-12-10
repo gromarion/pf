@@ -152,14 +152,23 @@ public class ErrorsByUserPage extends BasePage {
 						return availableErrors.getObject();
 					}
 				}, new ChoiceRenderer<Error>("name")) {
+			
+			@Override
+			protected String getNullValidDisplayValue() {
+				return "Elija uno...";
+			}
 		};
+		
+		errorListChoice.setNullValid(true);
 
 		OnChangeAjaxBehavior onChangeAjaxBehavior = new OnChangeAjaxBehavior() {
 			@Override
 			protected void onUpdate(AjaxRequestTarget target) {
-				int errorId = errorModel.getObject().getId();
 				PageParameters parameters = new PageParameters();
-				parameters.add("errorId", errorId);
+				if (errorModel.getObject() != null) {
+					int errorId = errorModel.getObject().getId();
+					parameters.add("errorId", errorId);
+				}
 				setResponsePage(ErrorsByUserPage.class, parameters);
 			}
 		};

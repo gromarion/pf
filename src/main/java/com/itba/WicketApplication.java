@@ -1,5 +1,6 @@
 package com.itba;
 
+import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.Session;
 import org.apache.wicket.authroles.authorization.strategies.role.RoleAuthorizationStrategy;
 import org.apache.wicket.markup.html.WebPage;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 import com.itba.common.HibernateRequestCycleListener;
 import com.itba.domain.model.UserRolesAuthorizer;
 import com.itba.web.WicketSession;
+import com.itba.web.page.ErrorPage;
 import com.itba.web.page.LoginPage;
 
 @Component
@@ -39,11 +41,21 @@ public class WicketApplication extends WebApplication {
 		getSecuritySettings().setAuthorizationStrategy(new RoleAuthorizationStrategy(new UserRolesAuthorizer()));
 		getComponentInstantiationListeners().add(new SpringComponentInjector(this));
 		getRequestCycleListeners().add(new HibernateRequestCycleListener(sessionFactory));
+		
+		getApplicationSettings().setPageExpiredErrorPage(LoginPage.class);
+		getApplicationSettings().setAccessDeniedPage(LoginPage.class);
+		getApplicationSettings().setInternalErrorPage(ErrorPage.class);
 
 	}
 
 	@Override
 	public Session newSession(Request request, Response response) {
 		return new WicketSession(request);
+	}
+	
+	@Override
+	public RuntimeConfigurationType getConfigurationType() {
+		// TODO: pasar a DEPLOYMENT antes de entregar
+		return RuntimeConfigurationType.DEVELOPMENT;
 	}
 }
