@@ -94,8 +94,8 @@ public class EndpointScorePanel extends Panel {
 		List<Character> grades = Arrays.asList('a', 'b', 'c', 'd', 'f');
 		for (Character grade : grades) {
 			WebMarkupContainer gradeContainer = new WebMarkupContainer(grade + "-global-grade");
-			Label gradeLabel = new Label(grade + "-global-grade-value", endpointScore.getScoreString());
-			gradeLabel.add(new AttributeModifier("id", grade + "-global-grade-" +number));
+			Label gradeLabel = new Label(grade + "-global-grade-value", 0);
+			gradeLabel.add(new AttributeModifier("id", grade + "-global-grade-" + number));
 			Label gradePercentageLabel = new Label(grade + "-global-grade-percentage", "%");
 			if (Character.toUpperCase(grade) != globalGradeLetter) {
 				gradeLabel.setVisible(false);

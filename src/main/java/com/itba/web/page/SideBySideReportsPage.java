@@ -77,6 +77,9 @@ public class SideBySideReportsPage extends BasePage {
 			}
 		};
 		campaignBDropDownChoice.add(campaignBDropDownBehavior);
+		
+		selectedCampaignAModel.setObject(campaignA);
+		selectedCampaignBModel.setObject(campaignB);
 
 		add(campaignADropDownChoice);
 		add(campaignBDropDownChoice);
