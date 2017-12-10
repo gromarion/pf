@@ -1,13 +1,12 @@
-var booleans = [
-	[false, false], //0: globalGradeVisible 1 & 2
-	[false, false], //1: endpointAvailabilityVisible 1 & 2
-	[false, false], //2: endpointQualityVisible 1 & 2
-	[false, false], //3: totalResourcesVisible 1 & 2
-	[false, false], //4: averageQualityVisible 1 & 2
-	[false, false], //5: incorrectDataVisible 1 & 2
-	[false, false], //6: incompleteDataVisible 1 & 2
-	[false, false], //7: semanticallyIncorrectVisible 1 & 2
-	[false, false]];//8: externalLinkVisible 1 & 2
+var globalGradeVisible = false;
+var endpointAvailabilityVisible = false;
+var endpointQualityVisible = false;
+var totalResourcesVisible = false;
+var averageQualityVisible = false;
+var incorrectDataVisible = false;
+var incompleteDataVisible = false;
+var semanticallyIncorrectVisible = false;
+var externalLinkVisible = false;
 
 var values = [
 	[0, 0],  //0: globalGradeValue 1 & 2
@@ -57,67 +56,72 @@ function initializeReportsPanel(
 	values[panelNumberParam - 1][9] = externalLinkParam;
 	panelNumberValue = panelNumberParam;
 
-	booleans[panelNumberParam - 1][0] = false;
-	booleans[panelNumberParam - 1][1] = false;
-	booleans[panelNumberParam - 1][3] = false;
-	booleans[panelNumberParam - 1][4] = false;
-	booleans[panelNumberParam - 1][5] = false;
-	booleans[panelNumberParam - 1][6] = false;
-	booleans[panelNumberParam - 1][7] = false;
-	booleans[panelNumberParam - 1][8] = false;
-
 	startAnimation();
 }
 
 function startAnimation() {
 	startGlobalGradeAnimation();
 
-	if ($('#endpoint-quality-' + panelNumberValue).visible(true) && !booleans[panelNumberValue - 1][2]) {
-		animateAllPanels('endpoint-quality-', 2, 2);
+	if ($('#endpoint-quality-1').visible() && !endpointQualityVisible) {
+		endpointQualityVisible = true;
+		animateAllPanels('endpoint-quality-', 2);
 	}
-	if ($('#endpoint-availability-' + panelNumberValue).visible(true) && !booleans[panelNumberValue - 1][1]) {
-		animateAllPanels('endpoint-availability-', 1, 3);
+	if ($('#endpoint-availability-1').visible() && !endpointAvailabilityVisible) {
+		endpointAvailabilityVisible = true;
+		animateAllPanels('endpoint-availability-', 3);
 	}
-	if ($('#total-resources-' + panelNumberValue).visible(true) && !booleans[panelNumberValue - 1][3]) {
-		animateAllPanels('total-resources-', 3, 4);
+	if ($('#total-resources-1').visible() && !totalResourcesVisible) {
+		totalResourcesVisible = true;
+		animateAllPanels('total-resources-', 4);
 	}
-	if ($('#average-quality-' + panelNumberValue).visible(true) && !booleans[panelNumberValue - 1][4]) {
-		animateAllPanels('average-quality-', 4, 5);
+	if ($('#average-quality-1').visible() && !averageQualityVisible) {
+		averageQualityVisible = true;
+		animateAllPanels('average-quality-', 5);
 	}
-	if ($('#incorrect-data-' + panelNumberValue).visible(true) && !booleans[panelNumberValue - 1][5]) {
-		animateAllPanels('incorrect-data-', 5, 6);
+	if ($('#incorrect-data-1').visible() && !incorrectDataVisible) {
+		incorrectDataVisible = true;
+		animateAllPanels('incorrect-data-', 6);
 	}
-	if ($('#incomplete-data-' + panelNumberValue).visible(true) && !booleans[panelNumberValue - 1][6]) {
-		animateAllPanels('incomplete-data-', 6, 7);
+	if ($('#incomplete-data-1').visible() && !incompleteDataVisible) {
+		incompleteDataVisible = true;
+		animateAllPanels('incomplete-data-', 7);
 	}
-	if ($('#semantically-incorrect-' + panelNumberValue).visible(true) && !booleans[panelNumberValue - 1][7]) {
-		animateAllPanels('semantically-incorrect-', 7, 8);
+	if ($('#semantically-incorrect-1').visible() && !semanticallyIncorrectVisible) {
+		semanticallyIncorrectVisible = true;
+		animateAllPanels('semantically-incorrect-', 8);
 	}
-	if ($('#external-link-' + panelNumberValue).visible(true) && !booleans[panelNumberValue - 1][8]) {
-		animateAllPanels('external-link-', 8, 9);
+	if ($('#external-link-1').visible() && !externalLinkVisible) {
+		externalLinkVisible = true;
+		animateAllPanels('external-link-', 9);
 	}
 }
 
 function startGlobalGradeAnimation() {
-	let componentId = values[panelNumberValue - 1][1].toLowerCase() + '-global-grade-' + panelNumberValue;
+	let componentId = values[panelNumberValue - 1][1].toLowerCase() + '-global-grade-1';
+	let i = 0;
+	let limit = 1;
 
-	if ($('#' + componentId).visible(true) && !booleans[panelNumberValue - 1][0]) {
-		booleans[panelNumberValue - 1][0] = true;
-	  animate(componentId, 0, values[panelNumberValue - 1][0]);
+	if (panelNumberValue > 1) {
+		limit = panelNumberValue;
+	}
+	if ($('#' + componentId).visible() && !booleans[0][0]) {
+		for (i = 0; i < limit; i++) {
+			booleans[0][i] = true;
+		  animate(componentId, 0, values[0][i]);
+		}
 	}
 }
 
-function animateAllPanels(id, booleanIndex, valueIndex) {
-	var i = 0;
-	var limit = 1;
+function animateAllPanels(id, valueIndex) {
+	let i = 0;
+	let limit = 1;
+
 	if (panelNumberValue > 1) {
 		limit = panelNumberValue;
 	}
 
 	for (i = 0; i < limit; i++) {
-		booleans[i][booleanIndex] = true;
-
-	  animate(id + (i + 1), 0, values[i][valueIndex]);
+	  animate(id + (i + 1), 0, values[valueIndex][i]);
 	}
 }
 
@@ -125,7 +129,6 @@ window.onload = function() {
 	startAnimation();
 
 	$(window).scroll(function() {
-		console.log("scroll");
 		startAnimation();
 	});
 };
