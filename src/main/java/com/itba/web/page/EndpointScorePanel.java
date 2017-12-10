@@ -1,7 +1,6 @@
 package com.itba.web.page;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +20,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import com.itba.domain.SparqlRequestHandler;
 import com.itba.domain.model.EndpointStats;
 import com.itba.domain.model.Error;
-import com.itba.domain.model.EvaluationSession;
 import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.formulae.EndpointQualityFormulae.EndpointScore;
@@ -142,6 +140,7 @@ public class EndpointScorePanel extends Panel {
 				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/count-up.js")));
 		response.render(JavaScriptHeaderItem
 				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/reports-panel.js")));
+		double globalScore = globalFormulae.getGlobalScore();
 		double incorrectData = errorTypeStats
 				.get(errorTypeStats.keySet().stream().filter(e -> e.getId() == 1).collect(Collectors.toList()).get(0));
 		double incompleteData = errorTypeStats
@@ -150,10 +149,10 @@ public class EndpointScorePanel extends Panel {
 				.get(errorTypeStats.keySet().stream().filter(e -> e.getId() == 3).collect(Collectors.toList()).get(0));
 		double externalLink = errorTypeStats
 				.get(errorTypeStats.keySet().stream().filter(e -> e.getId() == 4).collect(Collectors.toList()).get(0));
-		response.render(OnDomReadyHeaderItem.forScript("initializeReportsPanel(" + endpointScore.getScoreString()
-				+ ", '" + StringUtils.letterQualification(endpointScore.getScore()) + "', "
-				+ endpointScore.getSuccessfulRequestsRatio() + ", " + totalResources + ", "
-				+ globalFormulae.getAverageDocumentQuality() + ", " + incorrectData + ", " + incompleteData + ", "
-				+ semanticallyIncorrect + ", " + externalLink + ");"));
+		response.render(OnDomReadyHeaderItem.forScript(
+				"initializeReportsPanel(" + globalScore + ", '" + StringUtils.letterQualification(globalScore) + "', "
+						+ endpointScore.getScoreString() + ", " + endpointScore.getSuccessfulRequestsRatio() + ", "
+						+ totalResources + ", " + (100 * globalFormulae.getAvarageResourceQuality()) + ", " + incorrectData
+						+ ", " + incompleteData + ", " + semanticallyIncorrect + ", " + externalLink + ");"));
 	}
 }
