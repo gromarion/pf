@@ -1,5 +1,6 @@
 var globalGradeVisible = false;
 var endpointAvailabilityVisible = false;
+var endpointQualityVisible = false;
 var totalResourcesVisible = false;
 var averageQualityVisible = false;
 var incorrectDataVisible = false;
@@ -9,6 +10,7 @@ var externalLinkVisible = false;
 
 var globalGradeValue = 0;
 var globalGradeLetterParam = "";
+var endpointQualityValue = 0;
 var endpointAvailabilityValue = 0;
 var totalResourcesValue = 0;
 var averageQualityValue = 0;
@@ -30,6 +32,7 @@ function animate(id, start, end) {
 function initializeReportsPanel(
 		globalGradeParam,
 		globalGradeLetterParam,
+		endpointQualityParam,
 		endpointAvailabilityParam,
 		totalResourcesParam,
 		averageQualityParam,
@@ -40,6 +43,7 @@ function initializeReportsPanel(
 	globalGradeValue = globalGradeParam;
 	globalGradeLetterValue = globalGradeLetterParam;
 	endpointAvailabilityValue = endpointAvailabilityParam;
+	endpointQualityValue = endpointQualityParam;
 	totalResourcesValue = totalResourcesParam;
 	averageQualityValue = averageQualityParam;
 	incorrectDataValue = incorrectDataParam;
@@ -62,9 +66,13 @@ function initializeReportsPanel(
 function startAnimation() {
 	startGlobalGradeAnimation();
 
+	if ($('#endpoint-quality').visible(true) && !endpointQualityVisible) {
+		endpointQualityVisible = true;
+	  animate('endpoint-quality', 0, endpointQualityValue);
+	}
 	if ($('#endpoint-availability').visible(true) && !endpointAvailabilityVisible) {
 		endpointAvailabilityVisible = true;
-	  animate('endpoint-availability', 0.0, endpointAvailabilityValue);
+	  animate('endpoint-availability', 0, endpointAvailabilityValue);
 	}
 	if ($('#total-resources').visible(true) && !totalResourcesVisible) {
 		totalResourcesVisible = true;
@@ -97,7 +105,7 @@ function startGlobalGradeAnimation() {
 
 	if ($('#' + componentId).visible(true) && !globalGradeVisible) {
 		globalGradeVisible = true;
-	  animate(componentId, 0.0, globalGradeValue);
+	  animate(componentId, 0, globalGradeValue);
 	}
 }
 

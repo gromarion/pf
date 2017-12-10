@@ -20,16 +20,24 @@ public class GlobalFormulae {
 	public GlobalFormulae() {
 	}
 
-	public double getAverageDocumentQuality() {
+	public double getGlobalScore() {
 		EvaluationSession session = WicketSession.get().getEvaluationSession().get();
-		double sumScore = evaluatedResourceRepo.getSumScoreByCampaign(session.getCampaign()).doubleValue();
-		int totalResources = evaluatedResourceRepo.getAllByCampaign(session.getCampaign()).size();
-		
+
 		try {
-			return 100 * ((sumScore / totalResources) + endpointQualityFormulae.getScore(session.getCampaign()).getScore()) / 2;			
+			return 100
+					* (getAvarageResourceQuality() + endpointQualityFormulae.getScore(session.getCampaign()).getScore())
+					/ 2;
 		} catch (IOException e) {
 			e.printStackTrace();
 			return 0;
 		}
+	}
+
+	public double getAvarageResourceQuality() {
+		EvaluationSession session = WicketSession.get().getEvaluationSession().get();
+		double sumScore = evaluatedResourceRepo.getSumScoreByCampaign(session.getCampaign()).doubleValue();
+		int totalResources = evaluatedResourceRepo.getAllByCampaign(session.getCampaign()).size();
+
+		return sumScore / totalResources;
 	}
 }
