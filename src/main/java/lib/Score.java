@@ -45,6 +45,6 @@ public class Score implements Serializable {
 	}
 	
 	public String toString() {
-		return StringUtils.letterQualification(score) + " - " + scoreString();
+		return StringUtils.letterQualification(score * 100) + " - " + scoreString();
 	}
 }
