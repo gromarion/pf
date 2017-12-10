@@ -67,6 +67,7 @@ public class ManualErrorsFormulae {
         Map<Integer, Double> errors = new HashMap<>();
         Map<String, Integer> errorsAmount = new HashMap<>();
         double ans = 0;
+        // XXX: si el recurso aún no fue evaluado
 		if (!evaluatedResource.isPresent()) {
         	return new Score(-1, -1, errorsAmount);
         }

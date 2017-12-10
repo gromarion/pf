@@ -3,12 +3,12 @@
 		<div class="container">
 			<div wicket:id="feedbackPanel"/>
 			<div wicket:id="selectedErrorsTablePanel"/>
-			<div class="row">
-				<h2>
-					<wicket:message key="newErrorLabel">New error</wicket:message>
-				</h2>
-			</div>
 			<form wicket:id="errorForm" method="post" class="form-horizontal">
+				<div class="row">
+					<h2>
+						<wicket:message key="newErrorLabel">New error</wicket:message>
+					</h2>
+				</div>
 				<div class="form-group">
 					<label for="resourceLink" class="bold">
 						<wicket:message key="resource">Documento</wicket:message>

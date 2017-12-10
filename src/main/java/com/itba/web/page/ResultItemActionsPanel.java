@@ -3,6 +3,7 @@ package com.itba.web.page;
 import java.math.BigDecimal;
 
 import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -61,7 +62,8 @@ public class ResultItemActionsPanel extends Panel {
 					evaluatedResourceRepo.save(resourceModel.getObject());
 				}
 				resourceModel.getObject().setCorrect(!resourceModel.getObject().isCorrect());
-				resourceModel.getObject().setScore(new BigDecimal(1));
+				if(resourceModel.getObject().isCorrect()) 
+					resourceModel.getObject().setScore(new BigDecimal(1));
 				
 				try {
 					Score score = manualErrorsFormulae.compute(resource, Optional.of(resourceModel.getObject().getSession()));
@@ -106,12 +108,20 @@ public class ResultItemActionsPanel extends Panel {
 				setResponsePage(RelatedEvaluationsPage.class, parameters);
 			}
 		};
-
+		
+		WebMarkupContainer editCommentsButtonContainer = new WebMarkupContainer("editCommentsButtonContainer");
+		editCommentsButtonContainer.setVisible(resourceModel.getObject() == null ||
+				resourceModel.getObject().getSession().getUser().equals(WicketSession.get().getUser()));
+		
 		Tooltip.addToComponent(resourceOkButton, Position.TOP, "Un tooltip sobre este botón");
 		resourceOkButton.add(resourceOkLabel);
 		add(resourceOkButton.setVisible(resourceModel.getObject() == null
-				|| (resourceModel.getObject() != null && !resourceModel.getObject().hasDetails())));
+				|| (resourceModel.getObject() != null && !resourceModel.getObject().hasDetails() && 
+						resourceModel.getObject().getSession().getUser().equals(WicketSession.get().getUser()))
+			)
+		);
 		add(relatedEvaluationsButton);
+		add(editCommentsButtonContainer);
 	}
 	
 	@Override
