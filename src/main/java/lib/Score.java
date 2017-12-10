@@ -1,6 +1,7 @@
 package lib;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Map;
 
 @SuppressWarnings("serial")
@@ -32,8 +33,8 @@ public class Score implements Serializable {
 		if (score < 0) {
 			return "";
 		}
-
-		return StringUtils.formatDouble(score, 3);
+//		StringUtils.formatDouble(score.setScale(3, BigDecimal.ROUND_HALF_EVEN).doubleValue(), 3)
+		return StringUtils.formatDouble(new BigDecimal(score).setScale(3, BigDecimal.ROUND_HALF_EVEN).doubleValue(), 3);
 	}
 	
 	public String errorsString() {
