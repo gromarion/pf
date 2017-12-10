@@ -30,11 +30,15 @@ public class HibernateEvaluatedResourceRepo extends AbstractHibernateRepo implem
 		return get(EvaluatedResource.class, evaluatedResourceId);
 	}
 
+	private String adapt(String s) {
+		return s.replaceAll("'", "''");
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public Optional<EvaluatedResource> getResourceForSession(final EvaluationSession session, final String resource) {
 		Query query = getSession().createQuery("SELECT e FROM EvaluatedResource e " + " WHERE e.session = "
-				+ session.getId() + " AND e.resource = '" + resource + "'");
+				+ session.getId() + " AND e.resource = '" + adapt(resource) + "'");
 
 		List<EvaluatedResource> result = query.list();
 		if (result.isEmpty())
@@ -93,7 +97,7 @@ public class HibernateEvaluatedResourceRepo extends AbstractHibernateRepo implem
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<EvaluatedResource> getAllRelated(String resource, IModel<EvaluationSession> sessionModel) {
-		String query = "SELECT e FROM EvaluatedResource e WHERE e.resource = '" + resource + "'";
+		String query = "SELECT e FROM EvaluatedResource e WHERE e.resource = '" + adapt(resource) + "'";
 		if (sessionModel.getObject() != null) query += " AND e.session.id <> " + sessionModel.getObject().getId();
 		return getSession().createQuery(query).list();
 	}
