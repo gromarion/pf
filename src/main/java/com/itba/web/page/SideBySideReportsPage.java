@@ -2,6 +2,7 @@ package com.itba.web.page;
 
 import java.io.IOException;
 
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -31,11 +32,13 @@ public class SideBySideReportsPage extends BasePage {
 			EndpointScore endpointAScore = endpointQualityFormulae.getScore(campaignA);
 			EndpointScore endpointBScore = endpointQualityFormulae.getScore(campaignB);
 			final EndpointScorePanel endpointAScorePanel = new EndpointScorePanel("endpointAScorePanel", endpointAScore,
-					evaluatedResourceRepo);
+					evaluatedResourceRepo, 1);
 			final EndpointScorePanel endpointBScorePanel = new EndpointScorePanel("endpointBScorePanel", endpointBScore,
-					evaluatedResourceRepo);
+					evaluatedResourceRepo, 2);
 			add(endpointAScorePanel);
 			add(endpointBScorePanel);
+			add(new Label("endpointAName", campaignA.getName()));
+			add(new Label("endpointBName", campaignB.getName()));
 		} catch (IOException e) {
 			setResponsePage(ErrorPage.class);
 		}

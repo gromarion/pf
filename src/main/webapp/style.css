@@ -16,12 +16,12 @@ h1 > a {
 
 .circular-grade {
 	border-radius: 50%;
-	width: 75px;
-	height: 75px;
-	line-height: 75px;
-	font-size: 30px;
+	width: 65px;
+	height: 65px;
+	line-height: 65px;
+	font-size: 25px;
 	text-align: center;
-	margin: 0 50px;
+	margin: 0 15px;
 	color: white;
 	font-weight: 400;
 }
@@ -72,7 +72,7 @@ h1 > a {
 }
 
 .total-resources {
-	font-size: 60px;
+	font-size: 50px;
 }
 
 .warning-icon {

@@ -39,9 +39,12 @@ public class EndpointScorePanel extends Panel {
 	private EndpointStatsRepo endpointStatsRepo;
 	@SpringBean
 	private GlobalFormulae globalFormulae;
+	private int number;
 
-	public EndpointScorePanel(String id, EndpointScore endpointScore, EvaluatedResourceRepo evaluatedResourceRepo) {
+	public EndpointScorePanel(String id, EndpointScore endpointScore, EvaluatedResourceRepo evaluatedResourceRepo,
+			int number) {
 		super(id);
+		this.number = number;
 		this.errorColors = new HashMap<>();
 		errorColors.put("Tipodedatoincorrectamenteextraído", "#FF7777");
 		errorColors.put("Valordelobjetoextraídodeformaincompleta", "#D4AB6A");
@@ -92,6 +95,7 @@ public class EndpointScorePanel extends Panel {
 		for (Character grade : grades) {
 			WebMarkupContainer gradeContainer = new WebMarkupContainer(grade + "-global-grade");
 			Label gradeLabel = new Label(grade + "-global-grade-value", endpointScore.getScoreString());
+			gradeLabel.add(new AttributeModifier("id", grade + "-global-grade-" +number));
 			Label gradePercentageLabel = new Label(grade + "-global-grade-percentage", "%");
 			if (Character.toUpperCase(grade) != globalGradeLetter) {
 				gradeLabel.setVisible(false);
@@ -105,6 +109,38 @@ public class EndpointScorePanel extends Panel {
 			globalGradePanel.add(gradePercentageLabel);
 			globalGradePanel.add(gradeContainer);
 		}
+		Label endpointQuality = new Label("endpointQuality", 0);
+		endpointQuality.add(new AttributeModifier("id", "endpoint-quality-" + number));
+		
+		Label endpointAvailability = new Label("endpointAvailability", 0);
+		endpointAvailability.add(new AttributeModifier("id", "endpoint-availability-" + number));
+		
+		Label averageDocumentQuality = new Label("averageQuality", 0);
+		averageDocumentQuality.add(new AttributeModifier("id", "average-quality-" + number));
+		
+		Label totalResources = new Label("totalResources", 0);
+		totalResources.add(new AttributeModifier("id", "total-resources-" + number));
+		
+		Label incorrectData = new Label("incorrectData", 0);
+		incorrectData.add(new AttributeModifier("id", "incorrect-data-" + number));
+		
+		Label incompleteData = new Label("incompleteData", 0);
+		incompleteData.add(new AttributeModifier("id", "incomplete-data-" + number));
+		
+		Label semanticallyIncorrect = new Label("semanticallyIncorrect", 0);
+		semanticallyIncorrect.add(new AttributeModifier("id", "semantically-incorrect-" + number));
+		
+		Label externalLink = new Label("externalLink", 0);
+		externalLink.add(new AttributeModifier("id", "external-link-" + number));
+		
+		add(endpointQuality);
+		add(endpointAvailability);
+		documentQualityPanel.add(averageDocumentQuality);
+		documentQualityPanel.add(totalResources);
+		documentQualityPanel.add(incorrectData);
+		documentQualityPanel.add(incompleteData);
+		documentQualityPanel.add(semanticallyIncorrect);
+		documentQualityPanel.add(externalLink);
 
 		endpointURLLabel.setDefaultModelObject(endpointScore.getEndpointURL());
 	}
@@ -150,10 +186,10 @@ public class EndpointScorePanel extends Panel {
 		double externalLink = errorTypeStats
 				.get(errorTypeStats.keySet().stream().filter(e -> e.getId() == 4).collect(Collectors.toList()).get(0));
 		double globalScore = globalFormulae.getGlobalScore();
-		response.render(OnDomReadyHeaderItem.forScript(
-				"initializeReportsPanel(" + globalScore + ", '" + StringUtils.letterQualification(globalScore) + "', "
-						+ endpointScore.getScoreString() + ", " + endpointScore.getSuccessfulRequestsRatio() + ", "
-						+ totalResources + ", " + (100 * globalFormulae.getAvarageResourceQuality()) + ", " + incorrectData
-						+ ", " + incompleteData + ", " + semanticallyIncorrect + ", " + externalLink + ");"));
+		response.render(OnDomReadyHeaderItem.forScript("initializeReportsPanel(" + globalScore + ", '"
+				+ StringUtils.letterQualification(globalScore) + "', " + endpointScore.getScoreString() + ", "
+				+ endpointScore.getSuccessfulRequestsRatio() + ", " + totalResources + ", "
+				+ (100 * globalFormulae.getAvarageResourceQuality()) + ", " + incorrectData + ", " + incompleteData
+				+ ", " + semanticallyIncorrect + ", " + externalLink + ", " + number + ");"));
 	}
 }
