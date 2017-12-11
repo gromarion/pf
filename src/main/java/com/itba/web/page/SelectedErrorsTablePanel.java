@@ -50,6 +50,8 @@ public class SelectedErrorsTablePanel extends Panel {
     	    }
     	};
     	
+    	final Label errorActionsLabel = new Label("errorActionsLabel", getString("errorActionsLabel"));
+    	
     	add(new ListView<EvaluatedResourceDetail>("usedErrorDetails", usedErrorDetails) {
 			@Override
 			protected void populateItem(final ListItem<EvaluatedResourceDetail> errorDetail) {
@@ -85,8 +87,11 @@ public class SelectedErrorsTablePanel extends Panel {
 					}
 				}.setVisible(isAuthorUser).add(new AttributeModifier("data-target", "#modal" + errorDetail.getModelObject().getId())));
 				errorDetail.add(new EditErrorCommentModal("editCommentModal", "Editar comentario", errorDetail.getModel(), refreshParameters));
+				errorActionsLabel.setVisible(isAuthorUser);
 			}
 		}.setVisible(usedErrorDetails.getObject().size() > 0));
+    	
+    	add(errorActionsLabel);
 	}
 	
 	public IModel<List<EvaluatedResourceDetail>> getUsedErrorDetails() {
