@@ -21,8 +21,6 @@ import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.domain.repository.EvaluationSessionRepo;
 import com.itba.formulae.ManualErrorsFormulae;
 import com.itba.web.WicketSession;
-import com.itba.web.tooltip.Tooltip;
-import com.itba.web.tooltip.Tooltip.Position;
 
 import lib.Score;
 
@@ -114,7 +112,11 @@ public class ResultItemActionsPanel extends Panel {
 				resourceModel.getObject().getSession().getUser().equals(WicketSession.get().getUser()));
 		
 		resourceOkButton.add(resourceOkLabel);
-		add(resourceOkButton.setVisible(resourceModel.getObject() == null
+		
+		WebMarkupContainer resourceOk = new WebMarkupContainer("resourceOk");
+		resourceOk.add(resourceOkButton);
+		
+		add(resourceOk.setVisible(resourceModel.getObject() == null
 				|| (resourceModel.getObject() != null && !resourceModel.getObject().hasDetails() && 
 						resourceModel.getObject().getSession().getUser().equals(WicketSession.get().getUser()))
 			)

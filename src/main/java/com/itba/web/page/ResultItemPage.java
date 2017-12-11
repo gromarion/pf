@@ -10,7 +10,6 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ExternalLink;
-import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
@@ -69,10 +68,8 @@ public class ResultItemPage extends BasePage {
 		// TODO: adaptar esto para que puedan pasarlo o no...
 		final String comesFromMyResources = parameters.get("comesFromMyResources").toString();
 		final String resource = parameters.get("selection").toString();
-		final String search = parameters.get("search").toString();
 
 		boolean guest = userRepo.getByUsername(getAppSession().getUsername()).hasRole("GUEST");
-		final Label commentsTitleLabel = new Label("commentsTitleLabel", getString("comments"));
 		final WebMarkupContainer commentsContainer = new WebMarkupContainer("commentsContainer");
 
 		Optional<EvaluationSession> resourceSession = Optional.absent();
@@ -93,7 +90,6 @@ public class ResultItemPage extends BasePage {
 		final Label commentsLabel = new Label("comments", hasComments ? resourceModel.getObject().getComments() : "");
 
 		commentsContainer.add(commentsLabel);
-		add(commentsTitleLabel.setVisible(hasComments));
 		add(commentsContainer.setVisible(hasComments));
 		add(new EditResourceCommentModal("editCommentModal", "Editar comentario", resource, comesFromMyResources,
 				resourceModel));
@@ -131,7 +127,10 @@ public class ResultItemPage extends BasePage {
 							setResponsePage(ErrorSelectionPage.class, parameters);
 						}
 					};
-					boolean isAuthorUser = WicketSession.get().getUser().equals(resourceModel.getObject().getSession().getUser());
+					boolean isAuthorUser = false;
+					if (resourceModel.getObject() != null) {
+						isAuthorUser = WicketSession.get().getUser().equals(resourceModel.getObject().getSession().getUser());
+					}
 					errorPageLink.setVisible(isAuthorUser || (!isAuthorUser && hasEvaluations));
 					listItem.add(errorPageLink);
 				}
@@ -157,26 +156,10 @@ public class ResultItemPage extends BasePage {
 			setResponsePage(ErrorPage.class);
 		}
 
-		Link<Void> backButton = new Link<Void>("back") {
-			@Override
-			public void onClick() {
-				// TODO: agregar un "comesFromRelatedResources". Revisar la implementación de "comesFromMyResources"
-				if (!Strings.isNullOrEmpty(comesFromMyResources)) {
-					setResponsePage(ErrorsByUserPage.class);
-				} else {
-					PageParameters parameters = new PageParameters();
-					String searchString = search == null ? "" : search;
-					parameters.add("search", searchString);
-					setResponsePage(SearchResultPage.class, parameters);
-				}
-			}
-		};
-
 		add(new ResourceSearchPanel("search"));
 		String resourceName = resource.substring(resource.lastIndexOf('/') + 1);
 		add(new ExternalLink("resourceName", resource, resourceName.replace('_', ' ')));
 
-		add(backButton);
 		add(customFeedbackPanel);
 		ResultItemActionsPanel actionsPanel = new ResultItemActionsPanel("actionsPanel", parameters);
 		actionsPanel.setVisible(!guest);

@@ -192,7 +192,7 @@ public class ErrorSelectionPage extends BasePage {
                 setResponsePage(ResultItemPage.class, parameters);
 			}
 		};
-		form.add(backButton);
+		add(backButton);
         
 		boolean showForm = availableErrors.getObject().size() > 0 &&
 				(evaluatedResource.getObject() == null || (evaluatedResource.getObject().getSession().getUser().equals(WicketSession.get().getUser())));

@@ -1,191 +1,189 @@
 <html>
 	<body>
 		<wicket:panel>
-			<div class="container">
-				<div wicket:id="global-grade-panel">
-					<h3 class="center-text">CALIFICACION GLOBAL</h3>
-					<table class="grades">
-						<thead>
-							<th>
-								<div wicket:id="a-global-grade" class="circular-grade a-grade d-inline-block">
-									<span>A</span>
-								</div>
-							</th>
-							<th>
-								<div wicket:id="b-global-grade" class="circular-grade b-grade d-inline-block">
-									<span>B</span>
-								</div>
-							</th>
-							<th>
-								<div wicket:id="c-global-grade" class="circular-grade c-grade d-inline-block">
-									<span>C</span>
-								</div>
-							</th>
-							<th>
-								<div wicket:id="d-global-grade" class="circular-grade d-grade d-inline-block">
-									<span>D</span>
-								</div>
-							</th>
-							<th>
-								<div wicket:id="f-global-grade" class="circular-grade f-grade d-inline-block">
-									<span>F</span>
-								</div>
-							</th>
-						</thead>
-						<tbody>
-							<tr>
-								<td class="center-text">
-									<span wicket:id="a-global-grade-value" class="global-grade" id="a-global-grade">
-										0
-									</span>
-									<span wicket:id="a-global-grade-percentage" class="global-grade">%</span>
-								</td>
-								<td class="center-text">
-									<span wicket:id="b-global-grade-value" class="global-grade" id="b-global-grade">
-										0
-									</span>
-									<span wicket:id="b-global-grade-percentage" class="global-grade">%</span>
-								</td>
-								<td class="center-text">
-									<span wicket:id="c-global-grade-value" class="global-grade" id="c-global-grade">
-										0
-									</span>
-									<span wicket:id="c-global-grade-percentage" class="global-grade">%</span>
-								</td>
-								<td class="center-text">
-									<span wicket:id="d-global-grade-value" class="global-grade" id="d-global-grade">
-										0
-									</span>
-									<span wicket:id="d-global-grade-percentage" class="global-grade">%</span>
-								</td>
-								<td class="center-text">
-									<span wicket:id="f-global-grade-value" class="global-grade" id="f-global-grade">
-										0
-									</span>
-									<span wicket:id="f-global-grade-percentage" class="global-grade">%</span>
-								</td>
-							</tr>
-						</tbody>
-					</table>
+			<div wicket:id="global-grade-panel">
+				<h3 class="center-text">CALIFICACION GLOBAL</h3>
+				<table class="grades">
+					<thead>
+						<th>
+							<div wicket:id="a-global-grade" class="circular-grade a-grade d-inline-block">
+								<span>A</span>
+							</div>
+						</th>
+						<th>
+							<div wicket:id="b-global-grade" class="circular-grade b-grade d-inline-block">
+								<span>B</span>
+							</div>
+						</th>
+						<th>
+							<div wicket:id="c-global-grade" class="circular-grade c-grade d-inline-block">
+								<span>C</span>
+							</div>
+						</th>
+						<th>
+							<div wicket:id="d-global-grade" class="circular-grade d-grade d-inline-block">
+								<span>D</span>
+							</div>
+						</th>
+						<th>
+							<div wicket:id="f-global-grade" class="circular-grade f-grade d-inline-block">
+								<span>F</span>
+							</div>
+						</th>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="center-text">
+								<span wicket:id="a-global-grade-value" class="global-grade" id="a-global-grade">
+									0
+								</span>
+								<span wicket:id="a-global-grade-percentage" class="global-grade">%</span>
+							</td>
+							<td class="center-text">
+								<span wicket:id="b-global-grade-value" class="global-grade" id="b-global-grade">
+									0
+								</span>
+								<span wicket:id="b-global-grade-percentage" class="global-grade">%</span>
+							</td>
+							<td class="center-text">
+								<span wicket:id="c-global-grade-value" class="global-grade" id="c-global-grade">
+									0
+								</span>
+								<span wicket:id="c-global-grade-percentage" class="global-grade">%</span>
+							</td>
+							<td class="center-text">
+								<span wicket:id="d-global-grade-value" class="global-grade" id="d-global-grade">
+									0
+								</span>
+								<span wicket:id="d-global-grade-percentage" class="global-grade">%</span>
+							</td>
+							<td class="center-text">
+								<span wicket:id="f-global-grade-value" class="global-grade" id="f-global-grade">
+									0
+								</span>
+								<span wicket:id="f-global-grade-percentage" class="global-grade">%</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<h3 class="center-text margin-top-50">ESTADISTICAS DEL ENDPOINT</h3>
+			<h5 class="center-text">
+				Calidad
+			</h5>
+			<div class="center-text">
+				<span wicket:id="endpointQuality" class="total-resources">
+					0
+				</span>
+				<span class="total-resources">
+					%
+				</span>
+			</div>
+			<div class="row">
+				<div class="card w-100 mx-auto" wicket:id="SPARQLServerNormal">
+					<div class="card-body green-card">
+						<h6 class="card-title center-text">Estado</h6>
+						<br>
+						<h1 class="center-text green">NORMAL</h1>
+					</div>
 				</div>
-				<h3 class="center-text margin-top-50">ESTADISTICAS DEL ENDPOINT</h3>
+				<div class="card w-100 mx-auto" wicket:id="SPARQLServerDown">
+					<div class="card-body red-card">
+						<h6 class="card-title center-text">Estado</h6>
+						<br>
+						<h1 class="center-text red">CAIDO</h1>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="card w-50">
+					<div class="card-body">
+						<h6 class="card-title center-text">Disponibilidad</h6>
+						<br>
+						<h1 class="center-text">
+							<span wicket:id="endpointAvailability">0</span>
+							%
+						</h1>
+					</div>
+				</div>
+				<div wicket:id="hasLicense" class="card w-50">
+					<div class="card-body green-card">
+						<h6 class="card-title center-text">Licencia</h6>
+						<br>
+						<h1 class="center-text green">SI</h1>
+					</div>
+				</div>
+				<div wicket:id="doesntHaveLicense" class="card w-50">
+					<div class="card-body red-card">
+						<h6 class="card-title center-text">Licencia</h6>
+						<br>
+						<h1 class="center-text red">NO</h1>
+					</div>
+				</div>
+			</div>
+			<div wicket:id="document-quality-panel">
+				<h2 id="documents-quality" class="center-text margin-top-50">CALIDAD DE LOS DOCUMENTOS</h2>
 				<h5 class="center-text">
-					Calidad
+					Total de recursos evaluados
 				</h5>
 				<div class="center-text">
-					<span wicket:id="endpointQuality" class="total-resources">
+					<span wicket:id="totalResources" class="total-resources">
 						0
-					</span>
-					<span class="total-resources">
-						%
 					</span>
 				</div>
 				<div class="row">
-					<div class="card w-100 mx-auto" wicket:id="SPARQLServerNormal">
-						<div class="card-body green-card">
-							<h6 class="card-title center-text">Estado</h6>
+					<div class="card w-100">
+						<div class="card-body">
+							<h6 class="card-title center-text">Calidad promedio de los documentos</h6>
 							<br>
-							<h1 class="center-text green">NORMAL</h1>
-						</div>
-					</div>
-					<div class="card w-100 mx-auto" wicket:id="SPARQLServerDown">
-						<div class="card-body red-card">
-							<h6 class="card-title center-text">Estado</h6>
-							<br>
-							<h1 class="center-text red">CAIDO</h1>
+							<h1 class="center-text">
+								<span wicket:id="averageQuality">0</span>
+								%
+							</h1>
 						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="card w-50">
 						<div class="card-body">
-							<h6 class="card-title center-text">Disponibilidad</h6>
+							<h6 class="card-title center-text">Tipo de dato incorrectamente extraído</h6>
 							<br>
 							<h1 class="center-text">
-								<span wicket:id="endpointAvailability">0</span>
+								<span wicket:id="incorrectData">0</span>
 								%
 							</h1>
 						</div>
 					</div>
-					<div wicket:id="hasLicense" class="card w-50">
-						<div class="card-body green-card">
-							<h6 class="card-title center-text">Licencia</h6>
+					<div class="card w-50">
+						<div class="card-body">
+							<h6 class="card-title center-text">Valor del objeto extraído de forma incompleta</h6>
 							<br>
-							<h1 class="center-text green">SI</h1>
-						</div>
-					</div>
-					<div wicket:id="doesntHaveLicense" class="card w-50">
-						<div class="card-body red-card">
-							<h6 class="card-title center-text">Licencia</h6>
-							<br>
-							<h1 class="center-text red">NO</h1>
+							<h1 class="center-text">
+								<span wicket:id="incompleteData">0</span>
+								%
+							</h1>
 						</div>
 					</div>
 				</div>
-				<div wicket:id="document-quality-panel">
-					<h2 id="documents-quality" class="center-text margin-top-50">CALIDAD DE LOS DOCUMENTOS</h2>
-					<h5 class="center-text">
-						Total de recursos evaluados
-					</h5>
-					<div class="center-text">
-						<span wicket:id="totalResources" class="total-resources">
-							0
-						</span>
-					</div>
-					<div class="row">
-						<div class="card w-100">
-							<div class="card-body">
-								<h6 class="card-title center-text">Calidad promedio de los documentos</h6>
-								<br>
-								<h1 class="center-text">
-									<span wicket:id="averageQuality">0</span>
-									%
-								</h1>
-							</div>
+				<div class="row">
+					<div class="card w-50">
+						<div class="card-body">
+							<h6 class="card-title center-text">Objeto semánticamente incorrecto</h6>
+							<br>
+							<h1 class="center-text">
+								<span wicket:id="semanticallyIncorrect">0</span>
+								%
+							</h1>
 						</div>
 					</div>
-					<div class="row">
-						<div class="card w-50">
-							<div class="card-body">
-								<h6 class="card-title center-text">Tipo de dato incorrectamente extraído</h6>
-								<br>
-								<h1 class="center-text">
-									<span wicket:id="incorrectData">0</span>
-									%
-								</h1>
-							</div>
-						</div>
-						<div class="card w-50">
-							<div class="card-body">
-								<h6 class="card-title center-text">Valor del objeto extraído de forma incompleta</h6>
-								<br>
-								<h1 class="center-text">
-									<span wicket:id="incompleteData">0</span>
-									%
-								</h1>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="card w-50">
-							<div class="card-body">
-								<h6 class="card-title center-text">Objeto semánticamente incorrecto</h6>
-								<br>
-								<h1 class="center-text">
-									<span wicket:id="semanticallyIncorrect">0</span>
-									%
-								</h1>
-							</div>
-						</div>
-						<div class="card w-50">
-							<div class="card-body">
-								<h6 class="card-title center-text">Enlace externo incorrecto</h6>
-								<br>
-								<h1 class="center-text">
-									<span wicket:id="externalLink">0</span>
-									%
-								</h1>
-							</div>
+					<div class="card w-50">
+						<div class="card-body">
+							<h6 class="card-title center-text">Enlace externo incorrecto</h6>
+							<br>
+							<h1 class="center-text">
+								<span wicket:id="externalLink">0</span>
+								%
+							</h1>
 						</div>
 					</div>
 				</div>

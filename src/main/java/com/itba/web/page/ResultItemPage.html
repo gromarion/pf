@@ -7,60 +7,62 @@
 			</div>
 		</div>
 	</div>
-	<button wicket:id="back" class="btn btn-secondary">
-		<wicket:message key="back">Back</wicket:message>
-	</button>
-	<h1>
-		<a href="#" wicket:id="resourceName" target="_blank">Resource Name</a>
-	</h1>
-
-	<div wicket:id="scorePanel"/>
-	<div wicket:id="errorsTablePanel"/>
-	<div wicket:id="actionsPanel"/>
-
-	<h3>
-		<span wicket:id="commentsTitleLabel">Comments Title</span>
-	</h3>
-	<div wicket:id="editCommentModal"></div>
-	<div wicket:id="commentsContainer" class="well well-sm">
-		<span wicket:id="comments">Comments</span>
-	</div>
-
-	<div class="container-fluid">
+	<div class="container">
 		<div class="row">
-			<div class="col-sm-12">
-				<table class="table table-striped">
-					<thead>
-						<div class="row">
-							<tr>
-								<th class="col-xs-5">
-									<wicket:message key="predicate">Predicate</wicket:message>
-								</th>
-								<th class="col-xs-6">
-									<wicket:message key="object">Object</wicket:message>
-								</th>
-								<th class="col-xs-1"></th>
+			<h1 class="margin-top-50">
+				<a href="#" wicket:id="resourceName" target="_blank">Resource Name</a>
+			</h1>
+		</div>
+		<div wicket:id="scorePanel"/>
+		<div wicket:id="errorsTablePanel"/>
+		<div wicket:id="actionsPanel"/>
+
+		<div wicket:id="editCommentModal"></div>
+		<div class="card" wicket:id="commentsContainer">
+			<div class="card-body">
+				<h3 class="card-title center-text">
+					<wicket:message key="comments">Comments</wicket:message>
+				</h3>
+				<br>
+				<span wicket:id="comments">Comments</span>
+			</div>
+		</div>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-12">
+					<table class="table table-striped">
+						<thead>
+							<div class="row">
+								<tr>
+									<th class="col-xs-5">
+										<wicket:message key="predicate">Predicate</wicket:message>
+									</th>
+									<th class="col-xs-6">
+										<wicket:message key="object">Object</wicket:message>
+									</th>
+									<th class="col-xs-1"></th>
+								</tr>
+							</div>
+						</thead>
+						<tbody>
+							<tr wicket:id="resultItemList">
+								<td class="col-xs-5">
+									<a href="#" target="_blank" wicket:id="predicate">Some
+										Predicate
+									</a>
+								</td>
+								<td class="col-xs-5">
+									<span wicket:id="object">Some Object</span>
+								</td>
+								<td class="col-xs-5">
+									<a wicket:id="errorPageLink" class="btn btn-link" href="#">
+										<i class="fa fa-pencil" aria-hidden="true"/>
+									</a>
+								</td>
 							</tr>
-						</div>
-					</thead>
-					<tbody>
-						<tr wicket:id="resultItemList">
-							<td class="col-xs-5">
-								<a href="#" target="_blank" wicket:id="predicate">Some
-									Predicate
-								</a>
-							</td>
-							<td class="col-xs-5">
-								<span wicket:id="object">Some Object</span>
-							</td>
-							<td class="col-xs-5">
-								<a wicket:id="errorPageLink" class="btn btn-link" href="#">
-									<i class="fa fa-pencil" aria-hidden="true"/>
-								</a>
-							</td>
-						</tr>
-					</tbody>
-				</table>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	</div>

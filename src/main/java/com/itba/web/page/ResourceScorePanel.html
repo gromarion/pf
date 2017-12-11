@@ -6,8 +6,12 @@
 			</h2>
 			<div class="row">
 				<div class="col-4">
-					<button id="displayChart" class="btn btn-info" onclick="displayChart('#resource-score-chart')"><wicket:message key="displayChart">Display chart</wicket:message></button>
-					<button id="hideChart" class="btn btn-default" style="display: none;" onclick="hideChart('#resource-score-chart')"><wicket:message key="hideChart">Hide chart</wicket:message></button>
+					<button id="displayChart" class="btn btn-info guest-login" onclick="displayChart('#resource-score-chart')">
+						<wicket:message key="displayChart">Display chart</wicket:message>
+					</button>
+					<button id="hideChart" class="btn btn-secondary guest-login" style="display: none;" onclick="hideChart('#resource-score-chart')">
+						<wicket:message key="hideChart">Hide chart</wicket:message>
+					</button>
 				</div>
 			</div>
 			<div id="resource-score-chart" style="display: none;width: 940px;height: 320px;"/>
