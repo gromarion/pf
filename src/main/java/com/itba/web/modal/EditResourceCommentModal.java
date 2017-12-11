@@ -11,6 +11,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.google.common.base.Strings;
 import com.itba.domain.model.EvaluatedResource;
 import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.web.WicketSession;
@@ -36,10 +37,10 @@ public class EditResourceCommentModal extends Panel {
 				if (resourceModel.getObject() == null) {
 					resourceModel.setObject(new EvaluatedResource(WicketSession.get().getEvaluationSession().get(), resource));
 				}
-				resourceModel.getObject().setComments(comments.getValue());
+				resourceModel.getObject().setComments(comments.getConvertedInput());
 				evaluatedResourceRepo.save(resourceModel.getObject());
 				PageParameters parameters = new PageParameters();
-				parameters.add("comesFromMyResources", comesFromMyResources);
+				parameters.add("comesFromMyResources", Strings.nullToEmpty(comesFromMyResources));
 				parameters.add("selection", resource);
 				setResponsePage(ResultItemPage.class, parameters);
             }
