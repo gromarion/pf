@@ -88,9 +88,9 @@ public class SideBySideReportsPage extends BasePage {
 			EndpointScore endpointAScore = endpointQualityFormulae.getScore(campaignA);
 			EndpointScore endpointBScore = endpointQualityFormulae.getScore(campaignB);
 			final EndpointScorePanel endpointAScorePanel = new EndpointScorePanel("endpointAScorePanel", endpointAScore,
-					evaluatedResourceRepo, 1);
+					evaluatedResourceRepo, 1, true);
 			final EndpointScorePanel endpointBScorePanel = new EndpointScorePanel("endpointBScorePanel", endpointBScore,
-					evaluatedResourceRepo, 2);
+					evaluatedResourceRepo, 2, true);
 			add(endpointAScorePanel);
 			add(endpointBScorePanel);
 			add(new Label("endpointAName", campaignA.getName()));

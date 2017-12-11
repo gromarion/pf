@@ -26,6 +26,9 @@ function animate(id, start, end) {
 	var numAnim = new CountUp(id, start, end);
 
 	if (!numAnim.error) {
+		console.log(id);
+		console.log(start);
+		console.log(end);
 	  numAnim.start();
 	} else {
 	  console.error(numAnim.error);
@@ -43,20 +46,27 @@ function initializeReportsPanel(
 		incompleteDataParam,
 		semanticallyIncorrectParam,
 		externalLinkParam,
-		panelNumberParam) {
-	values[panelNumberParam - 1][0] = globalGradeParam;
-	values[panelNumberParam - 1][1] = globalGradeLetterParam;
-	values[panelNumberParam - 1][2] = endpointQualityParam;
-	values[panelNumberParam - 1][3] = endpointAvailabilityParam;
-	values[panelNumberParam - 1][4] = totalResourcesParam;
-	values[panelNumberParam - 1][5] = averageQualityParam;
-	values[panelNumberParam - 1][6] = incorrectDataParam;
-	values[panelNumberParam - 1][7] = incompleteDataParam;
-	values[panelNumberParam - 1][8] = semanticallyIncorrectParam;
-	values[panelNumberParam - 1][9] = externalLinkParam;
+		panelNumberParam,
+		moreThanOnePanel) {
+	values[0][panelNumberParam - 1] = globalGradeParam;
+	values[1][panelNumberParam - 1] = globalGradeLetterParam;
+	values[2][panelNumberParam - 1] = endpointQualityParam;
+	values[3][panelNumberParam - 1] = endpointAvailabilityParam;
+	values[4][panelNumberParam - 1] = totalResourcesParam;
+	values[5][panelNumberParam - 1] = averageQualityParam;
+	values[6][panelNumberParam - 1] = incorrectDataParam;
+	values[7][panelNumberParam - 1] = incompleteDataParam;
+	values[8][panelNumberParam - 1] = semanticallyIncorrectParam;
+	values[9][panelNumberParam - 1] = externalLinkParam;
 	panelNumberValue = panelNumberParam;
 
-	startAnimation();
+	if (moreThanOnePanel) {
+		if(panelNumberValue == 2) {
+			startAnimation();
+		}
+	} else {
+		startAnimation();
+	}
 }
 
 function startAnimation() {
@@ -97,18 +107,22 @@ function startAnimation() {
 }
 
 function startGlobalGradeAnimation() {
-	let componentId = values[panelNumberValue - 1][1].toLowerCase() + '-global-grade-1';
 	let i = 0;
 	let limit = 1;
 
 	if (panelNumberValue > 1) {
 		limit = panelNumberValue;
 	}
-	if ($('#' + componentId).visible() && !booleans[0][0]) {
+
+	if (!globalGradeVisible) {
 		for (i = 0; i < limit; i++) {
-			booleans[0][i] = true;
-		  animate(componentId, 0, values[0][i]);
+			if ($('#' + values[1][i].toLowerCase() + '-global-grade-' + (i + 1)).visible()) {
+				let componentId = values[1][i].toLowerCase() + '-global-grade-' + (i + 1);
+
+			  animate(componentId, 0, values[0][i]);
+			}
 		}
+		globalGradeVisible = true;
 	}
 }
 

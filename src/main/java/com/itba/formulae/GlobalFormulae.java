@@ -5,9 +5,8 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.itba.domain.model.EvaluationSession;
+import com.itba.domain.model.Campaign;
 import com.itba.domain.repository.EvaluatedResourceRepo;
-import com.itba.web.WicketSession;
 
 @Service
 public class GlobalFormulae {
@@ -20,12 +19,10 @@ public class GlobalFormulae {
 	public GlobalFormulae() {
 	}
 
-	public double getGlobalScore() {
-		EvaluationSession session = WicketSession.get().getEvaluationSession().get();
-
+	public double getGlobalScore(Campaign campaign) {
 		try {
 			return 100
-					* (getAvarageResourceQuality() + endpointQualityFormulae.getScore(session.getCampaign()).getScore())
+					* (getAvarageResourceQuality(campaign) + endpointQualityFormulae.getScore(campaign).getScore())
 					/ 2;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -33,11 +30,10 @@ public class GlobalFormulae {
 		}
 	}
 
-	public double getAvarageResourceQuality() {
-		EvaluationSession session = WicketSession.get().getEvaluationSession().get();
-		double sumScore = evaluatedResourceRepo.getSumScoreByCampaign(session.getCampaign()).doubleValue();
-		int totalResources = evaluatedResourceRepo.getAllByCampaign(session.getCampaign()).size();
+	public double getAvarageResourceQuality(Campaign campaign) {
+		double sumScore = evaluatedResourceRepo.getSumScoreByCampaign(campaign).doubleValue();
+		int totalResources = evaluatedResourceRepo.getAllByCampaign(campaign).size();
 
-		return sumScore / totalResources;
+		return totalResources == 0 ? 0 : sumScore / totalResources;
 	}
 }

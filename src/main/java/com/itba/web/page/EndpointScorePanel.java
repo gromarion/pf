@@ -40,11 +40,13 @@ public class EndpointScorePanel extends Panel {
 	@SpringBean
 	private GlobalFormulae globalFormulae;
 	private int number;
+	private boolean moreThanOnePanel;
 
 	public EndpointScorePanel(String id, EndpointScore endpointScore, EvaluatedResourceRepo evaluatedResourceRepo,
-			int number) {
+			int number, boolean moreThanOnePanel) {
 		super(id);
 		this.number = number;
+		this.moreThanOnePanel = moreThanOnePanel;
 		this.errorColors = new HashMap<>();
 		errorColors.put("Tipodedatoincorrectamenteextraído", "#FF7777");
 		errorColors.put("Valordelobjetoextraídodeformaincompleta", "#D4AB6A");
@@ -88,7 +90,7 @@ public class EndpointScorePanel extends Panel {
 		add(globalGradePanel);
 		add(documentQualityPanel);
 
-		double globalScore = globalFormulae.getGlobalScore();
+		double globalScore = globalFormulae.getGlobalScore(endpointScore.getCampaign());
 		char globalGradeLetter = StringUtils.letterQualification(globalScore);
 
 		List<Character> grades = Arrays.asList('a', 'b', 'c', 'd', 'f');
@@ -185,11 +187,11 @@ public class EndpointScorePanel extends Panel {
 				.get(errorTypeStats.keySet().stream().filter(e -> e.getId() == 3).collect(Collectors.toList()).get(0));
 		double externalLink = errorTypeStats
 				.get(errorTypeStats.keySet().stream().filter(e -> e.getId() == 4).collect(Collectors.toList()).get(0));
-		double globalScore = globalFormulae.getGlobalScore();
+		double globalScore = globalFormulae.getGlobalScore(endpointScore.getCampaign());
 		response.render(OnDomReadyHeaderItem.forScript("initializeReportsPanel(" + globalScore + ", '"
 				+ StringUtils.letterQualification(globalScore) + "', " + endpointScore.getScoreString() + ", "
 				+ endpointScore.getSuccessfulRequestsRatio() + ", " + totalResources + ", "
-				+ (100 * globalFormulae.getAvarageResourceQuality()) + ", " + incorrectData + ", " + incompleteData
-				+ ", " + semanticallyIncorrect + ", " + externalLink + ", " + number + ");"));
+				+ (100 * globalFormulae.getAvarageResourceQuality(endpointScore.getCampaign())) + ", " + incorrectData + ", " + incompleteData
+				+ ", " + semanticallyIncorrect + ", " + externalLink + ", " + number + ", " + moreThanOnePanel + ");"));
 	}
 }
