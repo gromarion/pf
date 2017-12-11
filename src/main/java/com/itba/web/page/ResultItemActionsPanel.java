@@ -113,7 +113,6 @@ public class ResultItemActionsPanel extends Panel {
 		editCommentsButtonContainer.setVisible(resourceModel.getObject() == null ||
 				resourceModel.getObject().getSession().getUser().equals(WicketSession.get().getUser()));
 		
-		Tooltip.addToComponent(resourceOkButton, Position.TOP, "Un tooltip sobre este botón");
 		resourceOkButton.add(resourceOkLabel);
 		add(resourceOkButton.setVisible(resourceModel.getObject() == null
 				|| (resourceModel.getObject() != null && !resourceModel.getObject().hasDetails() && 
