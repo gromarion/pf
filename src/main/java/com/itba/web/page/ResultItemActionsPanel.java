@@ -81,14 +81,14 @@ public class ResultItemActionsPanel extends Panel {
 				super.onComponentTag(tag);
 				if (resourceModel.getObject() != null) {
 					if (resourceModel.getObject().isCorrect()) {
-						tag.put("class", "btn btn-danger");
+						tag.put("class", "btn btn-danger guest-login");
 						resourceOkLabelMessage.setObject("Quitar de recursos correctos");
 					} else {
-						tag.put("class", "btn btn-success");
+						tag.put("class", "btn btn-success guest-login");
 						resourceOkLabelMessage.setObject("Agregar a recursos correctos");
 					}
 				} else {
-					tag.put("class", "btn btn-success");
+					tag.put("class", "btn btn-success guest-login");
 					resourceOkLabelMessage.setObject("Agregar a recursos correctos");
 				}
 			}
