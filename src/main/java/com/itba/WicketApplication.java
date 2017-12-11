@@ -7,6 +7,7 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
+import org.apache.wicket.settings.ExceptionSettings;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,8 @@ public class WicketApplication extends WebApplication {
 		getApplicationSettings().setPageExpiredErrorPage(LoginPage.class);
 		getApplicationSettings().setAccessDeniedPage(LoginPage.class);
 		getApplicationSettings().setInternalErrorPage(ErrorPage.class);
-
+		
+		getExceptionSettings().setUnexpectedExceptionDisplay(ExceptionSettings.SHOW_INTERNAL_ERROR_PAGE);
 	}
 
 	@Override
