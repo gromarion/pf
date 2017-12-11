@@ -123,14 +123,14 @@ public class EndpointQualityFormulae {
 					break;
 				}
 			}
-			if (erroredResponses == 0) {
-				return 0;
+			double availabilityScore;
+			if (successfulResponses + erroredResponses == 0) {
+				availabilityScore = 1;
 			} else {
-				// Ver cómo manejar las licencias para el reporte general
-				double availabilityScore = 1 - ((double) erroredResponses / (successfulResponses + erroredResponses));
-				int licenseScore = SparqlRequestHandler.hasLicense(campaign, endpointStatsRepo) ? 1 : 0;
-				return (availabilityScore + licenseScore) / 2;
+				availabilityScore = 1 - ((double) erroredResponses / (successfulResponses + erroredResponses));
 			}
+			int licenseScore = SparqlRequestHandler.hasLicense(campaign, endpointStatsRepo) ? 1 : 0;
+			return (availabilityScore + licenseScore) / 2;
 		}
 	}
 }
