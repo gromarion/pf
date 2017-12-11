@@ -56,13 +56,15 @@ public class ErrorsTablePanel extends Panel {
 					if (resourceModel.getObject() != null) {
 						for (EvaluatedResourceDetail detail : resourceModel.getObject().getDetails()) {
 							String key = detail.getError().getName();
-							if (!scoreImpact.containsKey(key))
+							// XXX: acá este loop está de más... Si ya existe, no contarlo de nuevo
+							if (!scoreImpact.containsKey(key)) {
 								scoreImpact.put(key, new Double(0));
-							scoreImpact.put(key,
+								scoreImpact.put(key,
 									scoreImpact.get(key)
 									+ new BigDecimal(manualErrorsFormulae.computeIndividual(resourceModel.getObject(), detail.getError().getId()))
 										.setScale(3, RoundingMode.HALF_EVEN).doubleValue()
-							);
+											);
+							}
 						}
 					}
 				} catch (Exception e) {
