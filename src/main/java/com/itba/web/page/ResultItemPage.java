@@ -131,7 +131,7 @@ public class ResultItemPage extends BasePage {
 							setResponsePage(ErrorSelectionPage.class, parameters);
 						}
 					};
-					boolean isAuthorUser = WicketSession.get().getUser().equals(resourceModel.getObject().getSession().getUser());
+					boolean isAuthorUser = resourceModel.getObject() == null || WicketSession.get().getUser().equals(resourceModel.getObject().getSession().getUser());
 					errorPageLink.setVisible(isAuthorUser || (!isAuthorUser && hasEvaluations));
 					listItem.add(errorPageLink);
 				}
