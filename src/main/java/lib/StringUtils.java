@@ -14,6 +14,7 @@ public class StringUtils {
 	private static final double C_CEIL = 79;
 	private static final double D_FLOOR = 60;
 	private static final double D_CEIL = 69;
+	public static final int MAX_LINK_LENGTH = 50;
 
 	public static boolean containsURL(String inputStr) {
 		for (int i = 0; i < HTTP_SCHEMES.length; i++) {
@@ -43,5 +44,12 @@ public class StringUtils {
 		} else {
 			return 'F';
 		}
+	}
+	
+	public static String shortenText(String text) {
+		if (text.length() > MAX_LINK_LENGTH) {
+			return text.substring(0, MAX_LINK_LENGTH) + "...";
+		}
+		return text;
 	}
 }

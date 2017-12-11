@@ -208,7 +208,10 @@ public class ErrorsByUserPage extends BasePage {
 						setResponsePage(ResultItemPage.class, parameters);
 					}
 				};
-				resultLink.add(new Label("resourceName", evaluatedResource.getModelObject().getResource()));
+				String link = evaluatedResource.getModelObject().getResource();
+				Label resultLinkLabel = new Label("resourceName", StringUtils.shortenText(link));
+				resultLink.add(resultLinkLabel);
+				Tooltip.addToComponent(resultLink, Position.TOP, evaluatedResource.getModelObject().getResource());
 				evaluatedResource.add(resultLink);
 			}
 		});

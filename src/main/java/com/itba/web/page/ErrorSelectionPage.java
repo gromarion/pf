@@ -97,7 +97,7 @@ public class ErrorSelectionPage extends BasePage {
             	
         final TextArea<String> comments = new TextArea<String>("comments", Model.of(""));
         final ExternalLink predicateLink = new ExternalLink("predicateLink", predicate, predicate);
-        final Label objectLabel = new Label("objectLabel", URLHelper.transformURLs(object));
+        final Label objectLabel = new Label("objectLabel", URLHelper.transformURLs(object, false));
         objectLabel.setEscapeModelStrings(false);
         final ExternalLink resourceLink = new ExternalLink("resourceLink", resource, resource);
         final Label errorDescriptionLabel = new Label("errorDescription", errorDescription);
