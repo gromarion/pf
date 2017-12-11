@@ -40,6 +40,7 @@ import com.itba.web.feedback.CustomFeedbackPanel;
 import com.itba.web.modal.EditResourceCommentModal;
 
 import lib.Score;
+import lib.StringUtils;
 import utils.URLHelper;
 
 @SuppressWarnings("serial")
@@ -110,14 +111,16 @@ public class ResultItemPage extends BasePage {
 				protected void populateItem(ListItem<List<ResultItem>> listItem) {
 					final List<ResultItem> resultItem = listItem.getModelObject();
 					String predicateURL = resultItem.get(0).value;
-					if (previouslyEvaluatedDetails.contains(predicateURL + resultItem.get(1))) {
+					boolean hasEvaluations = previouslyEvaluatedDetails.contains(predicateURL + resultItem.get(1));
+					if (hasEvaluations) {
 						listItem.add(new AttributeModifier("class", "table-danger"));
 					}
-					listItem.add(new ExternalLink("predicate", predicateURL, predicateURL));
-					Label objectLabel = new Label("object", URLHelper.transformURLs(resultItem.get(1).toString()));
+					listItem.add(new ExternalLink("predicate", StringUtils.shortenText(predicateURL), predicateURL));
+					String objectValue = URLHelper.transformURLs(resultItem.get(1).toString(), true);
+					Label objectLabel = new Label("object", objectValue);
 					objectLabel.setEscapeModelStrings(false);
 					listItem.add(objectLabel);
-					listItem.add(new AjaxLink<Void>("errorPageLink") {
+					AjaxLink<Void> errorPageLink = new AjaxLink<Void>("errorPageLink") {
 						@Override
 						public void onClick(AjaxRequestTarget target) {
 							PageParameters parameters = new PageParameters();
@@ -127,7 +130,10 @@ public class ResultItemPage extends BasePage {
 							if (resourceModel.getObject() != null) parameters.add("sessionId", resourceModel.getObject().getSession().getId());
 							setResponsePage(ErrorSelectionPage.class, parameters);
 						}
-					});
+					};
+					boolean isAuthorUser = WicketSession.get().getUser().equals(resourceModel.getObject().getSession().getUser());
+					errorPageLink.setVisible(isAuthorUser || (!isAuthorUser && hasEvaluations));
+					listItem.add(errorPageLink);
 				}
 			});
 		} catch (JSONException | IOException e) {
