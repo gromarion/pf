@@ -132,6 +132,8 @@ public class ResultItemPage extends BasePage {
 						isAuthorUser = WicketSession.get().getUser().equals(resourceModel.getObject().getSession().getUser());
 					}
 					errorPageLink.setVisible(isAuthorUser || (!isAuthorUser && hasEvaluations));
+					String errorPageLinkClass = isAuthorUser ? "fa fa-pencil" : "fa fa-eye";
+					errorPageLink.add(new AttributeModifier("class", errorPageLinkClass));
 					listItem.add(errorPageLink);
 				}
 			});

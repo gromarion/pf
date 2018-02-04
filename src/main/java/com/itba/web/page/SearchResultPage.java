@@ -1,11 +1,8 @@
 package com.itba.web.page;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -20,17 +17,13 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.google.common.base.Optional;
 import com.itba.domain.SparqlRequestHandler;
 import com.itba.domain.model.Campaign;
-import com.itba.domain.model.EvaluationSession;
 import com.itba.domain.repository.CampaignRepo;
 import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.domain.repository.EvaluatedResourceRepo;
 import com.itba.formulae.ManualErrorsFormulae;
 import com.itba.web.WicketSession;
-
-import lib.Score;
 
 @SuppressWarnings("serial")
 public class SearchResultPage extends BasePage {
