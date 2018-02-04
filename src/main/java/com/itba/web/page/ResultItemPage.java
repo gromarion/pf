@@ -1,6 +1,8 @@
 package com.itba.web.page;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
@@ -159,16 +161,22 @@ public class ResultItemPage extends BasePage {
 		}
 
 		add(new ResourceSearchPanel("search"));
-		String resourceName = resource.substring(resource.lastIndexOf('/') + 1);
-		add(new ExternalLink("resourceName", resource, resourceName.replace('_', ' ')));
-
-		add(customFeedbackPanel);
-		ResultItemActionsPanel actionsPanel = new ResultItemActionsPanel("actionsPanel", parameters);
-		actionsPanel.setVisible(!guest);
-		add(actionsPanel);
-		int sessionId = parameters.get("resourceSessionId").isNull() ? -1 : parameters.get("resourceSessionId").toInt(); 
-		ErrorsTablePanel errorsTablePanel = new ErrorsTablePanel("errorsTablePanel", resource, sessionId);
-		add(errorsTablePanel);
+		try {
+		String resourceName;
+			resourceName = URLDecoder.decode(resource.substring(resource.lastIndexOf('/') + 1), "UTF-8");
+			add(new ExternalLink("resourceName", resource, resourceName.replace('_', ' ')));
+			
+			add(customFeedbackPanel);
+			ResultItemActionsPanel actionsPanel = new ResultItemActionsPanel("actionsPanel", parameters);
+			actionsPanel.setVisible(!guest);
+			add(actionsPanel);
+			int sessionId = parameters.get("resourceSessionId").isNull() ? -1 : parameters.get("resourceSessionId").toInt(); 
+			ErrorsTablePanel errorsTablePanel = new ErrorsTablePanel("errorsTablePanel", resource, sessionId);
+			add(errorsTablePanel);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			setResponsePage(ErrorPage.class);
+		}
 	}
 
 	@Override
