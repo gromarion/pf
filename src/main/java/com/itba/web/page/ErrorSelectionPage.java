@@ -82,7 +82,11 @@ public class ErrorSelectionPage extends BasePage {
 					.orNull());
 		}
 
-		boolean isAuthor = evaluatedResource.getObject().getSession().getUser().equals(WicketSession.get().getUser());
+		EvaluatedResource resourceObject = evaluatedResource.getObject();
+		boolean isAuthor = false;
+		if (resourceObject != null) {
+			isAuthor = resourceObject.getSession().getUser().equals(WicketSession.get().getUser());
+		}
 		SelectedErrorsTablePanel selectedErrorsTablePanel = new SelectedErrorsTablePanel("selectedErrorsTablePanel",
 				predicate, object, evaluatedResource, isAuthor);
 

@@ -26,6 +26,7 @@ import com.itba.domain.SparqlRequestHandler;
 import com.itba.domain.model.Campaign;
 import com.itba.domain.model.EvaluatedResource;
 import com.itba.domain.model.EvaluationSession;
+import com.itba.domain.model.User;
 import com.itba.domain.repository.CampaignRepo;
 import com.itba.domain.repository.EndpointStatsRepo;
 import com.itba.domain.repository.ErrorRepo;
@@ -125,14 +126,16 @@ public class ResultItemPage extends BasePage {
 							parameters.add("predicate", resultItem.get(0));
 							parameters.add("object", resultItem.get(1));
 							parameters.add("resource", resource);
-							if (resourceModel.getObject() != null) parameters.add("sessionId", resourceModel.getObject().getSession().getId());
+							if (resourceModel.getObject() != null) {
+								parameters.add("sessionId", resourceModel.getObject().getSession().getId());
+							}
 							setResponsePage(ErrorSelectionPage.class, parameters);
 						}
 					};
-					boolean isAuthorUser = false;
-					if (resourceModel.getObject() != null) {
-						isAuthorUser = WicketSession.get().getUser().equals(resourceModel.getObject().getSession().getUser());
-					}
+					boolean isAuthorUser = (parameters.get("resourceSessionId").isNull()
+							&& !WicketSession.get().getUser().hasRole(User.GUEST_ROLE))
+							|| (resourceModel.getObject() != null && WicketSession.get().getUser()
+									.equals(resourceModel.getObject().getSession().getUser()));
 					errorPageLink.setVisible(isAuthorUser || (!isAuthorUser && hasEvaluations));
 					String errorPageLinkClass = isAuthorUser ? "fa fa-pencil" : "fa fa-eye";
 					errorPageLink.add(new AttributeModifier("class", errorPageLinkClass));
@@ -162,15 +165,16 @@ public class ResultItemPage extends BasePage {
 
 		add(new ResourceSearchPanel("search"));
 		try {
-		String resourceName;
+			String resourceName;
 			resourceName = URLDecoder.decode(resource.substring(resource.lastIndexOf('/') + 1), "UTF-8");
 			add(new ExternalLink("resourceName", resource, resourceName.replace('_', ' ')));
-			
+
 			add(customFeedbackPanel);
 			ResultItemActionsPanel actionsPanel = new ResultItemActionsPanel("actionsPanel", parameters);
 			actionsPanel.setVisible(!guest);
 			add(actionsPanel);
-			int sessionId = parameters.get("resourceSessionId").isNull() ? -1 : parameters.get("resourceSessionId").toInt(); 
+			int sessionId = parameters.get("resourceSessionId").isNull() ? -1
+					: parameters.get("resourceSessionId").toInt();
 			ErrorsTablePanel errorsTablePanel = new ErrorsTablePanel("errorsTablePanel", resource, sessionId);
 			add(errorsTablePanel);
 		} catch (UnsupportedEncodingException e) {
