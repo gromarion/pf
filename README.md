@@ -65,7 +65,7 @@ Once the user is logged in the application, he can start doing some manual check
 
 ![alt text](https://raw.githubusercontent.com/gromarion/pf/master/readme_images/manual_checks.gif)
 
-If he doesn't know exactly what to look for, he can always click the **Obtener recurso aleatorio** button, to fetch any random resource in the chosen endpoint:
+If he doesn't know exactly what to look for, he can always click the **Obtener documento aleatorio** button, to fetch any random resource in the chosen endpoint:
 
 ![alt text](https://raw.githubusercontent.com/gromarion/pf/master/readme_images/fetch_next_random.gif)
 

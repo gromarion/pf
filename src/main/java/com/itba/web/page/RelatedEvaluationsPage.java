@@ -52,7 +52,7 @@ public class RelatedEvaluationsPage extends BasePage {
 	private final IModel<EvaluationSession> evaluationSessioneModel = new EntityModel<EvaluationSession>(EvaluationSession.class);
 	private final IModel<EvaluatedResource> evaluatedResourceModel = new EntityModel<EvaluatedResource>(EvaluatedResource.class);
 
-	// TODO: evitar mostrar el recurso múltiples veces en las columnas. Mostrarlo una vez a modo de título
+	// TODO: evitar mostrar el documento múltiples veces en las columnas. Mostrarlo una vez a modo de título
 	
 	public RelatedEvaluationsPage(final PageParameters parameters) {
 		add(new CustomFeedbackPanel("feedbackPanel"));

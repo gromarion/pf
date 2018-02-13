@@ -57,14 +57,13 @@ public class HibernateEvaluatedResourceDetailRepo extends AbstractHibernateRepo
 	
 	@Override
 	public Long getQtyByErrorAndCampaign(final Error error, final Campaign campaign) {
-		// XXX: se hace el GROUP BY para evitar contar varias veces un mismo error en un mismo recurso marcado por distintos usuarios
+		// XXX: se hace el GROUP BY para evitar contar varias veces un mismo error en un mismo documento marcado por distintos usuarios
 		Query query = getSession()
 				.createQuery("SELECT d.resource.session.campaign.id, d.resource.resource, d.predicate, d.object, d.error.id"
 						+ " FROM EvaluatedResourceDetail d "
 						+ " WHERE d.error = " + error.getId()
 						+ " AND d.resource.session.campaign = " + campaign.getId()
-						+ " GROUP BY d.resource.session.campaign.id, d.resource.resource, d.predicate, d.object, d.error.id"
-						);
+						+ " GROUP BY d.resource.session.campaign.id, d.resource.resource, d.predicate, d.object, d.error.id");
 		return new Long(query.list().size());
 	}
 }
