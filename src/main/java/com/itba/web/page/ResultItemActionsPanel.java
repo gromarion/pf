@@ -1,6 +1,7 @@
 package com.itba.web.page;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -35,6 +36,7 @@ public class ResultItemActionsPanel extends Panel {
 	private EvaluationSessionRepo sessionRepo;
 
 	private final IModel<EvaluatedResource> resourceModel = new EntityModel<EvaluatedResource>(EvaluatedResource.class);
+	private final IModel<EvaluationSession> evaluationSessioneModel = new EntityModel<EvaluationSession>(EvaluationSession.class);
 
 	public ResultItemActionsPanel(String id, PageParameters parameters) {
 		super(id);
@@ -106,6 +108,9 @@ public class ResultItemActionsPanel extends Panel {
 				setResponsePage(RelatedEvaluationsPage.class, parameters);
 			}
 		};
+		evaluationSessioneModel.setObject(resourceModel.getObject().getSession());
+		List<EvaluatedResource> evaluatedResources = evaluatedResourceRepo.getAllRelated(resource, evaluationSessioneModel);
+		relatedEvaluationsButton.setVisible(evaluatedResources.size() > 0);
 		
 		WebMarkupContainer editCommentsButtonContainer = new WebMarkupContainer("editCommentsButtonContainer");
 		editCommentsButtonContainer.setVisible(resourceModel.getObject() == null ||
