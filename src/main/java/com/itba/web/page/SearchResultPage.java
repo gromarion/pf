@@ -121,6 +121,9 @@ public class SearchResultPage extends BasePage {
 	}
 	
 	private String formatSearch(String search) {
+		if (search == null) {
+			return null;
+		}
 		return search.replaceAll(" ", "_");
 	}
 	

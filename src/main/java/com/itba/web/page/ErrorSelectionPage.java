@@ -11,7 +11,6 @@ import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
@@ -36,7 +35,6 @@ import com.itba.web.feedback.CustomFeedbackPanel;
 
 import lib.Score;
 import lib.StringUtils;
-import utils.URLHelper;
 
 @SuppressWarnings("serial")
 public class ErrorSelectionPage extends BasePage {
@@ -105,10 +103,6 @@ public class ErrorSelectionPage extends BasePage {
 		}
 
 		final TextArea<String> comments = new TextArea<String>("comments", Model.of(""));
-		final ExternalLink predicateLink = new ExternalLink("predicateLink", predicate, predicate);
-		final Label objectLabel = new Label("objectLabel", URLHelper.transformURLs(object, false));
-		objectLabel.setEscapeModelStrings(false);
-		final ExternalLink resourceLink = new ExternalLink("resourceLink", resource, resource);
 		final Label errorDescriptionLabel = new Label("errorDescription", errorDescription);
 		final Label errorExampleLabel = new Label("errorExample", errorExample);
 
@@ -185,10 +179,8 @@ public class ErrorSelectionPage extends BasePage {
 		form.add(comments);
 		form.add(errorListChoice);
 		form.add(errorDescriptionLabel);
-		form.add(resourceLink);
-		form.add(objectLabel);
-		form.add(predicateLink);
 		form.add(errorExampleLabel);
+		form.add(new AboutErrorPanel("aboutErrorPanel", resource, predicate, object, isAuthor));
 
 		Button submit = new Button("submit");
 		if (availableErrors.getObject().size() == 0)

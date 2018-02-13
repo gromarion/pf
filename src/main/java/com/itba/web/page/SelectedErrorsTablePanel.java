@@ -9,7 +9,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -28,7 +27,6 @@ import com.itba.formulae.ManualErrorsFormulae;
 import com.itba.web.modal.EditErrorCommentModal;
 
 import lib.Score;
-import utils.URLHelper;
 
 @SuppressWarnings("serial")
 public class SelectedErrorsTablePanel extends Panel {
@@ -59,17 +57,7 @@ public class SelectedErrorsTablePanel extends Panel {
 		alertContainer.setVisible(!isAuthor);
 		add(alertContainer);
 
-		WebMarkupContainer container = new WebMarkupContainer("aboutError");
-		final ExternalLink predicateLink = new ExternalLink("errorAboutPredicateLink", predicate, predicate);
-		final Label objectLabel = new Label("errorAboutObjectLabel", URLHelper.transformURLs(object, false));
-		final ExternalLink resourceLink = new ExternalLink("errorAboutResourceLink", resource.getObject().getResource(),
-				resource.getObject().getResource());
-
-		container.add(objectLabel);
-		container.add(predicateLink);
-		container.add(resourceLink);
-		container.setVisible(!isAuthor);
-		add(container);
+		add(new AboutErrorPanel("aboutErrorPanel", resource.getObject().getResource(), predicate, object, isAuthor));
 
 		final Label errorActionsLabel = new Label("errorActionsLabel", getString("errorActionsLabel"));
 

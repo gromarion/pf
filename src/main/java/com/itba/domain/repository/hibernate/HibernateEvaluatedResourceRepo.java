@@ -51,7 +51,7 @@ public class HibernateEvaluatedResourceRepo extends AbstractHibernateRepo implem
 	public PaginatedResult<EvaluatedResource> getAllForSession(final EvaluationSession session, int page) {
 		Query query = getSession()
 				.createQuery("SELECT e FROM EvaluatedResource e WHERE e.session = " + session.getId())
-				.setMaxResults(LIMIT).setFirstResult(page);
+				.setMaxResults(LIMIT).setFirstResult(page * LIMIT);
 
 		Query countQuery = getSession()
 				.createQuery("SELECT COUNT(*) FROM EvaluatedResource e WHERE e.session = " + session.getId());

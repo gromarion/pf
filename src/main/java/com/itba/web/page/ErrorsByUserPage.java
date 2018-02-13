@@ -84,7 +84,6 @@ public class ErrorsByUserPage extends BasePage {
 			return errorRepo.getAll();
 		}
 	};
-	private boolean hasNextPage;
 
 	public ErrorsByUserPage(final PageParameters parameters) {
 		add(new CustomFeedbackPanel("feedbackPanel"));
@@ -92,10 +91,19 @@ public class ErrorsByUserPage extends BasePage {
 		currentSession.setObject(WicketSession.get().getEvaluationSession().get());
 		final int page = fetchPage(parameters);
 		
+		AjaxLink<Void> nextPageLink = new AjaxLink<Void>("nextPageLink") {
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				PageParameters parameters = new PageParameters();
+				parameters.set("page", page + 1);
+				setResponsePage(ErrorsByUserPage.class, parameters);
+			}
+		};
+		
 		final IModel<List<EvaluatedResource>> evaluatedResources = new LoadableDetachableModel<List<EvaluatedResource>>() {
 			@Override
 			protected List<EvaluatedResource> load() {
-				return getResult(parameters).getResult();
+				return getResult(parameters, nextPageLink).getResult();
 			}
 		};
 
@@ -216,21 +224,13 @@ public class ErrorsByUserPage extends BasePage {
 			}
 		});
 
-		AjaxLink<Void> nextPageLink = new AjaxLink<Void>("nextPageLink") {
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				PageParameters parameters = new PageParameters();
-				parameters.set("page", page + 1);
-				setResponsePage(SearchResultPage.class, parameters);
-			}
-		};
 		AjaxLink<Void> previousPageLink = new AjaxLink<Void>("previousPageLink") {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				PageParameters parameters = new PageParameters();
 				int newOffset = page > 0 ? page - 1 : 0;
 				parameters.set("page", newOffset);
-				setResponsePage(SearchResultPage.class, parameters);
+				setResponsePage(ErrorsByUserPage.class, parameters);
 			}
 		};
 
@@ -239,7 +239,6 @@ public class ErrorsByUserPage extends BasePage {
 		add(new Label("currentPage", page + 1));
 		previousPageLink.setVisible(page > 0);
 		add(previousPageLink);
-		nextPageLink.setVisible(hasNextPage);
 		add(nextPageLink);
 	}
 
@@ -254,12 +253,12 @@ public class ErrorsByUserPage extends BasePage {
 		return page == null ? 0 : Integer.parseInt(page);
 	}
 
-	private PaginatedResult<EvaluatedResource> getResult(PageParameters parameters) {
+	private PaginatedResult<EvaluatedResource> getResult(PageParameters parameters, AjaxLink<Void> nextPageLink) {
 		PaginatedResult<EvaluatedResource> result = userModel.getObject().hasRole(User.ADMIN_ROLE) ?
 				evaluatedResourceRepo.getAllPaginated(fetchPage(parameters)) :
 				evaluatedResourceRepo.getAllForSession(currentSession.getObject(), fetchPage(parameters));
 		
-		hasNextPage = result.hasNextPage();
+		nextPageLink.setVisible(result.hasNextPage());
 		if (Strings.isNotEmpty(parameters.get("errorId").toString())) {
 			int errorId = Integer.parseInt(parameters.get("errorId").toString());
 			errorModel.setObject(errorRepo.get(errorId));
