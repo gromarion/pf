@@ -20,6 +20,7 @@ import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.ajax.json.JSONException;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -162,7 +163,6 @@ public class ErrorsByUserPage extends BasePage {
 		}.setDeleteAfterDownload(true);
 
 		Tooltip.addToComponent(reportDownloadLink, Position.RIGHT, getString("downloadLink"));
-		add(reportDownloadLink);
 
 		DropDownChoice<Error> errorListChoice = new DropDownChoice<Error>("errorList", errorModel,
 				new LoadableDetachableModel<List<Error>>() {
@@ -192,9 +192,8 @@ public class ErrorsByUserPage extends BasePage {
 			}
 		};
 		errorListChoice.add(onChangeAjaxBehavior);
-		add(errorListChoice);
 
-		add(new ListView<EvaluatedResource>("evaluatedResources", evaluatedResources) {
+		ListView<EvaluatedResource> evaluatedResourcesListView = new ListView<EvaluatedResource>("evaluatedResources", evaluatedResources) {
 			@Override
 			protected void populateItem(final ListItem<EvaluatedResource> evaluatedResource) {
 				evaluatedResource
@@ -237,7 +236,16 @@ public class ErrorsByUserPage extends BasePage {
 				Tooltip.addToComponent(resultLink, Position.TOP, evaluatedResource.getModelObject().getResource());
 				evaluatedResource.add(resultLink);
 			}
-		});
+		};
+		WebMarkupContainer noErrorsByUserWarning = new WebMarkupContainer("noErrorsByUserWarning");
+		noErrorsByUserWarning.setVisible(evaluatedResources.getObject().size() == 0);
+		add(noErrorsByUserWarning);
+		WebMarkupContainer errorsByUserTable = new WebMarkupContainer("errorsByUserTable");
+		errorsByUserTable.add(evaluatedResourcesListView);
+		errorsByUserTable.setVisible(evaluatedResources.getObject().size() > 0);
+		errorsByUserTable.add(reportDownloadLink);
+		errorsByUserTable.add(errorListChoice);
+		add(errorsByUserTable);
 
 		AjaxLink<Void> previousPageLink = new AjaxLink<Void>("previousPageLink") {
 			@Override
@@ -251,10 +259,10 @@ public class ErrorsByUserPage extends BasePage {
 
 		add(new Label("titleLabel",
 				userModel.getObject().hasRole("ADMIN") ? getString("adminTitleLabel") : getString("titleLabel")));
-		add(new Label("currentPage", page + 1));
+		errorsByUserTable.add(new Label("currentPage", page + 1));
 		previousPageLink.setVisible(page > 0);
-		add(previousPageLink);
-		add(nextPageLink);
+		errorsByUserTable.add(previousPageLink);
+		errorsByUserTable.add(nextPageLink);
 	}
 
 	@Override

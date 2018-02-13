@@ -7,56 +7,65 @@
 					<span wicket:id="titleLabel">Title</span>
 				</h2>
 			</div>
-			<div class="form-group">
-				<a type="btn" class="btn btn-info" wicket:id="reportDownloadLink">
-					<i class="fa fa-download"/>
-					<wicket:message key="downloadLink">Download report</wicket:message>
-				</a>
-			</div>
-			<div class="form-group">
-				<label for="errorType">
-					<wicket:message key="errorListFilter">Error type</wicket:message>
-				</label>
-				<div class="controls">
-					<select wicket:id="errorList" class="custom-select"/>
+			<div wicket:id="noErrorsByUserWarning" class="row">
+				<div class="alert alert-warning" role="alert">
+					<span>
+						<wicket:message key="noErrorsByUserWarning">There are no evaluations yey</wicket:message>
+					</span>
 				</div>
 			</div>
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th>
-							<wicket:message key="resourceNameLabel">Resource</wicket:message>
-						</th>
-						<th>
-							<wicket:message key="evaluatorUsernameLabel">Username</wicket:message>
-						</th>
-						<th>
-							<wicket:message key="resourceScoreLabel">Resource score</wicket:message>
-						</th>
-						<th>
-							<wicket:message key="resourceTimestampLabel">Evaluation date</wicket:message>
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr wicket:id="evaluatedResources">
-						<td><a wicket:id="resultLink" class="btn btn-link" href="#"><span
-								wicket:id="resourceName">Some resource</span></a></td>
-						<td><span wicket:id="evaluatorUsername">username</span></td>
-						<td><span wicket:id="resourceScore">1.000</span></td>
-						<td><span wicket:id="resourceTimestamp">1/1/1970 00:00</span></td>
-					</tr>
-				</tbody>
-			</table>
-			<div class="paginator">
-				<a wicket:id="previousPageLink" href="#" class="btn btn-primary"><wicket:message
-						key="previousPage">Previous</wicket:message></a>
-				<wicket:message key="page">Página</wicket:message>
-				<span wicket:id="currentPage">1</span>
-				<a wicket:id="nextPageLink"
-					href="#" class="btn btn-primary">
-					<wicket:message key="nextPage">Next</wicket:message>
-				</a>
+			<div wicket:id="errorsByUserTable">
+				<div class="form-group">
+					<a type="btn" class="btn btn-info" wicket:id="reportDownloadLink">
+						<i class="fa fa-download"/>
+						<wicket:message key="downloadLink">Download report</wicket:message>
+					</a>
+				</div>
+				<div class="form-group">
+					<label for="errorType">
+						<wicket:message key="errorListFilter">Error type</wicket:message>
+					</label>
+					<div class="controls">
+						<select wicket:id="errorList" class="custom-select"/>
+					</div>
+				</div>
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>
+								<wicket:message key="resourceNameLabel">Resource</wicket:message>
+							</th>
+							<th>
+								<wicket:message key="evaluatorUsernameLabel">Username</wicket:message>
+							</th>
+							<th>
+								<wicket:message key="resourceScoreLabel">Resource score</wicket:message>
+							</th>
+							<th>
+								<wicket:message key="resourceTimestampLabel">Evaluation date</wicket:message>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr wicket:id="evaluatedResources">
+							<td><a wicket:id="resultLink" class="btn btn-link" href="#"><span
+									wicket:id="resourceName">Some resource</span></a></td>
+							<td><span wicket:id="evaluatorUsername">username</span></td>
+							<td><span wicket:id="resourceScore">1.000</span></td>
+							<td><span wicket:id="resourceTimestamp">1/1/1970 00:00</span></td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="paginator">
+					<a wicket:id="previousPageLink" href="#" class="btn btn-primary"><wicket:message
+							key="previousPage">Previous</wicket:message></a>
+					<wicket:message key="page">Página</wicket:message>
+					<span wicket:id="currentPage">1</span>
+					<a wicket:id="nextPageLink"
+						href="#" class="btn btn-primary">
+						<wicket:message key="nextPage">Next</wicket:message>
+					</a>
+				</div>
 			</div>
 		</div>
 	</div>
