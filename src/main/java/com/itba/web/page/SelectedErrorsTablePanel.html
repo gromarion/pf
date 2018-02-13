@@ -1,14 +1,41 @@
 <html>
 	<body>
 		<wicket:panel>
+			<div wicket:id="alertContainer" class="row">
+				<div class="alert alert-warning" role="alert">
+					<span wicket:id="readOnlyWarning"></span>
+				</div>
+			</div>
 			<div class="row">
 				<h2>
 					<wicket:message key="foundErrorsLabel">Found errors</wicket:message>
 				</h2>
 			</div>
-			<div wicket:id="alertContainer" class="row">
-				<div class="alert alert-warning" role="alert">
-					<span wicket:id="readOnlyWarning"></span>
+			<div wicket:id="aboutError">
+				<div class="form-group">
+					<label for="resourceLink" class="bold">
+						<wicket:message key="resource">Documento</wicket:message>
+					</label>
+					<div class="controls">
+						<a wicket:id="errorAboutResourceLink" href="#" target="_blank"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="predicateLink" class="bold">
+						<wicket:message
+							key="predicate">Predicado</wicket:message>
+					</label>
+					<div class="controls">
+						<a wicket:id="errorAboutPredicateLink" href="#" target="_blank"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="object" class="bold">
+						<wicket:message key="object">Objeto</wicket:message>
+					</label>
+					<div class="controls">
+						<span wicket:id="errorAboutObjectLabel">object</span>
+					</div>
 				</div>
 			</div>
 			<table class="table table-striped">

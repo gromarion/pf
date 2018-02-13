@@ -9,6 +9,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -24,10 +25,10 @@ import com.itba.domain.model.EvaluatedResourceDetail;
 import com.itba.domain.repository.ErrorRepo;
 import com.itba.domain.repository.EvaluatedResourceDetailRepo;
 import com.itba.formulae.ManualErrorsFormulae;
-import com.itba.web.WicketSession;
 import com.itba.web.modal.EditErrorCommentModal;
 
 import lib.Score;
+import utils.URLHelper;
 
 @SuppressWarnings("serial")
 public class SelectedErrorsTablePanel extends Panel {
@@ -52,21 +53,29 @@ public class SelectedErrorsTablePanel extends Panel {
 						: evaluatedResourceDetailRepo.getPreviousErrors(resource.getObject(), predicate, object);
 			}
 		};
-		
+
 		WebMarkupContainer alertContainer = new WebMarkupContainer("alertContainer");
 		alertContainer.add(new Label("readOnlyWarning", getString("readOnlyWarning")));
 		alertContainer.setVisible(!isAuthor);
 		add(alertContainer);
+
+		WebMarkupContainer container = new WebMarkupContainer("aboutError");
+		final ExternalLink predicateLink = new ExternalLink("errorAboutPredicateLink", predicate, predicate);
+		final Label objectLabel = new Label("errorAboutObjectLabel", URLHelper.transformURLs(object, false));
+		final ExternalLink resourceLink = new ExternalLink("errorAboutResourceLink", resource.getObject().getResource(),
+				resource.getObject().getResource());
+
+		container.add(objectLabel);
+		container.add(predicateLink);
+		container.add(resourceLink);
+		container.setVisible(!isAuthor);
+		add(container);
 
 		final Label errorActionsLabel = new Label("errorActionsLabel", getString("errorActionsLabel"));
 
 		add(new ListView<EvaluatedResourceDetail>("usedErrorDetails", usedErrorDetails) {
 			@Override
 			protected void populateItem(final ListItem<EvaluatedResourceDetail> errorDetail) {
-
-				boolean isAuthorUser = WicketSession.get().getUser()
-						.equals(resource.getObject().getSession().getUser());
-
 				final PageParameters refreshParameters = new PageParameters();
 				refreshParameters.add("predicate", predicate);
 				refreshParameters.add("object", object);
@@ -89,17 +98,17 @@ public class SelectedErrorsTablePanel extends Panel {
 							// TODO: do nothing for now...
 						}
 					}
-				}.setVisible(isAuthorUser));
+				}.setVisible(isAuthor));
 				errorDetail.add(new AjaxLink<Void>("editCommentLink") {
 					@Override
 					public void onClick(AjaxRequestTarget target) {
 						// TODO: do nothing for now...
 					}
-				}.setVisible(isAuthorUser)
+				}.setVisible(isAuthor)
 						.add(new AttributeModifier("data-target", "#modal" + errorDetail.getModelObject().getId())));
 				errorDetail.add(new EditErrorCommentModal("editCommentModal", "Editar comentario",
 						errorDetail.getModel(), refreshParameters));
-				errorActionsLabel.setVisible(isAuthorUser);
+				errorActionsLabel.setVisible(isAuthor);
 			}
 		}.setVisible(usedErrorDetails.getObject().size() > 0));
 
