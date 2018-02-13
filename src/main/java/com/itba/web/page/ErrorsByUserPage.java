@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -35,6 +37,7 @@ import org.apache.wicket.util.resource.IResourceStream;
 
 import com.google.common.base.Optional;
 import com.itba.domain.EntityModel;
+import com.itba.domain.model.Campaign;
 import com.itba.domain.model.Error;
 import com.itba.domain.model.EvaluatedResource;
 import com.itba.domain.model.EvaluatedResourceDetail;
@@ -90,7 +93,7 @@ public class ErrorsByUserPage extends BasePage {
 		userModel.setObject(userRepo.getByUsername(WicketSession.get().getUsername()));
 		currentSession.setObject(WicketSession.get().getEvaluationSession().get());
 		final int page = fetchPage(parameters);
-		
+
 		AjaxLink<Void> nextPageLink = new AjaxLink<Void>("nextPageLink") {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
@@ -99,7 +102,7 @@ public class ErrorsByUserPage extends BasePage {
 				setResponsePage(ErrorsByUserPage.class, parameters);
 			}
 		};
-		
+
 		final IModel<List<EvaluatedResource>> evaluatedResources = new LoadableDetachableModel<List<EvaluatedResource>>() {
 			@Override
 			protected List<EvaluatedResource> load() {
@@ -110,7 +113,7 @@ public class ErrorsByUserPage extends BasePage {
 		IModel<File> fileModel = new AbstractReadOnlyModel<File>() {
 			@Override
 			public File getObject() {
-				File reportFile = new File("report.csv");
+				File reportFile = new File(generateFileName());
 				FileOutputStream fos;
 				try {
 					fos = new FileOutputStream(reportFile);
@@ -160,13 +163,13 @@ public class ErrorsByUserPage extends BasePage {
 						return availableErrors.getObject();
 					}
 				}, new ChoiceRenderer<Error>("name")) {
-			
+
 			@Override
 			protected String getNullValidDisplayValue() {
 				return "Elija uno...";
 			}
 		};
-		
+
 		errorListChoice.setNullValid(true);
 
 		OnChangeAjaxBehavior onChangeAjaxBehavior = new OnChangeAjaxBehavior() {
@@ -197,11 +200,15 @@ public class ErrorsByUserPage extends BasePage {
 					BigDecimal score = evaluatedResource.getModelObject().getScore();
 					// XXX: patch para dar el primer valor a los scores de la DB
 					if (score == null) {
-						score = new BigDecimal(manualErrorsFormulae.compute(evaluatedResource.getModelObject().getResource(),
-								Optional.of(evaluatedResource.getModelObject().getSession())).getScore());
+						score = new BigDecimal(
+								manualErrorsFormulae
+										.compute(evaluatedResource.getModelObject().getResource(),
+												Optional.of(evaluatedResource.getModelObject().getSession()))
+										.getScore());
 						evaluatedResource.getModelObject().setScore(score);
 					}
-					evaluatedResource.add(new Label("resourceScore", StringUtils.formatDouble(score.setScale(3, BigDecimal.ROUND_HALF_EVEN).doubleValue(), 3)));
+					evaluatedResource.add(new Label("resourceScore",
+							StringUtils.formatDouble(score.setScale(3, BigDecimal.ROUND_HALF_EVEN).doubleValue(), 3)));
 				} catch (JSONException | IOException e) {
 					e.printStackTrace();
 					setResponsePage(ErrorPage.class);
@@ -254,10 +261,10 @@ public class ErrorsByUserPage extends BasePage {
 	}
 
 	private PaginatedResult<EvaluatedResource> getResult(PageParameters parameters, AjaxLink<Void> nextPageLink) {
-		PaginatedResult<EvaluatedResource> result = userModel.getObject().hasRole(User.ADMIN_ROLE) ?
-				evaluatedResourceRepo.getAllPaginated(fetchPage(parameters)) :
-				evaluatedResourceRepo.getAllForSession(currentSession.getObject(), fetchPage(parameters));
-		
+		PaginatedResult<EvaluatedResource> result = userModel.getObject().hasRole(User.ADMIN_ROLE)
+				? evaluatedResourceRepo.getAllPaginated(fetchPage(parameters))
+				: evaluatedResourceRepo.getAllForSession(currentSession.getObject(), fetchPage(parameters));
+
 		nextPageLink.setVisible(result.hasNextPage());
 		if (Strings.isNotEmpty(parameters.get("errorId").toString())) {
 			int errorId = Integer.parseInt(parameters.get("errorId").toString());
@@ -273,5 +280,16 @@ public class ErrorsByUserPage extends BasePage {
 			result.setResult(new ArrayList<EvaluatedResource>(filteredEvaluatedResource));
 		}
 		return result;
+	}
+
+	private String generateFileName() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MMM-d");
+		LocalDateTime now = LocalDateTime.now();
+		String endpointName = campaignRepo
+				.get(Campaign.class, WicketSession.get().getEvaluationSession().get().getCampaign().getId())
+				.getName()
+				.replaceAll(" ", "_");
+
+		return String.format("%s-%s.csv", endpointName, formatter.format(now));
 	}
 }

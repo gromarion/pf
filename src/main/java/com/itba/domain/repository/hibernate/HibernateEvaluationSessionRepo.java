@@ -31,6 +31,7 @@ public class HibernateEvaluationSessionRepo extends AbstractHibernateRepo implem
 	}
 	
 	@Override
+	@SuppressWarnings("unchecked")
 	public Optional<EvaluationSession> getForCampaignAndUser(final Campaign campaign, final User user) {
 		Query query = getSession().createQuery("SELECT e FROM EvaluationSession e " + " WHERE e.user = " + user.getId()
 				+ " AND e.campaign = " + campaign.getId());
