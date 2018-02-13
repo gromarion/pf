@@ -25,8 +25,13 @@ Developers
 - Import the project in Eclipse: File -> Import... -> Maven -> Existing Maven Projects
 - Open the PGAdmin application. Create a new user role with name 'finalproject' and password 'finalproject'. Then, in PGAdmin, copy and execute the SQL code of the following files, in the following order:
   - src/test/resources/postgresql-create-tables.sql
-  - src/test/resources/2017\_06\_10\_18\_13\_add\_timestamp\_to\_evaluated\_resource.sql
-  - src/test/resources/2017\_06\_12\_19\_26\_create\_endpoint\_stats\_table.sql
+  - src/test/resources/db/2017_06_10_18_13_add_timestamp_to_evaluated_resource.sql
+  - src/test/resources/db/2017_06_12_19_26_create_endpoint_stats_table.sql
+  - src/test/resources/db/2017_09_10_19_21_add_role_to_user.sql
+  - src/test/resources/db/2017_10_21_16_52_add_endpoint_params.sql
+  - src/test/resources/db/2017_11_12_16_16_add_deleted_at_to_user.sql
+  - src/test/resources/db/2017_12_02_13_21_add_score_resource.sql
+  - src/test/resources/db/2017_12_08_15_46_add_campaign_description.sql
 
 
 - In Eclipse, right click on the src/test/java/com/itba/Start.java -> Run As -> Java Application
@@ -45,36 +50,14 @@ Developers
 - copy the `.war` file in the `PATH_TO_APACHE_TOMCAT_FOLDER/webapps/` folder
 - Open the PGAdmin application. Create a new user role with name 'finalproject' and password 'finalproject'. Then, in PGAdmin, copy and  execute the SQL code of the following files, in the following order:
   - src/test/resources/postgresql-create-tables.sql
-  - src/test/resources/2017\_06\_10\_18\_13\_add\_timestamp\_to\_evaluated\_resource.sql
-  - src/test/resources/2017\_06\_12\_19\_26\_create\_endpoint\_stats\_table.sql
+  - src/test/resources/db/2017_06_10_18_13_add_timestamp_to_evaluated_resource.sql
+  - src/test/resources/db/2017_06_12_19_26_create_endpoint_stats_table.sql
+  - src/test/resources/db/2017_09_10_19_21_add_role_to_user.sql
+  - src/test/resources/db/2017_10_21_16_52_add_endpoint_params.sql
+  - src/test/resources/db/2017_11_12_16_16_add_deleted_at_to_user.sql
+  - src/test/resources/db/2017_12_02_13_21_add_score_resource.sql
+  - src/test/resources/db/2017_12_08_15_46_add_campaign_description.sql
 
 
 - Stepped in the `PATH_TO_APACHE_TOMCAT_FOLDER` folder, run `sh bin/startup.sh`
 - Open a web browser and head to `htp://localhost:8080/dataqualityassessmens-1.0-SNAPSHOT/`
-
-## Usage
-### User registration and login
-If it's your first time using the application, then you must register first before getting started. In order to do so, click the **¿Aún no eres un usuario? ¡Regístrate ahora!** link. This will redirect you to a page that will require you to fill up some basic information: full name, username, password and password confirmation, as shown below in the animated .GIF:
-
-![alt text](https://raw.githubusercontent.com/gromarion/pf/master/readme_images/register_user.gif)
-
-Once you've been fully registered, you can get started by logging in.
-
-### Manual checks
-Once the user is logged in the application, he can start doing some manual checks on any SPARQL endpoint loaded in the application, by making a search of any resource:
-
-![alt text](https://raw.githubusercontent.com/gromarion/pf/master/readme_images/manual_checks.gif)
-
-If he doesn't know exactly what to look for, he can always click the **Obtener documento aleatorio** button, to fetch any random resource in the chosen endpoint:
-
-![alt text](https://raw.githubusercontent.com/gromarion/pf/master/readme_images/fetch_next_random.gif)
-
-### Resource detail
-When the user finds the resource that he was looking for, they can click it to see in detail all of its properties:
-
-![alt text](https://raw.githubusercontent.com/gromarion/pf/master/readme_images/resource_detail.gif)
-
-### Error selection page
-If the user detects some errors in the selected resource, he can select the most accurate error, as shown in the following image:
-
-![alt text](https://raw.githubusercontent.com/gromarion/pf/master/readme_images/error_selection_page.gif)
