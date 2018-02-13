@@ -36,7 +36,8 @@ public class ResultItemActionsPanel extends Panel {
 	private EvaluationSessionRepo sessionRepo;
 
 	private final IModel<EvaluatedResource> resourceModel = new EntityModel<EvaluatedResource>(EvaluatedResource.class);
-	private final IModel<EvaluationSession> evaluationSessioneModel = new EntityModel<EvaluationSession>(EvaluationSession.class);
+	private final IModel<EvaluationSession> evaluationSessionModel = new EntityModel<EvaluationSession>(
+			EvaluationSession.class);
 
 	public ResultItemActionsPanel(String id, PageParameters parameters) {
 		super(id);
@@ -62,16 +63,17 @@ public class ResultItemActionsPanel extends Panel {
 					evaluatedResourceRepo.save(resourceModel.getObject());
 				}
 				resourceModel.getObject().setCorrect(!resourceModel.getObject().isCorrect());
-				if(resourceModel.getObject().isCorrect()) 
+				if (resourceModel.getObject().isCorrect())
 					resourceModel.getObject().setScore(new BigDecimal(1));
-				
+
 				try {
-					Score score = manualErrorsFormulae.compute(resource, Optional.of(resourceModel.getObject().getSession()));
+					Score score = manualErrorsFormulae.compute(resource,
+							Optional.of(resourceModel.getObject().getSession()));
 					resourceModel.getObject().setScore(new BigDecimal(score.getScore()));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				
+
 				PageParameters parameters = new PageParameters();
 				parameters.add("selection", resource);
 				parameters.add("comesFromMyResources", Strings.nullToEmpty(comesFromMyResources));
@@ -95,7 +97,7 @@ public class ResultItemActionsPanel extends Panel {
 				}
 			}
 		};
-		
+
 		Link<Void> relatedEvaluationsButton = new Link<Void>("relatedEvaluationsButton") {
 			@Override
 			public void onClick() {
@@ -108,31 +110,33 @@ public class ResultItemActionsPanel extends Panel {
 				setResponsePage(RelatedEvaluationsPage.class, parameters);
 			}
 		};
-		evaluationSessioneModel.setObject(resourceModel.getObject().getSession());
-		List<EvaluatedResource> evaluatedResources = evaluatedResourceRepo.getAllRelated(resource, evaluationSessioneModel);
+		EvaluationSession evaluationSession = resourceModel.getObject() == null ? null
+				: resourceModel.getObject().getSession();
+		evaluationSessionModel.setObject(evaluationSession);
+		List<EvaluatedResource> evaluatedResources = evaluatedResourceRepo.getAllRelated(resource,
+				evaluationSessionModel);
 		relatedEvaluationsButton.setVisible(evaluatedResources.size() > 0);
-		
+
 		WebMarkupContainer editCommentsButtonContainer = new WebMarkupContainer("editCommentsButtonContainer");
-		editCommentsButtonContainer.setVisible(resourceModel.getObject() == null ||
-				resourceModel.getObject().getSession().getUser().equals(WicketSession.get().getUser()));
-		
+		editCommentsButtonContainer.setVisible(resourceModel.getObject() == null
+				|| resourceModel.getObject().getSession().getUser().equals(WicketSession.get().getUser()));
+
 		resourceOkButton.add(resourceOkLabel);
-		
+
 		WebMarkupContainer resourceOk = new WebMarkupContainer("resourceOk");
 		resourceOk.add(resourceOkButton);
-		
+
 		add(resourceOk.setVisible(resourceModel.getObject() == null
-				|| (resourceModel.getObject() != null && !resourceModel.getObject().hasDetails() && 
-						resourceModel.getObject().getSession().getUser().equals(WicketSession.get().getUser()))
-			)
-		);
+				|| (resourceModel.getObject() != null && !resourceModel.getObject().hasDetails()
+						&& resourceModel.getObject().getSession().getUser().equals(WicketSession.get().getUser()))));
 		add(relatedEvaluationsButton);
 		add(editCommentsButtonContainer);
 	}
-	
+
 	@Override
 	protected void onDetach() {
 		super.onDetach();
 		resourceModel.detach();
+		evaluationSessionModel.detach();
 	}
 }

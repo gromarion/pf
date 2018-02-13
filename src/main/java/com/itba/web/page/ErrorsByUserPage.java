@@ -302,8 +302,7 @@ public class ErrorsByUserPage extends BasePage {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MMM-d");
 		LocalDateTime now = LocalDateTime.now();
 		String endpointName = campaignRepo
-				.get(Campaign.class, WicketSession.get().getEvaluationSession().get().getCampaign().getId())
-				.getName()
+				.get(Campaign.class, WicketSession.get().getEvaluationSession().get().getCampaign().getId()).getName()
 				.replaceAll(" ", "_");
 
 		return String.format("%s-%s.csv", endpointName, formatter.format(now));
