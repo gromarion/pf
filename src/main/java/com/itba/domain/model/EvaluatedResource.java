@@ -26,19 +26,14 @@ public class EvaluatedResource extends PersistentEntity {
 
     @Column(name = "resource")
     private String resource;
-
     @Column(name = "comments")
     private String comments;
-    
     @Column(name = "correct")
     private boolean correct;
-    
     @Column(name = "timestamp")
     private long timestamp;
-    
     @Column(name = "score")
     private BigDecimal score;
-
     @OneToMany(mappedBy = "resource", cascade = CascadeType.ALL)
     private Set<EvaluatedResourceDetail> details = new HashSet<>();
 
@@ -108,10 +103,11 @@ public class EvaluatedResource extends PersistentEntity {
 	public List<String> getAsCsvLines(Character separator) {
 		List<String> lines = Lists.newArrayList();
 		StringBuilder prefixBuilder = new StringBuilder();
-		prefixBuilder.append(session.getCampaign().getName()).append(separator);
+		prefixBuilder.append(session.getUser().getUsername()).append(separator);
 		prefixBuilder.append(session.getUser().getFullName()).append(separator);
 		prefixBuilder.append(getFormattedDate()).append(separator);
-		prefixBuilder.append(correct).append(separator);
+		prefixBuilder.append(translateCorrect(correct)).append(separator);
+		prefixBuilder.append(score).append(separator);
 		prefixBuilder.append(resource).append(separator);
 		String prefix = prefixBuilder.toString();
 		
@@ -132,5 +128,9 @@ public class EvaluatedResource extends PersistentEntity {
 			lines.add(builder.toString());
 		}
 		return lines;
+	}
+	
+	private String translateCorrect(boolean correct) {
+		return correct ? "Si" : "No";
 	}
 }

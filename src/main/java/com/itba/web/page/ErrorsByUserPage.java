@@ -61,8 +61,16 @@ import lib.StringUtils;
 @AuthorizeInstantiation({ User.EVALUATOR_ROLE, User.ADMIN_ROLE })
 public class ErrorsByUserPage extends BasePage {
 
-	private static final String[] CSV_HEADER = { "Campaign", "User", "Date", "Correct", "Resource", "Predicate",
-			"Object", "Error" };
+	private static final String[] CSV_HEADER = {
+			"Usuario",
+			"Nombre completo",
+			"Fecha",
+			"Correcto",
+			"Puntaje",
+			"Documento",
+			"Predicado",
+			"Objeto",
+			"Error"};
 
 	@SpringBean
 	private ManualErrorsFormulae manualErrorsFormulae;
