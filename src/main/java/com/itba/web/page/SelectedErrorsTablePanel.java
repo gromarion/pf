@@ -58,7 +58,7 @@ public class SelectedErrorsTablePanel extends Panel {
 		add(alertContainer);
 
 		String resourceString = resource.getObject() == null ? null : resource.getObject().getResource();
-		add(new AboutErrorPanel("aboutErrorPanel", resourceString, predicate, object, isAuthor));
+		add(new AboutErrorPanel("aboutErrorPanel", resourceString, predicate, object, !isAuthor));
 
 		final Label errorActionsLabel = new Label("errorActionsLabel", getString("errorActionsLabel"));
 

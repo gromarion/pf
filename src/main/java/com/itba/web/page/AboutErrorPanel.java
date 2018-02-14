@@ -9,7 +9,7 @@ import utils.URLHelper;
 @SuppressWarnings("serial")
 public class AboutErrorPanel extends Panel {
 	
-	public AboutErrorPanel(String id, String resource, String predicate, String object, boolean isAuthor) {
+	public AboutErrorPanel(String id, String resource, String predicate, String object, boolean isVisible) {
 		super(id);
 
 		final ExternalLink predicateLink = new ExternalLink("predicateLink", predicate, predicate);
@@ -20,6 +20,6 @@ public class AboutErrorPanel extends Panel {
 		add(resourceLink);
 		add(predicateLink);
 		add(objectLabel);
-		setVisible(!isAuthor);
+		setVisible(isVisible);
 	}
 }

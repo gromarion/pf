@@ -81,7 +81,7 @@ public class ErrorSelectionPage extends BasePage {
 		}
 
 		EvaluatedResource resourceObject = evaluatedResource.getObject();
-		boolean isAuthor = false;
+		boolean isAuthor = true;
 		if (resourceObject != null) {
 			isAuthor = resourceObject.getSession().getUser().equals(WicketSession.get().getUser());
 		}
