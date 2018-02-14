@@ -117,7 +117,7 @@ public class EvaluatedResource extends PersistentEntity {
 				StringBuilder builder = new StringBuilder();
 				builder.append(prefix);
 				builder.append(doubleQuote(detail.getPredicate())).append(separator);
-				builder.append(doubleQuote(detail.getObject())).append(separator);
+				builder.append(replaceCommas(detail.getObject())).append(separator);
 				builder.append(doubleQuote(detail.getError().getName()));
 				lines.add(builder.toString());
 			}
@@ -136,9 +136,10 @@ public class EvaluatedResource extends PersistentEntity {
 	}
 	
 	private String doubleQuote(String string) {
-		if (string.charAt(0) == '"' && string.charAt(string.length() - 1) == '"') {
-			return string.substring(1, string.length() - 2);
-		}
 		return "\"" + string + "\"";
+	}
+	
+	private String replaceCommas(String string) {
+		return string.replaceAll(",", ";");
 	}
 }
