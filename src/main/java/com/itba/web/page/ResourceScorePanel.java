@@ -19,23 +19,4 @@ public class ResourceScorePanel extends Panel {
 		super(id);
 		this.score = score;
 	}
-
-	@Override
-	public void renderHead(IHeaderResponse response) {
-		super.renderHead(response);
-		DonutChartWithLabels errorsDataChart = new DonutChartWithLabels("resource-score-chart");
-		Map<String, Integer> errorsAmount = score.getErrorsAmount();
-
-		for (String error : errorsAmount.keySet()) {
-			errorsDataChart.appendData(error, errorsAmount.get(error));
-		}
-
-		response.render(JavaScriptHeaderItem
-				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/d3.min.js")));
-		response.render(JavaScriptHeaderItem
-				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/donut-chart.js")));
-		response.render(JavaScriptHeaderItem
-				.forReference(new JavaScriptResourceReference(ResultItemPage.class, "js/display-donut-chart.js")));
-		response.render(errorsDataChart.getRender());
-	}
 }
