@@ -37,24 +37,28 @@ public class HibernateEvaluatedResourceRepo extends AbstractHibernateRepo implem
 	@SuppressWarnings("unchecked")
 	@Override
 	public Optional<EvaluatedResource> getResourceForSession(final EvaluationSession session, final String resource) {
-		Query query = getSession().createQuery("SELECT e FROM EvaluatedResource e " + " WHERE e.session = "
-				+ session.getId() + " AND e.resource = '" + adapt(resource) + "'");
-
+		String queryString = String.format("SELECT e FROM EvaluatedResource e WHERE e.session = %s AND e.resource = '%s'",
+				session.getId(),
+				adapt(resource)); 
+		Query query = getSession().createQuery(queryString);
 		List<EvaluatedResource> result = query.list();
-		if (result.isEmpty())
-			return Optional.absent();
-		return Optional.of(result.get(0));
+
+		return result.isEmpty() ? Optional.absent() : Optional.of(result.get(0));
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public PaginatedResult<EvaluatedResource> getAllForSession(final EvaluationSession session, int page) {
-		Query query = getSession()
-				.createQuery("SELECT e FROM EvaluatedResource e WHERE e.session = " + session.getId())
-				.setMaxResults(LIMIT).setFirstResult(page * LIMIT);
-
-		Query countQuery = getSession()
-				.createQuery("SELECT COUNT(*) FROM EvaluatedResource e WHERE e.session = " + session.getId());
+		String queryString = String.format(
+				"SELECT e FROM EvaluatedResource e WHERE e.session = %s order by timestamp DESC",
+				session.getId());
+		Query query = getSession().createQuery(queryString)
+				.setMaxResults(LIMIT)
+				.setFirstResult(page * LIMIT);
+		String countQueryString = String.format(
+				"SELECT COUNT(*) FROM EvaluatedResource e WHERE e.session = %s",
+				session.getId()); 
+		Query countQuery = getSession().createQuery(countQueryString);
 
 		return new PaginatedResult<EvaluatedResource>(query.list(), page, (long) countQuery.uniqueResult(), LIMIT);
 	}
@@ -62,26 +66,32 @@ public class HibernateEvaluatedResourceRepo extends AbstractHibernateRepo implem
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<EvaluatedResource> getAllForSession(final EvaluationSession session) {
-		Query query = getSession()
-				.createQuery("SELECT e FROM EvaluatedResource e " + " WHERE e.session = " + session.getId());
+		String queryString = String.format(
+				"SELECT e FROM EvaluatedResource e WHERE e.session = %s order by timestamp DESC",
+				session.getId());
+		Query query = getSession().createQuery(queryString);
 
 		return query.list();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> getErroredForSession(final EvaluationSession session) {
-		Query query = getSession().createQuery("SELECT e.resource FROM EvaluatedResource e " + " WHERE e.session = "
-				+ session.getId() + " AND e.correct = false");
-
-		return query.list();
+		return getForSession(session, false);
+	}
+	
+	@Override
+	public List<String> getCorrectForSession(final EvaluationSession session) {
+		return getForSession(session, true);
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
-	public List<String> getCorrectForSession(final EvaluationSession session) {
-		Query query = getSession().createQuery("SELECT e.resource FROM EvaluatedResource e " + " WHERE e.session = "
-				+ session.getId() + " AND e.correct = true");
+	private List<String> getForSession(final EvaluationSession session, boolean correct) {
+		String queryString = String.format(
+				"SELECT e.resource FROM EvaluatedResource e WHERE e.session = %s AND e.correct = %s",
+				session.getId(),
+				correct);
+		Query query = getSession().createQuery(queryString);
+
 		return query.list();
 	}
 
