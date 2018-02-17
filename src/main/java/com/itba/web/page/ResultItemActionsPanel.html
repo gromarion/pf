@@ -1,22 +1,18 @@
 <wicket:panel>
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-3">
-				<button wicket:id="relatedEvaluationsButton" class="btn btn-info guest-login">
-					<span wicket:message key="relatedEvaluationsLabel">Evaluaciones Relacionadas</span>
-				</button>
-			</div>
-			<div class="col-3" wicket:id="resourceOk">
-				<button wicket:id="resourceOkButton" class="btn btn-success guest-login">
-					<span wicket:id="resourceOkLabel">Is resource OK?</span>
-				</button>
-			</div>
-			<div wicket:id="editCommentsButtonContainer" class="col-3 guest-login">
-				<button class="btn btn-primary" href="#" data-toggle="modal"
-					data-target="#editCommentModal">
-					<wicket:message key="editCommentLabel">Edit comment</wicket:message>
-				</button>
-			</div>
-		</div>
+	<div class="guest-login">
+		<button wicket:id="relatedEvaluationsButton" class="btn btn-info">
+			<span wicket:message key="relatedEvaluationsLabel">Evaluaciones Relacionadas</span>
+		</button>
+	</div>
+	<div class="guest-login" wicket:id="resourceOk">
+		<button wicket:id="resourceOkButton" class="btn btn-success">
+			<span wicket:id="resourceOkLabel">Is resource OK?</span>
+		</button>
+	</div>
+	<div wicket:id="editCommentsButtonContainer" class="guest-login">
+		<button class="btn btn-primary" href="#" data-toggle="modal"
+			data-target="#editCommentModal">
+			<wicket:message key="editCommentLabel">Edit comment</wicket:message>
+		</button>
 	</div>
 </wicket:panel>

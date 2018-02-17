@@ -85,14 +85,14 @@ public class ResultItemActionsPanel extends Panel {
 				super.onComponentTag(tag);
 				if (resourceModel.getObject() != null) {
 					if (resourceModel.getObject().isCorrect()) {
-						tag.put("class", "btn btn-danger guest-login");
+						tag.put("class", "btn btn-danger");
 						resourceOkLabelMessage.setObject(getString("removeFromCorrectDocuments"));
 					} else {
-						tag.put("class", "btn btn-success guest-login");
+						tag.put("class", "btn btn-success");
 						resourceOkLabelMessage.setObject(getString("addToCorrectDocuments"));
 					}
 				} else {
-					tag.put("class", "btn btn-success guest-login");
+					tag.put("class", "btn btn-success");
 					resourceOkLabelMessage.setObject(getString("addToCorrectDocuments"));
 				}
 			}

@@ -152,7 +152,7 @@ public class ResultItemPage extends BasePage {
 		Score score;
 		try {
 			score = manualErrorsFormulae.compute(resource, resourceSession);
-			ResourceScorePanel resourceScorePanel = new ResourceScorePanel("scorePanel", score);
+			ResourceScorePanel resourceScorePanel = new ResourceScorePanel("scorePanel");
 			resourceScorePanel.add(new Label("resourceScore", score.toString()));
 			if (score.getScore() < 0 || score.getErrors() == 0) {
 				resourceScorePanel.setVisible(false);

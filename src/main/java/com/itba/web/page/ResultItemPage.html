@@ -15,7 +15,7 @@
 		</div>
 		<div wicket:id="scorePanel"/>
 		<div wicket:id="errorsTablePanel"/>
-		<div wicket:id="actionsPanel"/>
+		<div class="row" wicket:id="actionsPanel"/>
 
 		<div wicket:id="editCommentModal"></div>
 		<div class="card" wicket:id="commentsContainer">
@@ -27,42 +27,40 @@
 				<span wicket:id="comments">Comments</span>
 			</div>
 		</div>
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-sm-12">
-					<table class="table table-striped">
-						<thead>
-							<div class="row">
-								<tr>
-									<th class="col-xs-5">
-										<wicket:message key="predicate">Predicate</wicket:message>
-									</th>
-									<th class="col-xs-6">
-										<wicket:message key="object">Object</wicket:message>
-									</th>
-									<th class="col-xs-1"></th>
-								</tr>
-							</div>
-						</thead>
-						<tbody>
-							<tr wicket:id="resultItemList">
-								<td class="col-xs-5">
-									<a href="#" target="_blank" wicket:id="predicate">Some
-										Predicate
-									</a>
-								</td>
-								<td class="col-xs-5">
-									<span wicket:id="object">Some Object</span>
-								</td>
-								<td class="col-xs-5">
-									<a wicket:id="errorPageLink" class="btn btn-link" href="#">
-										<i aria-hidden="true"/>
-									</a>
-								</td>
+		<div class="row">
+			<div class="col-sm-12">
+				<table class="table table-striped">
+					<thead>
+						<div class="row">
+							<tr>
+								<th class="col-xs-5">
+									<wicket:message key="predicate">Predicate</wicket:message>
+								</th>
+								<th class="col-xs-6">
+									<wicket:message key="object">Object</wicket:message>
+								</th>
+								<th class="col-xs-1"></th>
 							</tr>
-						</tbody>
-					</table>
-				</div>
+						</div>
+					</thead>
+					<tbody>
+						<tr wicket:id="resultItemList">
+							<td class="col-xs-5">
+								<a href="#" target="_blank" wicket:id="predicate">Some
+									Predicate
+								</a>
+							</td>
+							<td class="col-xs-5">
+								<span wicket:id="object">Some Object</span>
+							</td>
+							<td class="col-xs-5">
+								<a wicket:id="errorPageLink" class="btn btn-link" href="#">
+									<i aria-hidden="true"/>
+								</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</div>
