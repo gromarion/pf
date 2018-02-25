@@ -133,8 +133,10 @@ public class HibernateEvaluatedResourceRepo extends AbstractHibernateRepo implem
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<EvaluatedResource> getAllByCampaign(Campaign c) {
-		return getSession().createQuery("SELECT e FROM EvaluatedResource e"
-				+ " WHERE e.resource.session.campaign = " + c.getId()).list();
+		String query = String.format(
+				"SELECT e FROM EvaluatedResource e WHERE e.resource.session.campaign = %s",
+				c.getId());
+		return getSession().createQuery(query).list();
 	}
 	
 	@Override
