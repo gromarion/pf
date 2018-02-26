@@ -141,8 +141,10 @@ public class HibernateEvaluatedResourceRepo extends AbstractHibernateRepo implem
 	
 	@Override
 	public BigDecimal getSumScoreByCampaign(Campaign c) {
-		BigDecimal result = (BigDecimal) getSession().createQuery("SELECT SUM(e.score) FROM EvaluatedResource e"
-				+ " WHERE e.resource.session.campaign = " + c.getId()).list().get(0);
+		String query = String.format(
+				"SELECT SUM(e.score) FROM EvaluatedResource e WHERE e.resource.session.campaign = %s AND e.score >= 0",
+				c.getId());
+		BigDecimal result = (BigDecimal) getSession().createQuery(query).list().get(0);
 
 		return result == null ? BigDecimal.ZERO : result;
 	}
