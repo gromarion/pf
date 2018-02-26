@@ -123,7 +123,8 @@ public class ResultItemPage extends BasePage {
 						public void onClick(AjaxRequestTarget target) {
 							PageParameters parameters = new PageParameters();
 							parameters.add("predicate", resultItem.get(0));
-							parameters.add("object", resultItem.get(1));
+							String object = resultItem.get(1).value.substring(0, 1000) + "...";
+							parameters.add("object", object);
 							parameters.add("resource", resource);
 							if (resourceModel.getObject() != null) {
 								parameters.add("sessionId", resourceModel.getObject().getSession().getId());
