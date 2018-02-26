@@ -41,7 +41,6 @@ import com.itba.web.WicketSession;
 import com.itba.web.feedback.CustomFeedbackPanel;
 import com.itba.web.modal.EditResourceCommentModal;
 
-import lib.Score;
 import lib.StringUtils;
 import utils.URLHelper;
 
@@ -148,20 +147,6 @@ public class ResultItemPage extends BasePage {
 		}
 		final CustomFeedbackPanel customFeedbackPanel = new CustomFeedbackPanel("feedbackPanel");
 		customFeedbackPanel.setOutputMarkupId(true);
-
-		Score score;
-		try {
-			score = manualErrorsFormulae.compute(resource, resourceSession);
-			ResourceScorePanel resourceScorePanel = new ResourceScorePanel("scorePanel");
-			resourceScorePanel.add(new Label("resourceScore", score.toString()));
-			if (score.getScore() < 0 || score.getErrors() == 0) {
-				resourceScorePanel.setVisible(false);
-			}
-			add(resourceScorePanel);
-		} catch (JSONException | IOException e) {
-			e.printStackTrace(System.out);
-			setResponsePage(ErrorPage.class);
-		}
 
 		add(new ResourceSearchPanel("search"));
 		try {

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.util.Strings;
 import org.apache.wicket.AttributeModifier;
@@ -115,7 +116,10 @@ public class ErrorsByUserPage extends BasePage {
 		final IModel<List<EvaluatedResource>> evaluatedResources = new LoadableDetachableModel<List<EvaluatedResource>>() {
 			@Override
 			protected List<EvaluatedResource> load() {
-				return getResult(parameters, nextPageLink).getResult();
+				return getResult(parameters, nextPageLink).getResult()
+						.stream()
+						.filter(r -> r.getScore().doubleValue() >= 0)
+						.collect(Collectors.toList());
 			}
 		};
 

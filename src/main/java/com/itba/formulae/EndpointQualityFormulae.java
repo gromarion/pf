@@ -104,7 +104,7 @@ public class EndpointQualityFormulae {
 			}
 		}
 
-		private double computeScore() throws IOException {
+		private double computeScore() {
 			int successfulResponses = 0;
 			int erroredResponses = 0;
 
@@ -125,11 +125,17 @@ public class EndpointQualityFormulae {
 			}
 			double availabilityScore;
 			if (successfulResponses + erroredResponses == 0) {
-				availabilityScore = 1;
+				availabilityScore = 0;
 			} else {
 				availabilityScore = 1 - ((double) erroredResponses / (successfulResponses + erroredResponses));
 			}
-			int licenseScore = SparqlRequestHandler.hasLicense(campaign, endpointStatsRepo) ? 1 : 0;
+			int licenseScore;
+			try {
+				licenseScore = SparqlRequestHandler.hasLicense(campaign, endpointStatsRepo) ? 1 : 0;
+			} catch (IOException e) {
+				e.printStackTrace();
+				licenseScore = 0;
+			}
 			return (availabilityScore + licenseScore) / 2;
 		}
 	}

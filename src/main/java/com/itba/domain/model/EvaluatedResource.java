@@ -112,7 +112,13 @@ public class EvaluatedResource extends PersistentEntity {
 		prefixBuilder.append(doubleQuote(resource)).append(separator);
 		String prefix = prefixBuilder.toString();
 
-		if (!this.correct) {
+		if (this.correct) {
+			StringBuilder builder = new StringBuilder();
+			builder.append(prefix);
+			builder.append(separator);
+			builder.append(separator);
+			lines.add(builder.toString());			
+		} else {
 			for (EvaluatedResourceDetail detail : details) {
 				StringBuilder builder = new StringBuilder();
 				builder.append(prefix);
@@ -121,12 +127,6 @@ public class EvaluatedResource extends PersistentEntity {
 				builder.append(doubleQuote(detail.getError().getName()));
 				lines.add(builder.toString());
 			}
-		} else {
-			StringBuilder builder = new StringBuilder();
-			builder.append(prefix);
-			builder.append(separator);
-			builder.append(separator);
-			lines.add(builder.toString());
 		}
 		return lines;
 	}

@@ -65,7 +65,6 @@ public class ResultItemActionsPanel extends Panel {
 				resourceModel.getObject().setCorrect(!resourceModel.getObject().isCorrect());
 				if (resourceModel.getObject().isCorrect())
 					resourceModel.getObject().setScore(new BigDecimal(1));
-
 				try {
 					Score score = manualErrorsFormulae.compute(resource,
 							Optional.of(resourceModel.getObject().getSession()));
